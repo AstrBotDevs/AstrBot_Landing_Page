@@ -1,11 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { useI18n } from "../components/i18n/I18nProvider";
 
 export default function Home() {
-  const { t } = useI18n();
   return (
     <div className="min-h-screen flex flex-col font-sans">
       <Navbar />
@@ -49,6 +48,7 @@ function Navbar() {
   const { t, setLocale, locale } = useI18n();
   const navRef = useRef<HTMLElement | null>(null);
   const langRef = useRef<HTMLLIElement | null>(null);
+  const [openLangMobile, setOpenLangMobile] = useState(false);
   const [isDark, setIsDark] = useState(false);
   const toggleTheme = () => {
     const root = document.documentElement;
@@ -82,7 +82,7 @@ function Navbar() {
   const langLabel = locale === "en-US" ? "English" : locale === "ja-JP" ? "日本語" : "简体中文";
 
   return (
-    <nav ref={navRef} className="sticky top-0 z-50 backdrop-blur bg-background/80 border-b border-black/[.06] dark:border-white/[.12]">
+    <nav ref={navRef} className="relative sticky top-0 z-50 backdrop-blur bg-background/80 border-b border-black/[.06] dark:border-white/[.12]">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 h-16 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <Image src="/logo.webp" alt="AstrBot" width={32} height={32} />
@@ -117,30 +117,63 @@ function Navbar() {
             )}
           </li>
         </ul>
-        <button className="md:hidden inline-flex flex-col gap-1" onClick={() => setOpenMenu((v) => !v)} aria-label="menu">
-          <span className="w-6 h-[2px] bg-foreground" />
-          <span className="w-6 h-[2px] bg-foreground" />
-          <span className="w-6 h-[2px] bg-foreground" />
+        <button
+          className="md:hidden inline-flex items-center justify-center h-9 w-9 rounded-lg border border-black/[.08] dark:border-white/[.16] bg-background/80 backdrop-blur transition active:scale-[0.98]"
+          onClick={() => setOpenMenu((v) => !v)}
+          aria-label="menu"
+          aria-expanded={openMenu}
+        >
+          <div className="relative w-4 h-4">
+            <span className={`absolute left-1/2 top-1/2 h-0.5 w-4 -translate-x-1/2 -translate-y-1/2 bg-foreground transition-transform duration-300 ${openMenu ? 'rotate-45' : '-translate-y-[4px]'}`} />
+            <span className={`absolute left-1/2 top-1/2 h-0.5 w-4 -translate-x-1/2 -translate-y-1/2 bg-foreground transition-transform duration-300 ${openMenu ? '-rotate-45' : 'translate-y-[4px]'}`} />
+          </div>
         </button>
       </div>
       {openMenu && (
-        <div className="md:hidden mx-auto max-w-6xl px-6 pb-4">
-          <ul className="flex flex-col gap-3 text-sm">
-            <li><a href="https://docs.astrbot.app" className="opacity-80 hover:opacity-100">{t("nav.quickStart")}</a></li>
-            <li><a href="https://plugins.astrbot.app/" className="opacity-80 hover:opacity-100">{t("nav.plugin")}</a></li>
-            <li><a href="https://github.com/AstrBotDevs/AstrBot" className="opacity-80 hover:opacity-100">{t("nav.github")}</a></li>
-            <li>
-              <button onClick={toggleTheme} aria-label="切换深浅模式" className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/[.08] dark:border-white/[.16] relative">
-                <svg className="w-5 h-5 brand-text absolute transition-opacity duration-300" style={{opacity: isDark ? 0 : 1}} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                  <circle cx="12" cy="12" r="5" />
-                  <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
-                </svg>
-                <svg className="w-5 h-5 brand-text absolute transition-opacity duration-300" style={{opacity: isDark ? 1 : 0}} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                  <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
-                </svg>
-              </button>
-            </li>
-          </ul>
+        <div className="md:hidden absolute left-0 right-0 top-16 z-40">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6 pb-4 mt-2">
+            <div className="rounded-2xl border border-black/[.08] dark:border-white/[.16] bg-background/90 backdrop-blur shadow-lg p-4">
+              <ul className="flex flex-col gap-2 text-sm">
+                <li><a href="https://docs.astrbot.app" className="block rounded-lg px-3 py-2 opacity-80 hover:opacity-100 hover:bg-black/[.04] dark:hover:bg-white/[.06]">{t("nav.quickStart")}</a></li>
+                <li><a href="https://plugins.astrbot.app/" className="block rounded-lg px-3 py-2 opacity-80 hover:opacity-100 hover:bg-black/[.04] dark:hover:bg-white/[.06]">{t("nav.plugin")}</a></li>
+                <li><a href="https://github.com/AstrBotDevs/AstrBot" className="block rounded-lg px-3 py-2 opacity-80 hover:opacity-100 hover:bg-black/[.04] dark:hover:bg-white/[.06]">{t("nav.github")}</a></li>
+              </ul>
+              <div className="mt-3 pt-3 border-t border-black/[.08] dark:border-white/[.16]">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <button onClick={toggleTheme} aria-label="切换深浅模式" className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/[.08] dark:border-white/[.16] relative">
+                    <svg className="w-5 h-5 brand-text absolute transition-opacity duration-300" style={{opacity: isDark ? 0 : 1}} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                      <circle cx="12" cy="12" r="5" />
+                      <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+                    </svg>
+                    <svg className="w-5 h-5 brand-text absolute transition-opacity duration-300" style={{opacity: isDark ? 1 : 0}} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                      <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+                    </svg>
+                  </button>
+                  <button
+                    onClick={() => setOpenLangMobile((v) => !v)}
+                    aria-expanded={openLangMobile}
+                    aria-label="语言"
+                    className="inline-flex h-10 px-3 items-center justify-center rounded-full border border-black/[.08] dark:border-white/[.16] gap-2"
+                  >
+                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                      <circle cx="12" cy="12" r="9" />
+                      <path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18" />
+                    </svg>
+                    <svg className={`w-4 h-4 transition-transform ${openLangMobile ? 'rotate-180' : ''}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                      <path d="M6 9l6 6 6-6" />
+                    </svg>
+                  </button>
+                  {openLangMobile && (
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <button onClick={() => { setLocale('zh-CN'); setOpenMenu(false); }} className={`px-3 py-1.5 rounded-full border text-xs ${locale === 'zh-CN' ? 'border-black/[.08] dark:border-white/[.16] bg-black/[.06] dark:bg-white/[.08]' : 'border-black/[.08] dark:border-white/[.16] opacity-80 hover:opacity-100'}`}>简体中文</button>
+                      <button onClick={() => { setLocale('en-US'); setOpenMenu(false); }} className={`px-3 py-1.5 rounded-full border text-xs ${locale === 'en-US' ? 'border-black/[.08] dark:border-white/[.16] bg-black/[.06] dark:bg-white/[.08]' : 'border-black/[.08] dark:border-white/[.16] opacity-80 hover:opacity-100'}`}>English</button>
+                      <button onClick={() => { setLocale('ja-JP'); setOpenMenu(false); }} className={`px-3 py-1.5 rounded-full border text-xs ${locale === 'ja-JP' ? 'border-black/[.08] dark:border-white/[.16] bg-black/[.06] dark:bg-white/[.08]' : 'border-black/[.08] dark:border-white/[.16] opacity-80 hover:opacity-100'}`}>日本語</button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </nav>
@@ -184,7 +217,9 @@ function Hero() {
             <h1 className="slogan text-3xl sm:text-5xl font-semibold tracking-tight gradient-title">{t("hero.slogan")}</h1>
             <p className="sub-slogan mt-4 text-sm sm:text-base opacity-80">{t("hero.subSlogan")}</p>
             <div className="trendshift-badge mt-6 flex lg:justify-start justify-center">
-              <a href="https://trendshift.io/api/badge/repositories/12875"><img src="https://trendshift.io/api/badge/repositories/12875" alt="AstrBot | Trendshift" width={250} height={55} /></a>
+              <a href="https://trendshift.io/api/badge/repositories/12875">
+                <Image src="https://trendshift.io/api/badge/repositories/12875" alt="AstrBot | Trendshift" width={250} height={55} unoptimized />
+              </a>
             </div>
             <div className="hero-buttons mt-6 flex flex-row flex-nowrap items-center gap-2 sm:gap-3">
               <a href="https://docs.astrbot.app" className="inline-flex items-center justify-center h-12 sm:h-11 px-5 rounded-full btn-brand text-sm font-medium transition">{t("hero.startButton")}</a>
@@ -203,7 +238,7 @@ function Hero() {
         </div>
       </div>
       <div className="pointer-events-none select-none absolute bottom-[70px] right-[-160px] sm:right-[-100px] opacity-60 z-0" style={parallaxImg}>
-        <img src="/webui-1.png" alt="AstrBot WebUI界面" className="w-[clamp(640px,70vw,1150px)] max-w-none drop-shadow-xl" />
+        <Image src="/webui-1.png" alt="AstrBot WebUI界面" width={1200} height={800} sizes="(min-width: 1024px) 70vw, 100vw" className="w-[clamp(640px,70vw,1150px)] max-w-none drop-shadow-xl" />
       </div>
       <div className="absolute inset-x-0 bottom-4 z-20 flex justify-center">
         <a href="#features" aria-label="Scroll down">
@@ -233,13 +268,14 @@ function Platforms() {
     { key: "vocechat", label: "VoceChat", src: "" },
   ];
   const [index, setIndex] = useState(0);
-  const go = (n: number) => setIndex((i) => (i + n + slides.length) % slides.length);
+  const slidesLen = slides.length;
+  const go = useCallback((n: number) => setIndex((i) => (i + n + slidesLen) % slidesLen), [slidesLen]);
   const autoRef = useRef(0 as number | 0);
   const sectionRef = useRef<HTMLDivElement | null>(null);
-  const startAuto = () => {
+  const startAuto = useCallback(() => {
     if (autoRef.current) window.clearInterval(autoRef.current as number);
     autoRef.current = window.setInterval(() => go(1), 5000) as unknown as number;
-  };
+  }, [go]);
   useEffect(() => {
     const el = sectionRef.current;
     if (!el) return;
@@ -257,7 +293,7 @@ function Platforms() {
       io.disconnect();
       if (autoRef.current) window.clearInterval(autoRef.current as number);
     };
-  }, []);
+  }, [startAuto]);
   return (
     <section ref={sectionRef} id="features" className="min-h-[calc(100vh-64px)] flex items-center py-12 sm:py-16">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
@@ -278,7 +314,7 @@ function Platforms() {
                 {slides.map((s, i) => (
                   <div key={s.key} className={`absolute inset-0 flex items-center justify-center transition-opacity duration-500 ${i === index ? "opacity-100" : "opacity-0"}`} aria-hidden={i !== index}>
                     {s.src ? (
-                      <img src={s.src} alt={`${s.label} 平台演示`} className="max-h-full w-auto mt-2 sm:mt-4 rounded-xl px-2" />
+                      <Image src={s.src} alt={`${s.label} 平台演示`} width={1200} height={800} className="max-h-full w-auto mt-2 sm:mt-4 rounded-xl px-2 object-contain" />
                     ) : (
                       <div className="text-center text-sm opacity-80"><span>{t("platforms.vocechatSupport")}</span></div>
                     )}
@@ -341,14 +377,14 @@ function Providers() {
             it.href ? (
               <a key={it.name} href={it.href} target="_blank" rel="noreferrer" className="rounded-xl border border-black/[.08] dark:border-white/[.16] p-3 sm:p-4 flex flex-col items-center gap-2 hover:bg-[var(--brand-soft)] transition">
                 <div className="h-10 w-10 rounded-md bg-white dark:bg-white flex items-center justify-center ring-1 ring-black/[.06] dark:ring-white/[.12]">
-                  <img src={it.src} alt={it.name} className="h-6" />
+                  <Image src={it.src} alt={it.name} width={24} height={24} className="h-6 w-auto" unoptimized />
                 </div>
                 <span className="text-sm opacity-80 underline underline-offset-4 brand-text">{it.name}</span>
               </a>
             ) : (
               <div key={it.name} className="rounded-xl border border-black/[.08] dark:border-white/[.16] p-3 sm:p-4 flex flex-col items-center gap-2">
                 <div className="h-10 w-10 rounded-md bg-white dark:bg-white flex items-center justify-center ring-1 ring-black/[.06] dark:ring-white/[.12]">
-                  <img src={it.src} alt={it.name} className="h-6" />
+                  <Image src={it.src} alt={it.name} width={24} height={24} className="h-6 w-auto" unoptimized />
                 </div>
                 <span className="text-sm opacity-80">{it.name}</span>
               </div>
@@ -374,7 +410,9 @@ function Plugins() {
       fetch("/api/plugins", { cache: "no-store" })
         .then((r) => r.json())
         .then((data) => {
-          const entries = Object.entries<any>(data?.plugins || {});
+          type PluginItem = { desc: string; stars?: number; repo?: string };
+          const pluginsMap = (data?.plugins || {}) as Record<string, PluginItem>;
+          const entries = Object.entries(pluginsMap) as Array<[string, PluginItem]>;
           setPluginCount(entries.length);
           for (let i = entries.length - 1; i > 0; i -= 1) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -524,7 +562,7 @@ function Community() {
         <div className="mt-10 text-center">
           <h3 className="text-base font-semibold">{t("community.contributorsTitle")}</h3>
           <div className="mt-4 flex justify-center">
-            <img src="https://contrib.rocks/image?repo=AstrBotDevs/AstrBot" alt="AstrBot 贡献者" className="rounded-xl border border-black/[.08] dark:border-white/[.16]" />
+            <Image src="https://contrib.rocks/image?repo=AstrBotDevs/AstrBot" width={800} height={200} alt="AstrBot 贡献者" className="rounded-xl border border-black/[.08] dark:border-white/[.16]" unoptimized />
           </div>
           <p className="mt-3 text-sm opacity-80">{t("community.contributorsNote")}</p>
         </div>

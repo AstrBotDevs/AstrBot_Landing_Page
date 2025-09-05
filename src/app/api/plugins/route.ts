@@ -1,9 +1,15 @@
 import data from "../../../../data/checkpoint.json";
 
+type PluginItem = { desc: string; stars?: number; repo?: string };
+type PluginsMap = Record<string, PluginItem>;
+type GithubStats = { stars?: number; forks?: number; contributors?: number };
+type Checkpoint = { plugins?: PluginsMap; github?: GithubStats };
+
 export async function GET() {
   try {
-    const plugins = (data as any).plugins || {};
-    const github = (data as any).github || {};
+    const checkpoint = data as unknown as Checkpoint;
+    const plugins: PluginsMap = checkpoint.plugins || {};
+    const github: GithubStats = checkpoint.github || {};
     return Response.json({
       plugins,
       github: {
@@ -12,7 +18,7 @@ export async function GET() {
         contributors: github.contributors ?? 0,
       },
     });
-  } catch (e) {
+  } catch {
     return Response.json({ error: "Failed to load plugins" }, { status: 500 });
   }
 }

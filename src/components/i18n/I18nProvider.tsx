@@ -6,20 +6,24 @@ import enUS from "../../../i18n/en-US.json";
 import jaJP from "../../../i18n/ja-JP.json";
 
 type Locale = "zh-CN" | "en-US" | "ja-JP";
-type Dict = Record<string, any>;
+type TranslationValue = string | TranslationDict;
+type TranslationDict = { [key: string]: TranslationValue };
 
-const DICTS: Record<Locale, Dict> = {
-  "zh-CN": zhCN as Dict,
-  "en-US": enUS as Dict,
-  "ja-JP": jaJP as Dict,
+const DICTS: Record<Locale, TranslationDict> = {
+  "zh-CN": zhCN as unknown as TranslationDict,
+  "en-US": enUS as unknown as TranslationDict,
+  "ja-JP": jaJP as unknown as TranslationDict,
 };
 
-function getFromDict(dict: Dict, key: string): string {
+function getFromDict(dict: TranslationDict, key: string): string {
   const parts = key.split(".");
-  let cur: any = dict;
+  let cur: TranslationValue = dict;
   for (const p of parts) {
-    if (cur && typeof cur === "object" && p in cur) cur = cur[p];
-    else return key;
+    if (cur && typeof cur === "object" && p in (cur as TranslationDict)) {
+      cur = (cur as TranslationDict)[p];
+    } else {
+      return key;
+    }
   }
   return typeof cur === "string" ? cur : key;
 }
