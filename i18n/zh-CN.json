@@ -1,0 +1,28 @@
+{
+  "nav": {"quickStart": "快速上手", "plugin": "插件市场", "github": "GitHub"},
+  "hero": {"slogan": "多平台大模型机器人基础设施", "subSlogan": "✨ 快速构建、部署和管理跨平台的智能聊天机器人 ✨", "startButton": "开始使用", "githubButton": "GitHub"},
+  "platforms": {"title": "多消息平台接入", "current": "当前平台"},
+  "models": {"title": "支持主流模型提供商", "subtitle": "支持文本生成、图像理解、语音转文本（STT）、文本转语音（TTS）、Embedding 等多种能力"},
+  "plugins": {"title": "丰富的插件生态", "subtitle": "众多插件满足各种场景需求，轻松扩展机器人功能", "more": "更多插件 →"},
+  "community": {"title": "高度活跃的社区", "subtitle": "亦有星星火，燎原势竟成。", "contributorsTitle": "项目贡献者", "contributorsNote": "感谢每一位开源贡献者。", "stars": "GitHub Stars", "forks": "GitHub Forks", "contributors": "贡献者", "plugins": "插件"},
+  "more": {"title": "更多能力", "kbLabel": "知识库", "kbDesc": "AstrBot 内置 AI 知识库能力，免除繁杂部署", "codeLabel": "代码执行器", "codeDesc": "AstrBot 支持基于 Docker 的沙箱化代码执行器", "searchLabel": "网页搜索", "searchDesc": "让大模型接入互联网", "memoryLabel": "长期记忆", "memoryDesc": "试验型长期记忆层（即将上线）"},
+  "carousel": {"prev": "上一张", "next": "下一张"},
+  "platforms": {"title": "多消息平台接入", "current": "当前平台", "vocechatSupport": "AstrBot 支持接入 VoceChat。"},
+  "getStarted": {"title": "开始使用 🥳", "doc": "查看文档", "subtitle": "支持 Docker、pip、Windows 一键安装器等方式快速部署。"},
+  "footer": {
+    "resources": "资源",
+    "community": "社区",
+    "support": "支持",
+    "docs": "文档",
+    "github": "GitHub",
+    "qq": "QQ",
+    "telegram": "Telegram",
+    "contact": "联系我们",
+    "issues": "反馈问题",
+    "partners": "合作伙伴",
+    "friendLinks": "友情链接",
+    "madeWith": "Made with ❤️ forever.",
+    "copyright": "保留所有权利。本项目受 AGPL-v3 开源许可协议保护。"
+  }
+}
+
