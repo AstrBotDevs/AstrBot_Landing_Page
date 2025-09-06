@@ -18,11 +18,11 @@ on:
       upstream_branch:
         description: 'Branch name on upstream to sync from.'
         required: false
-        default: 'main'
+        default: 'master'
       target_branch:
         description: 'Branch name in this repo to update.'
         required: false
-        default: 'main'
+        default: 'master'
 
 jobs:
   sync:
