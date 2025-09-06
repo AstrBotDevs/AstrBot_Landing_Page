@@ -71,6 +71,7 @@ jobs:
           else
             # 退回到 GITHUB_TOKEN，注意：GITHUB_TOKEN 在 fork -> upstream 的推送场景可能权限不足
             git push origin ${TARGET_BRANCH} || (echo "Push failed. Add a secret named PAT with push permission." && exit 1)
+          fi
 
 # 可选改进提示：
 # - 如果你想使用 rebase 而非 merge，把上面的 merge 命令换为：git rebase upstream/${UPSTREAM_BRANCH}
