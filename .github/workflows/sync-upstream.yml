@@ -1,0 +1,79 @@
+# GitHub Actions workflow: 自动同步上游仓库
+# 使用方式：
+# - 将此文件放到 .github/workflows/sync-upstream.yml
+# - 提供一个 secrets.PAT（可选但推荐，需有 repo 权限），用于在 fork 的仓库推送。
+# - 或者在仓库的 Settings > Secrets 设置 secrets.UPSTREAM_REPO（格式 owner/repo）。
+# - 可以手动触发（workflow_dispatch）或按计划运行（cron）。
+
+name: Sync from upstream
+
+on:
+  schedule:
+    - cron: '0 3 * * *' # 每天 03:00 UTC 同步（可修改）
+  workflow_dispatch:
+    inputs:
+      upstream_repo:
+        description: 'Upstream repository in owner/repo format (e.g. upstream-owner/upstream-repo). If empty, will use secrets.UPSTREAM_REPO.'
+        required: false
+      upstream_branch:
+        description: 'Branch name on upstream to sync from.'
+        required: false
+        default: 'master'
+      target_branch:
+        description: 'Branch name in this repo to update.'
+        required: false
+        default: 'master'
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    env:
+      UPSTREAM_REPO: ${{ github.event.inputs.upstream_repo || secrets.UPSTREAM_REPO || '' }}
+      UPSTREAM_BRANCH: ${{ github.event.inputs.upstream_branch || 'main' }}
+      TARGET_BRANCH: ${{ github.event.inputs.target_branch || 'main' }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Add upstream remote and fetch
+        run: |
+          if [ -z "${UPSTREAM_REPO}" ]; then
+            echo "Error: UPSTREAM_REPO not set. Provide via workflow_dispatch input or secrets.UPSTREAM_REPO."
+            exit 1
+          fi
+          git remote add upstream "https://github.com/${UPSTREAM_REPO}" || true
+          git fetch upstream --depth=1
+
+      - name: Merge upstream into target
+        run: |
+          git checkout ${TARGET_BRANCH}
+          git fetch upstream ${UPSTREAM_BRANCH}
+          # 首先尝试快进合并
+          git merge --ff-only upstream/${UPSTREAM_BRANCH} || \
+          # 如果无法快进，则做常规合并（保留历史），如需保持线性可改为 --rebase
+          git merge --no-edit upstream/${UPSTREAM_BRANCH} || true
+
+      - name: Push to origin
+        env:
+          PAT: ${{ secrets.PAT }}
+        run: |
+          if [ -n "${PAT}" ]; then
+            # 使用 PAT 推送，适用于 fork 或需要跨仓库权限的场景
+            git push https://x-access-token:${PAT}@github.com/${{ github.repository }} ${TARGET_BRANCH}
+          else
+            # 退回到 GITHUB_TOKEN，注意：GITHUB_TOKEN 在 fork -> upstream 的推送场景可能权限不足
+            git push origin ${TARGET_BRANCH} || (echo "Push failed. Add a secret named PAT with push permission." && exit 1)
+          fi
+
+# 可选改进提示：
+# - 如果你想使用 rebase 而非 merge，把上面的 merge 命令换为：git rebase upstream/${UPSTREAM_BRANCH}
+# - 如果你只想在有差异时才创建一个 PR 而不是直接推送，可以用 peter-evans/create-pull-request action 来创建 PR。
+# - 在私有仓库或企业环境中，请确保 PAT 的权限仅限需要的作用域以降低风险。
