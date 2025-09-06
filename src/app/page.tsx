@@ -223,12 +223,12 @@ function Hero() {
   }, []);
   return (
     <section className="relative overflow-hidden min-h-[calc(100vh-64px)] flex items-start">
-      <div className="absolute -z-10 left-1/2 -translate-x-1/2 top-[-200px] h-[480px] w-[480px] rounded-full bg-[#6aa1ff]/20 blur-3xl" />
+      <div className="absolute -z-10 left-1/2 -translate-x-1/2 top-[-200px] h-[480px] w-[480px] rounded-full bg-[#6aa1ff]/20 blur-3xl animate-orb-pulse" style={{ animationDelay: "0s" }} />
       {/* additional colorful glow orbs */}
-      <div className="absolute -z-10 top-[8%] left-[-120px] h-[280px] w-[280px] rounded-full bg-[#f0abfc]/30 blur-3xl" style={parallax1} />
-      <div className="absolute -z-10 top-[18%] right-[-140px] h-[340px] w-[340px] rounded-full bg-[#a78bfa]/25 blur-3xl" style={parallax2} />
-      <div className="absolute -z-10 bottom-[14%] left-[10%] h-[320px] w-[320px] rounded-full bg-[#22d3ee]/25 blur-3xl" style={parallax3} />
-      <div className="absolute -z-10 bottom-[-60px] right-[22%] h-[260px] w-[260px] rounded-full bg-[#f59e0b]/20 blur-3xl" style={parallax4} />
+      <div className="absolute -z-10 top-[8%] left-[-120px] h-[280px] w-[280px] rounded-full bg-[#f0abfc]/30 blur-3xl animate-orb-pulse" style={{...parallax1, animationDelay: "1s"}} />
+      <div className="absolute -z-10 top-[18%] right-[-140px] h-[340px] w-[340px] rounded-full bg-[#a78bfa]/25 blur-3xl animate-orb-pulse" style={{...parallax2, animationDelay: "2.5s"}} />
+      <div className="absolute -z-10 bottom-[14%] left-[10%] h-[320px] w-[320px] rounded-full bg-[#22d3ee]/25 blur-3xl animate-orb-pulse" style={{...parallax3, animationDelay: "4s"}} />
+      <div className="absolute -z-10 bottom-[-60px] right-[22%] h-[260px] w-[260px] rounded-full bg-[#f59e0b]/20 blur-3xl animate-orb-pulse" style={{...parallax4, animationDelay: "5.5s"}} />
       <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 pt-16 sm:pt-24 lg:pt-28 pb-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 items-start gap-8">
           <div className="text-left lg:col-span-8">
@@ -691,16 +691,16 @@ function SiteFooter() {
         style={{ transform: `translateY(${parallaxY}px)`, willChange: "transform" }}
       >
         <div
-          className="absolute top-4 left-0 w-72 h-72 rounded-full blur-3xl opacity-25 dark:opacity-20 animate-orb-float"
-          style={{ backgroundColor: "var(--brand)" }}
+          className="absolute top-4 left-0 w-72 h-72 rounded-full blur-3xl opacity-25 dark:opacity-20 animate-orb-sway animate-orb-pulse"
+          style={{ backgroundColor: "var(--brand)", animationDelay: "0s, 0.5s, 1s" }}
         />
         <div
-          className="absolute bottom-0 left-1/3 w-80 h-80 rounded-full blur-3xl opacity-20 dark:opacity-15 animate-orb-float"
-          style={{ backgroundColor: "#22d3ee", animationDelay: ".6s" }}
+          className="absolute bottom-0 left-1/3 w-80 h-80 rounded-full blur-3xl opacity-20 dark:opacity-15 animate-orb-sway animate-orb-pulse"
+          style={{ backgroundColor: "#22d3ee", animationDelay: "0.6s, 1.2s, 3s" }}
         />
         <div
-          className="absolute top-6 right-0 w-64 h-64 rounded-full blur-3xl opacity-20 dark:opacity-15 animate-orb-float"
-          style={{ backgroundColor: "#a78bfa", animationDelay: "1.2s" }}
+          className="absolute top-6 right-0 w-64 h-64 rounded-full blur-3xl opacity-20 dark:opacity-15 animate-orb-sway animate-orb-pulse"
+          style={{ backgroundColor: "#a78bfa", animationDelay: "1.2s, 2.4s, 5s" }}
         />
       </div>
 

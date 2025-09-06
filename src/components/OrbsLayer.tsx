@@ -91,7 +91,7 @@ export default function OrbsLayer() {
       {orbs.map((o, i) => (
         <div
           key={i}
-          className={`${o.className} animate-orb-float`}
+          className={`${o.className} animate-orb-sway`}
           style={{
             left: o.left,
             top: o.top,
