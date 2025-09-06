@@ -4,6 +4,21 @@ import Image from "next/image";
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useI18n } from "../components/i18n/I18nProvider";
 
+// Helper to type CSS custom properties safely
+type CSSVars = React.CSSProperties & {
+  ['--orb-float-x']?: string;
+  ['--orb-float-y']?: string;
+  ['--orb-float-dur']?: string;
+  ['--sway-x']?: string;
+  ['--sway-y']?: string;
+  ['--sway-dur']?: string;
+  ['--hue-dur']?: string;
+  ['--orb-alpha']?: string;
+  ['--orb-sat']?: string;
+  ['--orb-light']?: string;
+};
+const css = (vars: CSSVars, extra?: React.CSSProperties): React.CSSProperties => Object.assign({}, vars, extra);
+
 export default function Home() {
   return (
     <div className="min-h-screen flex flex-col font-sans">
@@ -223,12 +238,20 @@ function Hero() {
   }, []);
   return (
     <section className="relative overflow-hidden min-h-[calc(100vh-64px)] flex items-start">
-      <div className="absolute -z-10 left-1/2 -translate-x-1/2 top-[-200px] h-[480px] w-[480px] rounded-full bg-[#6aa1ff]/20 blur-3xl" />
-      {/* additional colorful glow orbs */}
-      <div className="absolute -z-10 top-[8%] left-[-120px] h-[280px] w-[280px] rounded-full bg-[#f0abfc]/30 blur-3xl" style={parallax1} />
-      <div className="absolute -z-10 top-[18%] right-[-140px] h-[340px] w-[340px] rounded-full bg-[#a78bfa]/25 blur-3xl" style={parallax2} />
-      <div className="absolute -z-10 bottom-[14%] left-[10%] h-[320px] w-[320px] rounded-full bg-[#22d3ee]/25 blur-3xl" style={parallax3} />
-      <div className="absolute -z-10 bottom-[-60px] right-[22%] h-[260px] w-[260px] rounded-full bg-[#f59e0b]/20 blur-3xl" style={parallax4} />
+  <div className="absolute -z-10 left-1/2 -translate-x-1/2 top-[-200px] h-[480px] w-[480px] rounded-full orb-color blur-3xl animate-orb-sway" style={css({ '--sway-y': '-36px', '--sway-x': '18px', '--sway-dur': '8s', '--hue-dur': '26s', '--orb-alpha': '0.20' })} />
+      {/* additional colorful glow orbs (wrapper = parallax, inner = float) */}
+      <div className="absolute -z-10 top-[8%] left-[-120px]" style={parallax1}>
+  <div className="h-[280px] w-[280px] rounded-full orb-color blur-3xl animate-orb-sway" style={css({ '--sway-y': '-30px', '--sway-x': '16px', '--sway-dur': '7.5s', '--hue-dur': '22s', '--orb-alpha': '0.28' }, { animationDelay: '.2s' })} />
+      </div>
+      <div className="absolute -z-10 top-[18%] right-[-140px]" style={parallax2}>
+  <div className="h-[340px] w-[340px] rounded-full orb-color blur-3xl animate-orb-sway" style={css({ '--sway-y': '-34px', '--sway-x': '-18px', '--sway-dur': '8.5s', '--hue-dur': '28s', '--orb-alpha': '0.25' }, { animationDelay: '.5s' })} />
+      </div>
+      <div className="absolute -z-10 bottom-[14%] left-[10%]" style={parallax3}>
+  <div className="h-[320px] w-[320px] rounded-full orb-color blur-3xl animate-orb-sway" style={css({ '--sway-y': '-28px', '--sway-x': '16px', '--sway-dur': '8s', '--hue-dur': '24s', '--orb-alpha': '0.25' }, { animationDelay: '.8s' })} />
+      </div>
+      <div className="absolute -z-10 bottom-[-60px] right-[22%]" style={parallax4}>
+  <div className="h-[260px] w-[260px] rounded-full orb-color blur-3xl animate-orb-sway" style={css({ '--sway-y': '-26px', '--sway-x': '-16px', '--sway-dur': '7s', '--hue-dur': '20s', '--orb-alpha': '0.22' }, { animationDelay: '1.1s' })} />
+      </div>
       <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 pt-16 sm:pt-24 lg:pt-28 pb-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 items-start gap-8">
           <div className="text-left lg:col-span-8">
@@ -670,9 +693,41 @@ function GetStarted() {
 
 function SiteFooter() {
   const { t } = useI18n();
+  const scrollY = useScrollY();
+  const footerRef = useRef<HTMLElement | null>(null);
+  const [parallaxY, setParallaxY] = useState(0);
+
+  useEffect(() => {
+    const el = footerRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    // Move opposite to scroll a little, but clamp to avoid hiding orbs
+    const y = Math.max(-60, Math.min(60, -rect.top * 0.06));
+    setParallaxY(y);
+  }, [scrollY]);
   return (
-    <footer className="border-t border-black/[.06] dark:border-white/[.12] bg-gray-100/60 dark:bg-gray-800/40">
-      <div className="mx-auto max-w-6xl px-6 py-10">
+    <footer ref={footerRef} className="relative overflow-hidden border-t border-black/[.06] dark:border-white/[.12]" style={{ backgroundColor: "var(--footer-bg)" }}>
+      {/* Decorative blurred orbs */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 z-0"
+        style={{ transform: `translateY(${parallaxY}px)`, willChange: "transform" }}
+      >
+        <div
+          className="absolute top-4 left-0 w-72 h-72 rounded-full blur-3xl animate-orb-sway orb-color"
+          style={css({ '--sway-y': '-22px', '--sway-x': '10px', '--sway-dur': '8.5s', '--hue-dur': '26s', '--orb-alpha': '0.30', '--orb-sat': '78%', '--orb-light': '60%' })}
+        />
+        <div
+          className="absolute bottom-0 left-1/3 w-80 h-80 rounded-full blur-3xl animate-orb-sway orb-color"
+          style={css({ '--sway-y': '-24px', '--sway-x': '-12px', '--sway-dur': '9s', '--hue-dur': '24s', '--orb-alpha': '0.28', '--orb-sat': '76%', '--orb-light': '60%' }, { animationDelay: '.6s' })}
+        />
+        <div
+          className="absolute top-6 right-0 w-64 h-64 rounded-full blur-3xl animate-orb-sway orb-color"
+          style={css({ '--sway-y': '-20px', '--sway-x': '10px', '--sway-dur': '7.5s', '--hue-dur': '22s', '--orb-alpha': '0.28', '--orb-sat': '76%', '--orb-light': '60%' }, { animationDelay: '1.2s' })}
+        />
+      </div>
+
+      <div className="relative z-10 mx-auto max-w-6xl px-6 py-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <h2 className="text-lg font-semibold">AstrBot</h2>

@@ -19,6 +19,8 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  /* Footer background (light) */
+  --footer-bg: #f3f4f6; /* gray-100 */
 }
 
 @theme inline {
@@ -99,6 +101,8 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+  /* Footer background (dark) */
+  --footer-bg: #0f1115; /* subtle near-black */
   }
 }
 
@@ -106,6 +110,7 @@
 html.dark, :root[data-theme="dark"] {
   --background: #0a0a0a;
   --foreground: #ededed;
+  --footer-bg: #0f1115;
 }
 
 body {
@@ -168,13 +173,49 @@ a, button, input, textarea {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* subtle float animation for decorative orbs */
+/* subtle float animation for decorative orbs (amplitude/duration customizable) */
 @keyframes orb-float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(var(--orb-float-x, 0), var(--orb-float-y, -22px), 0); }
 }
 
 .animate-orb-float {
-  animation: orb-float 7s ease-in-out infinite;
+  animation: orb-float var(--orb-float-dur, 7s) ease-in-out infinite;
   will-change: transform;
+}
+
+/* swaying animation for orbs (more noticeable, with slight horizontal sway) */
+@keyframes orb-sway {
+  0%   { transform: translate3d(0, 0, 0) rotate(0deg); }
+  25%  { transform: translate3d(var(--sway-x, 12px), calc(var(--sway-y, -24px) * 0.7), 0) rotate(1.2deg); }
+  50%  { transform: translate3d(0, var(--sway-y, -24px), 0) rotate(0deg); }
+  75%  { transform: translate3d(calc(var(--sway-x, 12px) * -1), calc(var(--sway-y, -24px) * 0.7), 0) rotate(-1.2deg); }
+  100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+}
+
+.animate-orb-sway {
+  /* Run sway (ease-in-out) and hue cycle (linear) together */
+  animation: orb-sway var(--sway-dur, 8s) ease-in-out infinite, orb-hue-cycle var(--hue-dur, 24s) linear infinite;
+  will-change: transform;
+}
+
+/* Animatable hue for color cycling */
+@property --orb-hue {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 210deg;
+}
+
+@keyframes orb-hue-cycle {
+  from { --orb-hue: 0deg; }
+  to   { --orb-hue: 360deg; }
+}
+
+/* Utility to color orb by the animated hue */
+.orb-color {
+  /* alpha/sat/light customizable via CSS vars */
+  --orb-alpha: var(--orb-alpha, 0.25);
+  --orb-sat: var(--orb-sat, 70%);
+  --orb-light: var(--orb-light, 62%);
+  background-color: hsl(var(--orb-hue) var(--orb-sat) var(--orb-light) / var(--orb-alpha));
 }
