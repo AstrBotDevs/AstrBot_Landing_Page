@@ -50,6 +50,19 @@ function Navbar() {
   const langRef = useRef<HTMLLIElement | null>(null);
   const [openLangMobile, setOpenLangMobile] = useState(false);
   const [isDark, setIsDark] = useState(false);
+  const [releaseVersion, setReleaseVersion] = useState<string | null>(null);
+  
+  useEffect(() => {
+    fetch("/api/plugins", { cache: "no-store" })
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.release && data.release.version) {
+          setReleaseVersion(data.release.version);
+        }
+      })
+      .catch(() => setReleaseVersion(null));
+  }, []);
+  
   const toggleTheme = () => {
     const root = document.documentElement;
     const next = !isDark;
@@ -87,6 +100,11 @@ function Navbar() {
         <div className="flex items-center gap-3">
           <Image src="/logo.webp" alt="AstrBot" width={32} height={32} />
           <span className="text-lg sm:text-xl font-semibold tracking-tight font-lexend">AstrBot</span>
+          {releaseVersion && (
+            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-[var(--brand-soft)] text-[var(--brand)] border border-[var(--brand)]/20">
+              {releaseVersion}
+            </span>
+          )}
         </div>
         <ul className="hidden md:flex items-center gap-6 text-sm">
           <li><a href="https://docs.astrbot.app" className="opacity-80 hover:opacity-100">{t("nav.quickStart")}</a></li>
@@ -653,7 +671,7 @@ function GetStarted() {
 function SiteFooter() {
   const { t } = useI18n();
   return (
-    <footer className="border-t border-black/[.06] dark:border-white/[.12]">
+    <footer className="border-t border-black/[.06] dark:border-white/[.12] bg-gray-100/60 dark:bg-gray-800/40">
       <div className="mx-auto max-w-6xl px-6 py-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
