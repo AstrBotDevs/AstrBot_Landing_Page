@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useI18n } from "../components/i18n/I18nProvider";
+import Reveal from "../components/Reveal";
 
 export default function Home() {
   return (
@@ -200,7 +201,7 @@ function Navbar() {
 
 function Hero() {
   const scrollY = useScrollY();
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   // slower translate for parallax layers
   const parallax1 = { transform: `translateY(${scrollY * 0.08}px)` } as React.CSSProperties;
   const parallax2 = { transform: `translateY(${scrollY * 0.06}px)` } as React.CSSProperties;
@@ -232,16 +233,32 @@ function Hero() {
       <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 pt-16 sm:pt-24 lg:pt-28 pb-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 items-start gap-8">
           <div className="text-left lg:col-span-8">
-            <h1 className="slogan text-3xl sm:text-5xl font-semibold tracking-tight gradient-title">{t("hero.slogan")}</h1>
-            <p className="sub-slogan mt-4 text-sm sm:text-base opacity-80">{t("hero.subSlogan")}</p>
-            <div className="trendshift-badge mt-6 flex lg:justify-start justify-center">
+            <Reveal as="h1" className="slogan text-5xl sm:text-5xl font-semibold tracking-tight gradient-title" delay={0}>
+              {locale === "zh-CN" ? (
+                <>
+                  <span className="sm:hidden">
+                    <span>多平台大模型</span>
+                    <br />
+                    <span>机器人基础设施</span>
+                  </span>
+                  <span className="hidden sm:inline">{t("hero.slogan")}</span>
+                </>
+              ) : (
+                t("hero.slogan")
+              )}
+            </Reveal>
+            <Reveal as="p" className="sub-slogan mt-4 text-sm sm:text-base opacity-80" delay={150}>{t("hero.subSlogan")}</Reveal>
+            <Reveal className="trendshift-badge mt-6 flex lg:justify-start justify-center" delay={300}>
               <a href="https://trendshift.io/api/badge/repositories/12875">
                 <Image src="https://trendshift.io/api/badge/repositories/12875" alt="AstrBot | Trendshift" width={250} height={55} unoptimized />
               </a>
-            </div>
+            </Reveal>
             <div className="hero-buttons mt-6 flex flex-row flex-nowrap items-center gap-2 sm:gap-3">
-              <a href="https://docs.astrbot.app" className="inline-flex items-center justify-center h-12 sm:h-11 px-5 rounded-full btn-brand text-sm font-medium transition">{t("hero.startButton")}</a>
-              <a href="https://github.com/AstrBotDevs/AstrBot" className="inline-flex items-center justify-center h-12 sm:h-11 px-5 rounded-full btn-outline-brand text-sm font-medium transition border" target="_blank">
+              <Reveal as="span" delay={400}>
+                <a href="https://docs.astrbot.app" className="inline-flex items-center justify-center h-12 sm:h-11 px-5 rounded-full btn-brand text-sm font-medium transition">{t("hero.startButton")}</a>
+              </Reveal>
+              <Reveal as="span" delay={500}>
+                <a href="https://github.com/AstrBotDevs/AstrBot" className="inline-flex items-center justify-center h-12 sm:h-11 px-5 rounded-full btn-outline-brand text-sm font-medium transition border" target="_blank">
                 <span>{t("hero.githubButton")}</span>
                 <span className="github-stars ml-2 inline-flex items-center gap-1 text-xs opacity-80">
                   <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -249,14 +266,17 @@ function Hero() {
                   </svg>
                   {heroStars !== null ? heroStars.toLocaleString() : "..."}
                 </span>
-              </a>
+                </a>
+              </Reveal>
             </div>
           </div>
           <div className="hidden lg:block lg:col-span-4" />
         </div>
       </div>
       <div className="pointer-events-none select-none absolute bottom-[70px] right-[-160px] sm:right-[-100px] opacity-60 z-0" style={parallaxImg}>
-        <Image src="/webui-1.png" alt="AstrBot WebUI界面" width={1200} height={800} sizes="(min-width: 1024px) 70vw, 100vw" className="w-[clamp(640px,70vw,1150px)] max-w-none drop-shadow-xl" />
+        <Reveal animation="fade" delay={300}>
+          <Image src="/webui-1.png" alt="AstrBot WebUI界面" width={1200} height={800} sizes="(min-width: 1024px) 70vw, 100vw" className="w-[clamp(640px,70vw,1150px)] max-w-none drop-shadow-xl" />
+        </Reveal>
       </div>
       <div className="absolute inset-x-0 bottom-4 z-20 flex justify-center">
         <a href="#features" aria-label="Scroll down">
@@ -315,14 +335,16 @@ function Platforms() {
   return (
     <section ref={sectionRef} id="features" className="min-h-[calc(100vh-64px)] flex items-center py-12 sm:py-16">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <h2 className="text-center text-3xl sm:text-4xl font-semibold tracking-tight mb-6 sm:mb-8 gradient-title">{t("platforms.title")}</h2>
+  <Reveal as="h2" className="text-center text-3xl sm:text-4xl font-semibold tracking-tight mb-6 sm:mb-8 gradient-title" delay={0}>{t("platforms.title")}</Reveal>
         <div className="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
           <div className="lg:col-span-2 text-center lg:text-left">
-            <div className="inline-flex items-center rounded-full border px-3 py-1 text-xs tag-brand">{t("platforms.current")}</div>
-            <h3 className="mt-3 text-xl sm:text-2xl font-semibold tracking-tight">{slides[index].label}</h3>
+            <Reveal className="inline-flex items-center rounded-full border px-3 py-1 text-xs tag-brand" delay={100}>{t("platforms.current")}</Reveal>
+            <Reveal as="h3" className="mt-3 text-xl sm:text-2xl font-semibold tracking-tight" delay={200}>{slides[index].label}</Reveal>
             <div className="mt-5 hidden sm:flex flex-wrap gap-2">
               {slides.map((s, i) => (
-                <button key={s.key} onClick={() => { setIndex(i); startAuto(); }} className={`px-3 py-1.5 rounded-full border text-xs ${i === index ? "border-black/[.08] dark:border-white/[.16] bg-black/[.06] dark:bg-white/[.08]" : "border-black/[.08] dark:border-white/[.16] opacity-80 hover:opacity-100"}`}>{s.label}</button>
+                <Reveal key={s.key} as="span" delay={150 + i * 40}>
+                  <button onClick={() => { setIndex(i); startAuto(); }} className={`px-3 py-1.5 rounded-full border text-xs ${i === index ? "border-black/[.08] dark:border-white/[.16] bg-black/[.06] dark:bg-white/[.08]" : "border-black/[.08] dark:border-white/[.16] opacity-80 hover:opacity-100"}`}>{s.label}</button>
+                </Reveal>
               ))}
             </div>
           </div>
@@ -388,27 +410,33 @@ function Providers() {
   return (
     <section className="min-h-[calc(100vh-64px)] flex items-center py-12 sm:py-16">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <h2 className="text-center text-3xl sm:text-4xl font-semibold tracking-tight mb-6 sm:mb-8 gradient-title">{t("models.title")}</h2>
-        <p className="text-center mt-2 text-sm opacity-80 mb-10 sm:mb-12">{t("models.subtitle")}</p>
+  <Reveal as="h2" className="text-center text-3xl sm:text-4xl font-semibold tracking-tight mb-6 sm:mb-8 gradient-title" delay={0}>{t("models.title")}</Reveal>
+  <Reveal as="p" className="text-center mt-2 text-sm opacity-80 mb-10 sm:mb-12" delay={150}>{t("models.subtitle")}</Reveal>
         <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
-          {items.map((it) => (
+          {items.map((it, idx) => (
             it.href ? (
-              <a key={it.name} href={it.href} target="_blank" rel="noreferrer" className="rounded-xl border border-black/[.08] dark:border-white/[.16] p-3 sm:p-4 flex flex-col items-center gap-2 hover:bg-[var(--brand-soft)] transition">
+              <Reveal key={it.name} delay={100 + idx * 40} className="h-full">
+                <a href={it.href} target="_blank" rel="noreferrer" className="h-full min-h-28 rounded-xl border border-black/[.08] dark:border-white/[.16] p-3 sm:p-4 flex flex-col items-center gap-2 hover:bg-[var(--brand-soft)] transition">
                 <div className="h-10 w-10 rounded-md bg-white dark:bg-white flex items-center justify-center ring-1 ring-black/[.06] dark:ring-white/[.12]">
                   <Image src={it.src} alt={it.name} width={24} height={24} className="h-6 w-auto" unoptimized />
                 </div>
                 <span className="text-sm opacity-80 underline underline-offset-4 brand-text">{it.name}</span>
-              </a>
+                </a>
+              </Reveal>
             ) : (
-              <div key={it.name} className="rounded-xl border border-black/[.08] dark:border-white/[.16] p-3 sm:p-4 flex flex-col items-center gap-2">
+              <Reveal key={it.name} delay={100 + idx * 40} className="h-full">
+                <div className="h-full min-h-28 rounded-xl border border-black/[.08] dark:border-white/[.16] p-3 sm:p-4 flex flex-col items-center gap-2">
                 <div className="h-10 w-10 rounded-md bg-white dark:bg-white flex items-center justify-center ring-1 ring-black/[.06] dark:ring-white/[.12]">
                   <Image src={it.src} alt={it.name} width={24} height={24} className="h-6 w-auto" unoptimized />
                 </div>
                 <span className="text-sm opacity-80">{it.name}</span>
-              </div>
+                </div>
+              </Reveal>
             )
           ))}
-          <div className="rounded-xl border border-black/[.08] dark:border-white/[.16] p-3 sm:p-4 flex items-center justify-center">...</div>
+          <Reveal delay={100 + items.length * 40} className="h-full">
+            <div className="h-full min-h-28 rounded-xl border border-black/[.08] dark:border-white/[.16] p-3 sm:p-4 flex items-center justify-center">...</div>
+          </Reveal>
         </div>
       </div>
     </section>
@@ -466,11 +494,11 @@ function Plugins() {
   return (
     <section ref={sectionRef} className="min-h-[calc(100vh-64px)] flex items-center py-12 sm:py-16">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <h2 className="text-center text-3xl sm:text-4xl font-semibold tracking-tight mb-6 sm:mb-8 gradient-title">
+  <Reveal as="h2" className="text-center text-3xl sm:text-4xl font-semibold tracking-tight mb-6 sm:mb-8 gradient-title" delay={0}>
           {t("plugins.title")}
           <span className="ml-3 align-middle inline-flex items-center rounded-full border border-black/[.12] dark:border-white/[.18] px-3 py-1.5 text-base sm:text-lg leading-none">{pluginCount}</span>
-        </h2>
-        <p className="text-center mt-2 mb-10 sm:mb-12 text-sm opacity-80">{t("plugins.subtitle")}</p>
+  </Reveal>
+  <Reveal as="p" className="text-center mt-2 mb-10 sm:mb-12 text-sm opacity-80" delay={150}>{t("plugins.subtitle")}</Reveal>
         <div id="plugins-grid" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
           {loading ? (
             <div className="col-span-1 sm:col-span-2 lg:col-span-3 flex items-center justify-center py-14 sm:py-16">
@@ -478,8 +506,15 @@ function Plugins() {
             </div>
           ) : (
             <>
-              {plugins.slice(0, 8).map((p) => (
-                <a key={p.key} href={p.repo} target="_blank" className="rounded-2xl border border-black/[.08] dark:border-white/[.16] p-4 sm:p-5 hover:bg-[var(--brand-soft)] transition">
+              {plugins.slice(0, 8).map((p, idx) => (
+                <Reveal
+                  key={p.key}
+                  as="a"
+                  href={p.repo}
+                  target="_blank"
+                  className="block rounded-2xl border border-black/[.08] dark:border-white/[.16] p-4 sm:p-5 hover:bg-[var(--brand-soft)] transition"
+                  delay={100 + idx * 60}
+                >
                   <h4 className="text-sm font-semibold line-clamp-1">{p.name}</h4>
                   <p className="mt-2 text-sm opacity-80 line-clamp-2">{p.desc}</p>
                   {typeof p.stars === "number" && (
@@ -490,11 +525,18 @@ function Plugins() {
                       {p.stars}
                     </div>
                   )}
-                </a>
+                </Reveal>
               ))}
-              <a href="https://plugins.astrbot.app" target="_blank" rel="noreferrer" className="rounded-2xl border border-black/[.08] dark:border-white/[.16] p-4 sm:p-5 hover:bg-[var(--brand-soft)] transition flex items-center justify-center">
+              <Reveal
+                as="a"
+                href="https://plugins.astrbot.app"
+                target="_blank"
+                rel="noreferrer"
+                className="block rounded-2xl border border-black/[.08] dark:border-white/[.16] p-4 sm:p-5 hover:bg-[var(--brand-soft)] transition flex items-center justify-center"
+                delay={100 + 8 * 60}
+              >
                 <span className="text-sm font-medium brand-text">{t("plugins.more")}</span>
-              </a>
+              </Reveal>
             </>
           )}
         </div>
@@ -535,54 +577,62 @@ function Community() {
   return (
     <section className="py-12 sm:py-16">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <h2 className="text-center text-3xl sm:text-4xl font-semibold tracking-tight gradient-title">{t("community.title")}</h2>
-        <p className="text-center mt-2 mb-10 text-sm opacity-80">{t("community.subtitle")}</p>
+        <Reveal as="h2" className="text-center text-3xl sm:text-4xl font-semibold tracking-tight gradient-title" delay={0}>{t("community.title")}</Reveal>
+        <Reveal as="p" className="text-center mt-2 mb-10 text-sm opacity-80" delay={150}>{t("community.subtitle")}</Reveal>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {StatCard({
-            icon: (
-              <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.62L12 2 9.19 8.62 2 9.24l5.46 4.73L5.82 21z" />
-              </svg>
-            ),
-            value: stats.stars,
-            label: t("community.stars"),
-          })}
-          {StatCard({
-            icon: (
-              <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                <path d="M6 3v12" />
-                <path d="M18 9v12" />
-                <path d="M6 15l6 6 6-6" />
-              </svg>
-            ),
-            value: stats.forks,
-            label: t("community.forks"),
-          })}
-          {StatCard({
-            icon: (
-              <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-                <path d="M16 11c1.66 0 3-1.79 3-4s-1.34-4-3-4-3 1.79-3 4 1.34 4 3 4zM8 11c1.66 0 3-1.79 3-4S9.66 3 8 3 5 4.79 5 7s1.34 4 3 4zm0 2c-2.33 0-7 1.17-7 3.5V20h14v-3.5C15 14.17 10.33 13 8 13zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V20h6v-3.5c0-2.33-4.67-3.5-7-3.5z" />
-              </svg>
-            ),
-            value: stats.contributors,
-            label: t("community.contributors"),
-          })}
-          {StatCard({
-            icon: (
-              <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-                <path d="M20.5 11H17V7.5L12 2 7 7.5V11H3.5L2 13l1.5 2H7v3.5L12 22l5-3.5V15h3.5L22 13l-1.5-2zM9 9l3-3 3 3v4H9V9z" />
-              </svg>
-            ),
-            value: stats.plugins,
-            label: t("community.plugins"),
-          })}
+          <Reveal delay={100}>
+            {StatCard({
+              icon: (
+                <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.62L12 2 9.19 8.62 2 9.24l5.46 4.73L5.82 21z" />
+                </svg>
+              ),
+              value: stats.stars,
+              label: t("community.stars"),
+            })}
+          </Reveal>
+          <Reveal delay={180}>
+            {StatCard({
+              icon: (
+                <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <path d="M6 3v12" />
+                  <path d="M18 9v12" />
+                  <path d="M6 15l6 6 6-6" />
+                </svg>
+              ),
+              value: stats.forks,
+              label: t("community.forks"),
+            })}
+          </Reveal>
+          <Reveal delay={260}>
+            {StatCard({
+              icon: (
+                <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                  <path d="M16 11c1.66 0 3-1.79 3-4s-1.34-4-3-4-3 1.79-3 4 1.34 4 3 4zM8 11c1.66 0 3-1.79 3-4S9.66 3 8 3 5 4.79 5 7s1.34 4 3 4zm0 2c-2.33 0-7 1.17-7 3.5V20h14v-3.5C15 14.17 10.33 13 8 13zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V20h6v-3.5c0-2.33-4.67-3.5-7-3.5z" />
+                </svg>
+              ),
+              value: stats.contributors,
+              label: t("community.contributors"),
+            })}
+          </Reveal>
+          <Reveal delay={340}>
+            {StatCard({
+              icon: (
+                <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                  <path d="M20.5 11H17V7.5L12 2 7 7.5V11H3.5L2 13l1.5 2H7v3.5L12 22l5-3.5V15h3.5L22 13l-1.5-2zM9 9l3-3 3 3v4H9V9z" />
+                </svg>
+              ),
+              value: stats.plugins,
+              label: t("community.plugins"),
+            })}
+          </Reveal>
         </div>
         <div className="mt-10 text-center">
-          <h3 className="text-base font-semibold">{t("community.contributorsTitle")}</h3>
-          <div className="mt-4 flex justify-center">
+          <Reveal as="h3" className="text-base font-semibold" delay={0}>{t("community.contributorsTitle")}</Reveal>
+          <Reveal className="mt-4 flex justify-center" animation="fade" delay={120}>
             <Image src="https://contrib.rocks/image?repo=AstrBotDevs/AstrBot" width={800} height={200} alt="AstrBot 贡献者" className="rounded-xl border border-black/[.08] dark:border-white/[.16]" unoptimized />
-          </div>
-          <p className="mt-3 text-sm opacity-80">{t("community.contributorsNote")}</p>
+          </Reveal>
+          <Reveal as="p" className="mt-3 text-sm opacity-80" delay={200}>{t("community.contributorsNote")}</Reveal>
         </div>
       </div>
     </section>
@@ -638,14 +688,16 @@ function MoreThings() {
   return (
     <section id="use-cases" className="py-12 sm:py-16">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <h2 className="text-center text-2xl font-semibold tracking-tight">{t("more.title")}</h2>
+        <Reveal as="h2" className="text-center text-2xl font-semibold tracking-tight" delay={0}>{t("more.title")}</Reveal>
         <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {items.map((it) => (
-            <div key={it.label} className="rounded-2xl border border-black/[.08] dark:border-white/[.16] p-5">
-              <div className="mb-2 brand-text">{it.icon}</div>
-              <h3 className="text-sm font-semibold">{it.label}</h3>
-              <p className="mt-2 text-sm opacity-80">{it.desc}</p>
-            </div>
+          {items.map((it, idx) => (
+            <Reveal key={it.label} delay={100 + idx * 60} className="h-full">
+              <div className="h-full min-h-32 sm:min-h-36 rounded-2xl border border-black/[.08] dark:border-white/[.16] p-5 flex flex-col">
+                <div className="mb-2 brand-text">{it.icon}</div>
+                <h3 className="text-sm font-semibold">{it.label}</h3>
+                <p className="mt-2 text-sm opacity-80 line-clamp-2">{it.desc}</p>
+              </div>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -658,11 +710,11 @@ function GetStarted() {
   return (
     <section id="get-started" className="py-12 sm:py-16">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <h2 className="text-center text-2xl font-semibold tracking-tight">{t("getStarted.title")}</h2>
-        <p className="text-center mt-2 mb-8 text-sm opacity-80">{t("getStarted.subtitle")}</p>
-        <div className="flex items-center justify-center">
+        <Reveal as="h2" className="text-center text-2xl font-semibold tracking-tight" delay={0}>{t("getStarted.title")}</Reveal>
+        <Reveal as="p" className="text-center mt-2 mb-8 text-sm opacity-80" delay={150}>{t("getStarted.subtitle")}</Reveal>
+        <Reveal className="flex items-center justify-center" delay={300}>
           <a href="https://docs.astrbot.app" target="_blank" className="inline-flex items-center justify-center h-11 px-5 rounded-full btn-brand text-sm font-medium hover:opacity-90 transition">{t("getStarted.doc")}</a>
-        </div>
+        </Reveal>
       </div>
     </section>
   );

@@ -227,3 +227,50 @@ a, button, input, textarea {
   animation: orb-pulse-size 6s ease-in-out infinite;
   will-change: transform;
 }
+
+/* =============================
+   Entrance reveal animations
+   ============================= */
+@keyframes reveal-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes reveal-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.reveal-up {
+  opacity: 0;
+  animation: reveal-up .6s ease-out forwards;
+}
+
+.reveal-fade {
+  opacity: 0;
+  animation: reveal-fade .8s ease-out forwards;
+}
+
+/* 初始隐藏（用于还未触发时的占位和状态） */
+.reveal-init { opacity: 0; transform: translateY(8px); }
+
+/* delay utilities */
+.reveal-delay-0   { animation-delay: 0s; }
+.reveal-delay-100 { animation-delay: .1s; }
+.reveal-delay-150 { animation-delay: .15s; }
+.reveal-delay-200 { animation-delay: .2s; }
+.reveal-delay-300 { animation-delay: .3s; }
+.reveal-delay-400 { animation-delay: .4s; }
+.reveal-delay-500 { animation-delay: .5s; }
+.reveal-delay-600 { animation-delay: .6s; }
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .reveal-up,
+  .reveal-fade {
+    opacity: 1 !important;
+    animation: none !important;
+    transform: none !important;
+  }
+  .reveal-init { opacity: 1 !important; transform: none !important; }
+}
