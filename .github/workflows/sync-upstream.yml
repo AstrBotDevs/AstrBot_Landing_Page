@@ -2,7 +2,7 @@ name: Sync from upstream
 
 on:
   schedule:
-    - cron: '0 * * * *' # 每小时同步
+    - cron: '0 3 * * *' # 每天 3:00 同步
   workflow_dispatch:
     inputs:
       upstream_repo:
