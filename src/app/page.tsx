@@ -7,6 +7,14 @@ import { useI18n } from "../components/i18n/I18nProvider";
 import Reveal from "../components/Reveal";
 import { SparklesIcon, HeartIcon, PuzzlePieceIcon, EllipsisHorizontalIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
 
+function formatCompactNumber(n: number): string {
+  if (!Number.isFinite(n)) return "";
+  if (n >= 1_000_000_000) return (Math.round((n / 1_000_000_000) * 10) / 10).toFixed(1).replace(/\.0$/, "") + "B";
+  if (n >= 1_000_000) return (Math.round((n / 1_000_000) * 10) / 10).toFixed(1).replace(/\.0$/, "") + "M";
+  if (n >= 1_000) return (Math.round((n / 1_000) * 10) / 10).toFixed(1).replace(/\.0$/, "") + "k";
+  return Math.round(n).toLocaleString();
+}
+
 export default function Home() {
   return (
     <div className="min-h-screen flex flex-col font-sans">
@@ -279,7 +287,7 @@ function Hero() {
                   <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                     <path d="M12 17.3l-5.4 3 1-5.8-4.4-4.3 6-.9L12 3l2.8 5.3 6 .9-4.4 4.3 1 5.8z" />
                   </svg>
-                  {heroStars !== null ? heroStars.toLocaleString() : "..."}
+                  {heroStars !== null ? formatCompactNumber(heroStars) : "..."}
                 </span>
                 </a>
               </Reveal>
