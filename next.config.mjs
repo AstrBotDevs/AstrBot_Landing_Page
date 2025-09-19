@@ -6,6 +6,7 @@ const nextConfig = {
       "contrib.rocks",
       "registry.npmmirror.com",
     ],
+    qualities: [70, 75, 80, 85, 90],
   },
 };
 

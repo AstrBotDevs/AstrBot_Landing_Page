@@ -433,7 +433,7 @@ function Providers() {
               <Reveal key={it.name} delay={100 + idx * 40} className="h-full">
                 <a href={it.href} target="_blank" rel="noreferrer" className="h-full min-h-28 rounded-xl border border-ui p-3 sm:p-4 flex flex-col items-center gap-2 hover:bg-[var(--brand-soft)] transition">
                 <div className="h-10 w-10 rounded-md bg-white dark:bg-white flex items-center justify-center ring-1 ring-black/[.06] dark:ring-white/[.12]">
-                  <Image src={it.src} alt={it.name} width={24} height={24} className="h-6 w-auto" unoptimized />
+                  <Image src={it.src} alt={it.name} width={24} height={24} className="h-6 w-auto" unoptimized style={{ width: "auto", height: "auto" }} />
                 </div>
                 <span className="text-sm opacity-80 underline underline-offset-4 brand-text">{it.name}</span>
                 </a>
@@ -442,7 +442,7 @@ function Providers() {
               <Reveal key={it.name} delay={100 + idx * 40} className="h-full">
                 <div className="h-full min-h-28 rounded-xl border border-ui p-3 sm:p-4 flex flex-col items-center gap-2">
                 <div className="h-10 w-10 rounded-md bg-white dark:bg-white flex items-center justify-center ring-1 ring-black/[.06] dark:ring-white/[.12]">
-                  <Image src={it.src} alt={it.name} width={24} height={24} className="h-6 w-auto" unoptimized />
+                  <Image src={it.src} alt={it.name} width={24} height={24} className="h-6 w-auto" unoptimized style={{ width: "auto", height: "auto" }} />
                 </div>
                 <span className="text-sm opacity-80">{it.name}</span>
                 </div>
@@ -656,7 +656,7 @@ function Community() {
         <div className="mt-10 text-center">
           <Reveal as="h3" className="text-base font-semibold" delay={0}>{t("community.contributorsTitle")}</Reveal>
           <Reveal className="mt-4 flex justify-center" animation="fade" delay={120}>
-            <Image src="https://contrib.rocks/image?repo=AstrBotDevs/AstrBot" width={800} height={200} alt="AstrBot 贡献者" className="rounded-xl" unoptimized />
+            <Image src="https://contrib.rocks/image?repo=AstrBotDevs/AstrBot" width={800} height={200} alt="AstrBot 贡献者" className="rounded-xl" unoptimized style={{ width: "auto", height: "auto" }} />
           </Reveal>
           <Reveal as="p" className="mt-3 text-sm opacity-80" delay={200}>{t("community.contributorsNote")}</Reveal>
         </div>

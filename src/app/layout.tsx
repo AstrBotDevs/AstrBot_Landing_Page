@@ -4,6 +4,7 @@ import OrbsLayer from "../components/OrbsLayer";
 import I18nProvider from "../components/i18n/I18nProvider";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
   title: "AstrBot | 多平台大模型机器人基础设施",
   description: "AstrBot —— 快速构建、部署和管理跨平台的智能聊天机器人",
   icons: { icon: "/logo.png" },
