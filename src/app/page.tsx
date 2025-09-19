@@ -96,7 +96,7 @@ function Navbar() {
   const langLabel = locale === "en-US" ? "English" : locale === "ja-JP" ? "日本語" : "简体中文";
 
   return (
-    <nav ref={navRef} className="relative sticky top-0 z-50 backdrop-blur bg-background/80 border-b border-black/[.06] dark:border-white/[.12]">
+    <nav ref={navRef} className="relative sticky top-0 z-50 backdrop-blur bg-background/80 border-b border-ui">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 h-16 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <Image src="/logo.webp" alt="AstrBot" width={32} height={32} />
@@ -107,28 +107,42 @@ function Navbar() {
             </span>
           )}
         </div>
-        <ul className="hidden md:flex items-center gap-6 text-sm">
-          <li><a href="https://docs.astrbot.app" className="opacity-80 hover:opacity-100">{t("nav.quickStart")}</a></li>
-          <li><a href="https://plugins.astrbot.app/" className="opacity-80 hover:opacity-100">{t("nav.plugin")}</a></li>
-          <li><a href="https://github.com/AstrBotDevs/AstrBot" className="opacity-80 hover:opacity-100">{t("nav.github")}</a></li>
+        <ul className="hidden md:flex items-center gap-3 text-sm">
           <li>
-            <button onClick={toggleTheme} aria-label="切换深浅模式" className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-black/[.08] dark:border-white/[.16] relative">
-              <svg className="w-5 h-5 brand-text absolute transition-opacity duration-300" style={{opacity: isDark ? 0 : 1}} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                <circle cx="12" cy="12" r="5" />
-                <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
-              </svg>
-              <svg className="w-5 h-5 brand-text absolute transition-opacity duration-300" style={{opacity: isDark ? 1 : 0}} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
-              </svg>
+            <a href="https://docs.astrbot.app" className="inline-flex items-center h-9 px-3 rounded-full border border-ui opacity-80 hover:opacity-100 transition">
+              {t("nav.quickStart")}
+            </a>
+          </li>
+          <li>
+            <a href="https://plugins.astrbot.app/" className="inline-flex items-center h-9 px-3 rounded-full border border-ui opacity-80 hover:opacity-100 transition">
+              {t("nav.plugin")}
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/AstrBotDevs/AstrBot" className="inline-flex items-center h-9 px-3 rounded-full border border-ui opacity-80 hover:opacity-100 transition">
+              {t("nav.github")}
+            </a>
+          </li>
+          <li>
+            <button onClick={toggleTheme} aria-label="切换深浅模式" className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-ui" style={{ lineHeight: 1 }}>
+              <span className="grid place-items-center">
+                <svg className="w-4 h-4 brand-text col-start-1 row-start-1 transition-opacity duration-300" style={{opacity: isDark ? 0 : 1}} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <circle cx="12" cy="12" r="5" />
+                  <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+                </svg>
+                <svg className="w-4 h-4 brand-text col-start-1 row-start-1 transition-opacity duration-300" style={{opacity: isDark ? 1 : 0}} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+                </svg>
+              </span>
             </button>
           </li>
           <li ref={langRef} className="relative">
-            <button aria-expanded={openLang} onClick={() => setOpenLang((v) => !v)} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-black/[.08] dark:border-white/[.16]">
+            <button aria-expanded={openLang} onClick={() => setOpenLang((v) => !v)} className="inline-flex items-center gap-2 h-9 px-3 rounded-full border border-ui">
               <span className="current-language">{langLabel}</span>
               <span aria-hidden>▾</span>
             </button>
             {openLang && (
-              <ul className="absolute right-0 mt-2 w-36 rounded-lg border border-black/[.08] dark:border-white/[.16] bg-background shadow">
+              <ul className="absolute right-0 mt-2 w-36 rounded-lg border border-ui bg-background shadow">
                 <li className="px-3 py-2 hover:bg-black/[.04] dark:hover:bg-white/[.06] cursor-pointer" onClick={() => { setLocale("zh-CN"); setOpenLang(false); }}>简体中文</li>
                 <li className="px-3 py-2 hover:bg-black/[.04] dark:hover:bg-white/[.06] cursor-pointer" onClick={() => { setLocale("en-US"); setOpenLang(false); }}>English</li>
                 <li className="px-3 py-2 hover:bg-black/[.04] dark:hover:bg-white/[.06] cursor-pointer" onClick={() => { setLocale("ja-JP"); setOpenLang(false); }}>日本語</li>
@@ -137,7 +151,7 @@ function Navbar() {
           </li>
         </ul>
         <button
-          className="md:hidden inline-flex items-center justify-center h-9 w-9 rounded-lg border border-black/[.08] dark:border-white/[.16] bg-background/80 backdrop-blur transition active:scale-[0.98]"
+          className="md:hidden inline-flex items-center justify-center h-9 w-9 rounded-lg border border-ui bg-background/80 backdrop-blur transition active:scale-[0.98]"
           onClick={() => setOpenMenu((v) => !v)}
           aria-label="menu"
           aria-expanded={openMenu}
@@ -151,28 +165,30 @@ function Navbar() {
       {openMenu && (
         <div className="md:hidden absolute left-0 right-0 top-16 z-40">
           <div className="mx-auto max-w-6xl px-4 sm:px-6 pb-4 mt-2">
-            <div className="rounded-2xl border border-black/[.08] dark:border-white/[.16] bg-background/90 backdrop-blur shadow-lg p-4">
+            <div className="rounded-2xl border border-ui bg-background/90 backdrop-blur shadow-lg p-4">
               <ul className="flex flex-col gap-2 text-sm">
-                <li><a href="https://docs.astrbot.app" className="block rounded-lg px-3 py-2 opacity-80 hover:opacity-100 hover:bg-black/[.04] dark:hover:bg-white/[.06]">{t("nav.quickStart")}</a></li>
-                <li><a href="https://plugins.astrbot.app/" className="block rounded-lg px-3 py-2 opacity-80 hover:opacity-100 hover:bg-black/[.04] dark:hover:bg-white/[.06]">{t("nav.plugin")}</a></li>
-                <li><a href="https://github.com/AstrBotDevs/AstrBot" className="block rounded-lg px-3 py-2 opacity-80 hover:opacity-100 hover:bg-black/[.04] dark:hover:bg-white/[.06]">{t("nav.github")}</a></li>
+                <li><a href="https://docs.astrbot.app" className="inline-flex items-center h-10 px-3 rounded-full border border-ui opacity-80 hover:opacity-100 transition">{t("nav.quickStart")}</a></li>
+                <li><a href="https://plugins.astrbot.app/" className="inline-flex items-center h-10 px-3 rounded-full border border-ui opacity-80 hover:opacity-100 transition">{t("nav.plugin")}</a></li>
+                <li><a href="https://github.com/AstrBotDevs/AstrBot" className="inline-flex items-center h-10 px-3 rounded-full border border-ui opacity-80 hover:opacity-100 transition">{t("nav.github")}</a></li>
               </ul>
-              <div className="mt-3 pt-3 border-t border-black/[.08] dark:border-white/[.16]">
+              <div className="mt-3 pt-3 border-t border-ui">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <button onClick={toggleTheme} aria-label="切换深浅模式" className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/[.08] dark:border-white/[.16] relative">
-                    <svg className="w-5 h-5 brand-text absolute transition-opacity duration-300" style={{opacity: isDark ? 0 : 1}} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                      <circle cx="12" cy="12" r="5" />
-                      <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
-                    </svg>
-                    <svg className="w-5 h-5 brand-text absolute transition-opacity duration-300" style={{opacity: isDark ? 1 : 0}} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                      <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
-                    </svg>
+                  <button onClick={toggleTheme} aria-label="切换深浅模式" className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-ui" style={{ lineHeight: 1 }}>
+                    <span className="grid place-items-center">
+                      <svg className="w-5 h-5 brand-text col-start-1 row-start-1 transition-opacity duration-300" style={{opacity: isDark ? 0 : 1}} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                        <circle cx="12" cy="12" r="5" />
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+                      </svg>
+                      <svg className="w-5 h-5 brand-text col-start-1 row-start-1 transition-opacity duration-300" style={{opacity: isDark ? 1 : 0}} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                        <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+                      </svg>
+                    </span>
                   </button>
                   <button
                     onClick={() => setOpenLangMobile((v) => !v)}
                     aria-expanded={openLangMobile}
                     aria-label="语言"
-                    className="inline-flex h-10 px-3 items-center justify-center rounded-full border border-black/[.08] dark:border-white/[.16] gap-2"
+                    className="inline-flex h-10 px-3 items-center justify-center rounded-full border border-ui gap-2"
                   >
                     <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                       <circle cx="12" cy="12" r="9" />
@@ -184,9 +200,9 @@ function Navbar() {
                   </button>
                   {openLangMobile && (
                     <div className="flex items-center gap-2 flex-wrap">
-                      <button onClick={() => { setLocale('zh-CN'); setOpenMenu(false); }} className={`px-3 py-1.5 rounded-full border text-xs ${locale === 'zh-CN' ? 'border-black/[.08] dark:border-white/[.16] bg-black/[.06] dark:bg-white/[.08]' : 'border-black/[.08] dark:border-white/[.16] opacity-80 hover:opacity-100'}`}>简体中文</button>
-                      <button onClick={() => { setLocale('en-US'); setOpenMenu(false); }} className={`px-3 py-1.5 rounded-full border text-xs ${locale === 'en-US' ? 'border-black/[.08] dark:border-white/[.16] bg-black/[.06] dark:bg-white/[.08]' : 'border-black/[.08] dark:border-white/[.16] opacity-80 hover:opacity-100'}`}>English</button>
-                      <button onClick={() => { setLocale('ja-JP'); setOpenMenu(false); }} className={`px-3 py-1.5 rounded-full border text-xs ${locale === 'ja-JP' ? 'border-black/[.08] dark:border-white/[.16] bg-black/[.06] dark:bg-white/[.08]' : 'border-black/[.08] dark:border-white/[.16] opacity-80 hover:opacity-100'}`}>日本語</button>
+                  <button onClick={() => { setLocale('zh-CN'); setOpenMenu(false); }} className={`inline-flex items-center h-9 px-3 rounded-full border border-ui text-xs ${locale === 'zh-CN' ? 'bg-black/[.06] dark:bg-white/[.08]' : 'opacity-80 hover:opacity-100'}`}>简体中文</button>
+                  <button onClick={() => { setLocale('en-US'); setOpenMenu(false); }} className={`inline-flex items-center h-9 px-3 rounded-full border border-ui text-xs ${locale === 'en-US' ? 'bg-black/[.06] dark:bg-white/[.08]' : 'opacity-80 hover:opacity-100'}`}>English</button>
+                  <button onClick={() => { setLocale('ja-JP'); setOpenMenu(false); }} className={`inline-flex items-center h-9 px-3 rounded-full border border-ui text-xs ${locale === 'ja-JP' ? 'bg-black/[.06] dark:bg-white/[.08]' : 'opacity-80 hover:opacity-100'}`}>日本語</button>
                     </div>
                   )}
                 </div>
@@ -343,13 +359,13 @@ function Platforms() {
             <div className="mt-5 hidden sm:flex flex-wrap gap-2">
               {slides.map((s, i) => (
                 <Reveal key={s.key} as="span" delay={150 + i * 40}>
-                  <button onClick={() => { setIndex(i); startAuto(); }} className={`px-3 py-1.5 rounded-full border text-xs ${i === index ? "border-black/[.08] dark:border-white/[.16] bg-black/[.06] dark:bg-white/[.08]" : "border-black/[.08] dark:border-white/[.16] opacity-80 hover:opacity-100"}`}>{s.label}</button>
+                  <button onClick={() => { setIndex(i); startAuto(); }} className={`px-3 py-1.5 rounded-full border border-ui text-xs ${i === index ? "bg-black/[.06] dark:bg-white/[.08]" : "opacity-80 hover:opacity-100"}`}>{s.label}</button>
                 </Reveal>
               ))}
             </div>
           </div>
           <div className="lg:col-span-10">
-            <div className="mx-auto w-full max-w-[960px] rounded-xl border border-black/[.08] dark:border-white/[.16] overflow-hidden bg-background/80 backdrop-blur p-4 sm:p-6">
+            <div className="mx-auto w-full max-w-[960px] rounded-xl border border-ui overflow-hidden bg-background/80 backdrop-blur p-4 sm:p-6">
               <div className="relative h-[340px] sm:h-[360px] md:h-[460px] lg:h-[560px] xl:h-[640px]">
                 {slides.map((s, i) => (
                   <div key={s.key} className={`absolute inset-0 flex items-center justify-center transition-opacity duration-500 ${i === index ? "opacity-100" : "opacity-0"}`} aria-hidden={i !== index}>
@@ -360,12 +376,12 @@ function Platforms() {
                     )}
                   </div>
                 ))}
-                <button aria-label={t("carousel.prev")} onClick={() => { go(-1); startAuto(); }} className="absolute left-3 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full border border-black/[.14] dark:border-white/[.22] bg-background/80 backdrop-blur flex items-center justify-center">
+                <button aria-label={t("carousel.prev")} onClick={() => { go(-1); startAuto(); }} className="absolute left-3 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full border border-ui bg-background/80 backdrop-blur flex items-center justify-center">
                   <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                     <path d="M15 6l-6 6 6 6" />
                   </svg>
                 </button>
-                <button aria-label={t("carousel.next")} onClick={() => { go(1); startAuto(); }} className="absolute right-3 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full border border-black/[.14] dark:border-white/[.22] bg-background/80 backdrop-blur flex items-center justify-center">
+                <button aria-label={t("carousel.next")} onClick={() => { go(1); startAuto(); }} className="absolute right-3 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full border border-ui bg-background/80 backdrop-blur flex items-center justify-center">
                   <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                     <path d="M9 6l6 6-6 6" />
                   </svg>
@@ -416,7 +432,7 @@ function Providers() {
           {items.map((it, idx) => (
             it.href ? (
               <Reveal key={it.name} delay={100 + idx * 40} className="h-full">
-                <a href={it.href} target="_blank" rel="noreferrer" className="h-full min-h-28 rounded-xl border border-black/[.08] dark:border-white/[.16] p-3 sm:p-4 flex flex-col items-center gap-2 hover:bg-[var(--brand-soft)] transition">
+                <a href={it.href} target="_blank" rel="noreferrer" className="h-full min-h-28 rounded-xl border border-ui p-3 sm:p-4 flex flex-col items-center gap-2 hover:bg-[var(--brand-soft)] transition">
                 <div className="h-10 w-10 rounded-md bg-white dark:bg-white flex items-center justify-center ring-1 ring-black/[.06] dark:ring-white/[.12]">
                   <Image src={it.src} alt={it.name} width={24} height={24} className="h-6 w-auto" unoptimized />
                 </div>
@@ -425,7 +441,7 @@ function Providers() {
               </Reveal>
             ) : (
               <Reveal key={it.name} delay={100 + idx * 40} className="h-full">
-                <div className="h-full min-h-28 rounded-xl border border-black/[.08] dark:border-white/[.16] p-3 sm:p-4 flex flex-col items-center gap-2">
+                <div className="h-full min-h-28 rounded-xl border border-ui p-3 sm:p-4 flex flex-col items-center gap-2">
                 <div className="h-10 w-10 rounded-md bg-white dark:bg-white flex items-center justify-center ring-1 ring-black/[.06] dark:ring-white/[.12]">
                   <Image src={it.src} alt={it.name} width={24} height={24} className="h-6 w-auto" unoptimized />
                 </div>
@@ -435,7 +451,7 @@ function Providers() {
             )
           ))}
           <Reveal delay={100 + items.length * 40} className="h-full">
-            <div className="h-full min-h-28 rounded-xl border border-black/[.08] dark:border-white/[.16] p-3 sm:p-4 flex items-center justify-center">...</div>
+            <div className="h-full min-h-28 rounded-xl border border-ui p-3 sm:p-4 flex items-center justify-center">...</div>
           </Reveal>
         </div>
       </div>
@@ -496,7 +512,7 @@ function Plugins() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
   <Reveal as="h2" className="text-center text-3xl sm:text-4xl font-semibold tracking-tight mb-6 sm:mb-8 gradient-title" delay={0}>
           {t("plugins.title")}
-          <span className="ml-3 align-middle inline-flex items-center rounded-full border border-black/[.12] dark:border-white/[.18] px-3 py-1.5 text-base sm:text-lg leading-none">{pluginCount}</span>
+          <span className="ml-3 align-middle inline-flex items-center rounded-full border border-ui px-3 py-1.5 text-base sm:text-lg leading-none">{pluginCount}</span>
   </Reveal>
   <Reveal as="p" className="text-center mt-2 mb-10 sm:mb-12 text-sm opacity-80" delay={150}>{t("plugins.subtitle")}</Reveal>
         <div id="plugins-grid" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
@@ -512,7 +528,7 @@ function Plugins() {
                   as="a"
                   href={p.repo}
                   target="_blank"
-                  className="block rounded-2xl border border-black/[.08] dark:border-white/[.16] p-4 sm:p-5 hover:bg-[var(--brand-soft)] transition"
+                className="block rounded-2xl border border-ui p-4 sm:p-5 hover:bg-[var(--brand-soft)] transition"
                   delay={100 + idx * 60}
                 >
                   <h4 className="text-sm font-semibold line-clamp-1">{p.name}</h4>
@@ -532,7 +548,7 @@ function Plugins() {
                 href="https://plugins.astrbot.app"
                 target="_blank"
                 rel="noreferrer"
-                className="block rounded-2xl border border-black/[.08] dark:border-white/[.16] p-4 sm:p-5 hover:bg-[var(--brand-soft)] transition flex items-center justify-center"
+                className="block rounded-2xl border border-ui p-4 sm:p-5 hover:bg-[var(--brand-soft)] transition flex items-center justify-center"
                 delay={100 + 8 * 60}
               >
                 <span className="text-sm font-medium brand-text">{t("plugins.more")}</span>
@@ -567,7 +583,7 @@ function Community() {
     { icon, value, label }:
     { icon: React.ReactNode; value: number | string; label: string }
   ) => (
-    <div className="rounded-2xl border border-black/[.08] dark:border-white/[.16] p-6 text-center">
+    <div className="rounded-2xl border border-ui p-6 text-center">
       <div className="flex items-center justify-center mb-2 brand-text">{icon}</div>
       <div className="text-2xl font-semibold">{typeof value === "number" ? value.toLocaleString() : value}</div>
       <h3 className="mt-2 text-sm opacity-80">{label}</h3>
@@ -630,7 +646,7 @@ function Community() {
         <div className="mt-10 text-center">
           <Reveal as="h3" className="text-base font-semibold" delay={0}>{t("community.contributorsTitle")}</Reveal>
           <Reveal className="mt-4 flex justify-center" animation="fade" delay={120}>
-            <Image src="https://contrib.rocks/image?repo=AstrBotDevs/AstrBot" width={800} height={200} alt="AstrBot 贡献者" className="rounded-xl border border-black/[.08] dark:border-white/[.16]" unoptimized />
+            <Image src="https://contrib.rocks/image?repo=AstrBotDevs/AstrBot" width={800} height={200} alt="AstrBot 贡献者" className="rounded-xl border border-ui" unoptimized />
           </Reveal>
           <Reveal as="p" className="mt-3 text-sm opacity-80" delay={200}>{t("community.contributorsNote")}</Reveal>
         </div>
@@ -692,7 +708,7 @@ function MoreThings() {
         <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {items.map((it, idx) => (
             <Reveal key={it.label} delay={100 + idx * 60} className="h-full">
-              <div className="h-full min-h-32 sm:min-h-36 rounded-2xl border border-black/[.08] dark:border-white/[.16] p-5 flex flex-col">
+              <div className="h-full min-h-32 sm:min-h-36 rounded-2xl border border-ui p-5 flex flex-col">
                 <div className="mb-2 brand-text">{it.icon}</div>
                 <h3 className="text-sm font-semibold">{it.label}</h3>
                 <p className="mt-2 text-sm opacity-80 line-clamp-2">{it.desc}</p>
@@ -735,7 +751,7 @@ function SiteFooter() {
     setParallaxY(y);
   }, [scrollY]);
   return (
-    <footer ref={footerRef} className="relative overflow-hidden border-t border-black/[.06] dark:border-white/[.12]" style={{ backgroundColor: "var(--footer-bg)" }}>
+    <footer ref={footerRef} className="relative overflow-hidden border-t border-ui" style={{ backgroundColor: "var(--footer-bg)" }}>
       {/* Decorative blurred orbs */}
       <div
         aria-hidden

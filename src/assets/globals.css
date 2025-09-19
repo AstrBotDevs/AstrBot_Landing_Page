@@ -19,6 +19,7 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --border-ui: rgba(0,0,0,0.12);
   /* Footer background (light) */
   --footer-bg: #f3f4f6; /* gray-100 */
 }
@@ -101,6 +102,7 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --border-ui: rgba(255,255,255,0.28);
   /* Footer background (dark) */
   --footer-bg: #0f1115; /* subtle near-black */
   }
@@ -110,6 +112,7 @@
 html.dark, :root[data-theme="dark"] {
   --background: #0a0a0a;
   --foreground: #ededed;
+  --border-ui: rgba(255,255,255,0.28);
   --footer-bg: #0f1115;
 }
 
@@ -140,6 +143,9 @@ html.snap-temp-disable {
 .brand-text { color: var(--brand); }
 .brand-bg { background-color: var(--brand); }
 .brand-border { border-color: var(--brand); }
+
+/* Unified UI border utility */
+.border-ui { border-color: var(--border-ui) !important; }
 
 .btn-brand {
   background-color: var(--brand);
