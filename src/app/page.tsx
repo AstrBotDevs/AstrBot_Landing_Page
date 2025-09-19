@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import webui1 from "../../public/webui-1.png";
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useI18n } from "../components/i18n/I18nProvider";
 import Reveal from "../components/Reveal";
@@ -289,7 +290,7 @@ function Hero() {
       </div>
       <div className="pointer-events-none select-none absolute bottom-[70px] right-0 md:right-[-100px] xl:right-[-160px] opacity-60 z-0" style={parallaxImg}>
         <Reveal animation="fade" delay={300}>
-          <Image src="/webui-1.png" alt="AstrBot WebUI界面" width={1200} height={800} sizes="(min-width: 1280px) 50vw, (min-width: 1024px) 60vw, 92vw" className="hidden sm:block h-auto w-auto max-w-[92vw] md:max-w-[60vw] xl:max-w-[50vw] max-h-[70vh] object-contain drop-shadow-xl" />
+          <Image src={webui1} alt="AstrBot WebUI界面" width={1200} height={800} sizes="(min-width: 1280px) 50vw, (min-width: 1024px) 60vw, 92vw" placeholder="blur" priority quality={70} className="hidden sm:block h-auto w-auto max-w-[92vw] md:max-w-[60vw] xl:max-w-[50vw] max-h-[70vh] object-contain drop-shadow-xl" />
         </Reveal>
       </div>
       <div className="absolute inset-x-0 bottom-4 z-20 flex justify-center">
