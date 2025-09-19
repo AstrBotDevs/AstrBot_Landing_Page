@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import webui1 from "../../public/webui-1.png";
+import webui1 from "../../public/webui-1.webp";
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useI18n } from "../components/i18n/I18nProvider";
 import Reveal from "../components/Reveal";
