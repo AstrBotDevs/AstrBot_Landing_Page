@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useI18n } from "../components/i18n/I18nProvider";
 import Reveal from "../components/Reveal";
+import { SparklesIcon, HeartIcon } from "@heroicons/react/24/solid";
 
 export default function Home() {
   return (
@@ -200,9 +201,9 @@ function Navbar() {
                   </button>
                   {openLangMobile && (
                     <div className="flex items-center gap-2 flex-wrap">
-                  <button onClick={() => { setLocale('zh-CN'); setOpenMenu(false); }} className={`inline-flex items-center h-9 px-3 rounded-full border border-ui text-xs ${locale === 'zh-CN' ? 'bg-black/[.06] dark:bg-white/[.08]' : 'opacity-80 hover:opacity-100'}`}>简体中文</button>
-                  <button onClick={() => { setLocale('en-US'); setOpenMenu(false); }} className={`inline-flex items-center h-9 px-3 rounded-full border border-ui text-xs ${locale === 'en-US' ? 'bg-black/[.06] dark:bg-white/[.08]' : 'opacity-80 hover:opacity-100'}`}>English</button>
-                  <button onClick={() => { setLocale('ja-JP'); setOpenMenu(false); }} className={`inline-flex items-center h-9 px-3 rounded-full border border-ui text-xs ${locale === 'ja-JP' ? 'bg-black/[.06] dark:bg-white/[.08]' : 'opacity-80 hover:opacity-100'}`}>日本語</button>
+                      <button onClick={() => { setLocale('zh-CN'); setOpenMenu(false); }} className={`inline-flex items-center h-9 px-3 rounded-full border border-ui text-xs ${locale === 'zh-CN' ? 'bg-black/[.06] dark:bg-white/[.08]' : 'opacity-80 hover:opacity-100'}`}>简体中文</button>
+                      <button onClick={() => { setLocale('en-US'); setOpenMenu(false); }} className={`inline-flex items-center h-9 px-3 rounded-full border border-ui text-xs ${locale === 'en-US' ? 'bg-black/[.06] dark:bg-white/[.08]' : 'opacity-80 hover:opacity-100'}`}>English</button>
+                      <button onClick={() => { setLocale('ja-JP'); setOpenMenu(false); }} className={`inline-flex items-center h-9 px-3 rounded-full border border-ui text-xs ${locale === 'ja-JP' ? 'bg-black/[.06] dark:bg-white/[.08]' : 'opacity-80 hover:opacity-100'}`}>日本語</button>
                     </div>
                   )}
                 </div>
@@ -223,14 +224,7 @@ function Hero() {
   const parallax2 = { transform: `translateY(${scrollY * 0.06}px)` } as React.CSSProperties;
   const parallax3 = { transform: `translateY(${scrollY * 0.04}px)` } as React.CSSProperties;
   const parallax4 = { transform: `translateY(${scrollY * 0.02}px)` } as React.CSSProperties;
-  const [isSmall, setIsSmall] = useState(false);
-  useEffect(() => {
-    const update = () => setIsSmall(window.innerWidth < 640);
-    update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
-  }, []);
-  const parallaxImg = { transform: `translateY(${scrollY * 0.1}px) ${isSmall ? 'translateX(150px)' : ''} rotate(3deg) scale(1.10)` } as React.CSSProperties;
+  const parallaxImg = { transform: `translateY(${scrollY * 0.1}px) rotate(3deg) scale(1.10)` } as React.CSSProperties;
   const [heroStars, setHeroStars] = useState<number | null>(null);
   useEffect(() => {
     fetch("/api/plugins", { cache: "no-store" })
@@ -263,8 +257,12 @@ function Hero() {
                 t("hero.slogan")
               )}
             </Reveal>
-            <Reveal as="p" className="sub-slogan mt-4 text-sm sm:text-base opacity-80" delay={150}>{t("hero.subSlogan")}</Reveal>
-            <Reveal className="trendshift-badge mt-6 flex lg:justify-start justify-center" delay={300}>
+            <Reveal as="p" className="sub-slogan mt-4 text-sm sm:text-base opacity-80 inline-flex items-center gap-2" delay={150}>
+              <SparklesIcon className="w-4 h-4 brand-text" />
+              <span>{t("hero.subSlogan")}</span>
+              <SparklesIcon className="w-4 h-4 brand-text" />
+            </Reveal>
+            <Reveal className="trendshift-badge mt-6 flex justify-start" delay={300}>
               <a href="https://trendshift.io/api/badge/repositories/12875">
                 <Image src="https://trendshift.io/api/badge/repositories/12875" alt="AstrBot | Trendshift" width={250} height={55} unoptimized />
               </a>
@@ -289,9 +287,9 @@ function Hero() {
           <div className="hidden lg:block lg:col-span-4" />
         </div>
       </div>
-      <div className="pointer-events-none select-none absolute bottom-[70px] right-[-160px] sm:right-[-100px] opacity-60 z-0" style={parallaxImg}>
+      <div className="pointer-events-none select-none absolute bottom-[70px] right-0 md:right-[-100px] xl:right-[-160px] opacity-60 z-0" style={parallaxImg}>
         <Reveal animation="fade" delay={300}>
-          <Image src="/webui-1.png" alt="AstrBot WebUI界面" width={1200} height={800} sizes="(min-width: 1024px) 70vw, 100vw" className="w-[clamp(640px,70vw,1150px)] max-w-none drop-shadow-xl" />
+          <Image src="/webui-1.png" alt="AstrBot WebUI界面" width={1200} height={800} sizes="(min-width: 1280px) 50vw, (min-width: 1024px) 60vw, 92vw" className="hidden sm:block h-auto w-auto max-w-[92vw] md:max-w-[60vw] xl:max-w-[50vw] max-h-[70vh] object-contain drop-shadow-xl" />
         </Reveal>
       </div>
       <div className="absolute inset-x-0 bottom-4 z-20 flex justify-center">
@@ -726,7 +724,11 @@ function GetStarted() {
   return (
     <section id="get-started" className="py-12 sm:py-16">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <Reveal as="h2" className="text-center text-2xl font-semibold tracking-tight" delay={0}>{t("getStarted.title")}</Reveal>
+        <Reveal as="h2" className="text-2xl font-semibold tracking-tight" delay={0}>
+          <span className="flex items-center justify-center gap-2">
+            <span>{t("getStarted.title")}</span>
+          </span>
+        </Reveal>
         <Reveal as="p" className="text-center mt-2 mb-8 text-sm opacity-80" delay={150}>{t("getStarted.subtitle")}</Reveal>
         <Reveal className="flex items-center justify-center" delay={300}>
           <a href="https://docs.astrbot.app" target="_blank" className="inline-flex items-center justify-center h-11 px-5 rounded-full btn-brand text-sm font-medium hover:opacity-90 transition">{t("getStarted.doc")}</a>
@@ -806,7 +808,10 @@ function SiteFooter() {
           <p>© {new Date().getFullYear()} AstrBot. {t("footer.copyright")}</p>
           <p className="mt-2">{t("footer.partners")}: <a className="underline" href="https://www.rainyun.com/NjY3OTQ1_" target="_blank">雨云-新一代云服务商</a></p>
           <p className="mt-2">{t("footer.friendLinks")}: <a className="underline" href="https://ustb-806.github.io/" target="_blank">北京科技大学 806 学生创新实验室</a></p>
-          <p className="mt-2">{t("footer.madeWith")}</p>
+          <p className="mt-2 inline-flex items-center gap-2">
+            <span>{t("footer.madeWith")}</span>
+            <HeartIcon className="w-4 h-4 text-red-500" />
+          </p>
         </div>
       </div>
       </footer>
