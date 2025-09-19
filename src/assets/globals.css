@@ -57,10 +57,8 @@
   background: linear-gradient(90deg, rgba(0,0,0,0.06) 25%, rgba(0,0,0,0.12) 37%, rgba(0,0,0,0.06) 63%);
 }
 
-@media (prefers-color-scheme: dark) {
-  .skeleton {
-    background: linear-gradient(90deg, rgba(255,255,255,0.06) 25%, rgba(255,255,255,0.12) 37%, rgba(255,255,255,0.06) 63%);
-  }
+html.dark .skeleton, :root[data-theme="dark"] .skeleton {
+  background: linear-gradient(90deg, rgba(255,255,255,0.06) 25%, rgba(255,255,255,0.12) 37%, rgba(255,255,255,0.06) 63%);
 }
 
 .skeleton::after {
@@ -88,25 +86,15 @@
   animation: loader-spin 0.9s linear infinite;
 }
 
-@media (prefers-color-scheme: dark) {
-  .loader-ring {
-    border-color: rgba(255,255,255,0.14);
-    border-top-color: var(--foreground);
-  }
+html.dark .loader-ring, :root[data-theme="dark"] .loader-ring {
+  border-color: rgba(255,255,255,0.14);
+  border-top-color: var(--foreground);
 }
 
 @keyframes loader-spin {
   to { transform: rotate(360deg); }
 }
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-    --border-ui: rgba(255,255,255,0.28);
-  /* Footer background (dark) */
-  --footer-bg: #0f1115; /* subtle near-black */
-  }
-}
+/* Remove OS auto-dark; theme is fully controlled via .dark / data-theme */
 
 /* Explicit dark mode override when html has .dark or data-theme="dark" */
 html.dark, :root[data-theme="dark"] {
@@ -122,6 +110,10 @@ body {
   font-family: var(--font-sans);
   transition: background-color .3s ease, color .3s ease;
 }
+
+/* Explicitly control UA theming to avoid browser auto-forced dark overriding our toggle */
+html { color-scheme: light; }
+html.dark, :root[data-theme="dark"] { color-scheme: dark; }
 
 html {
   scroll-behavior: smooth;
