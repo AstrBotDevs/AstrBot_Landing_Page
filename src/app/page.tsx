@@ -265,7 +265,7 @@ function Hero() {
             </Reveal>
             <Reveal className="trendshift-badge mt-6 flex justify-start" delay={300}>
               <a href="https://trendshift.io/api/badge/repositories/12875">
-                <Image src="https://trendshift.io/api/badge/repositories/12875" alt="AstrBot | Trendshift" width={250} height={55} unoptimized />
+                <Image src="https://trendshift.io/api/badge/repositories/12875" alt="AstrBot | Trendshift" width={250} height={55} unoptimized priority loading="eager" fetchPriority="high" />
               </a>
             </Reveal>
             <div className="hero-buttons mt-6 flex flex-row flex-nowrap items-center gap-2 sm:gap-3">

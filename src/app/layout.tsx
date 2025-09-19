@@ -5,11 +5,11 @@ import I18nProvider from "../components/i18n/I18nProvider";
 
 export const metadata: Metadata = {
   title: "AstrBot | 多平台大模型机器人基础设施",
-  description: "AstrBot —— 轻量、强大、可扩展的 AI 助手。",
+  description: "AstrBot —— 快速构建、部署和管理跨平台的智能聊天机器人",
   icons: { icon: "/logo.png" },
   openGraph: {
     title: "AstrBot | 多平台大模型机器人基础设施",
-    description: "AstrBot —— 轻量、强大、可扩展的 AI 助手。",
+    description: "AstrBot —— 快速构建、部署和管理跨平台的智能聊天机器人",
     images: [
       {
         url: "/logo.webp",
