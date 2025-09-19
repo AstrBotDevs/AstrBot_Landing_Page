@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useI18n } from "../components/i18n/I18nProvider";
 import Reveal from "../components/Reveal";
-import { SparklesIcon, HeartIcon } from "@heroicons/react/24/solid";
+import { SparklesIcon, HeartIcon, PuzzlePieceIcon, EllipsisHorizontalIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
 
 export default function Home() {
   return (
@@ -526,19 +526,24 @@ function Plugins() {
                   as="a"
                   href={p.repo}
                   target="_blank"
-                className="block rounded-2xl border border-ui p-4 sm:p-5 hover:bg-[var(--brand-soft)] transition"
+                className="block relative overflow-hidden rounded-2xl border border-ui p-4 sm:p-5 hover:bg-[var(--brand-soft)] transition"
                   delay={100 + idx * 60}
                 >
-                  <h4 className="text-sm font-semibold line-clamp-1">{p.name}</h4>
-                  <p className="mt-2 text-sm opacity-80 line-clamp-2">{p.desc}</p>
-                  {typeof p.stars === "number" && (
-                    <div className="mt-3 text-xs opacity-80 inline-flex items-center gap-1 brand-text">
-                      <svg className="w-3.5 h-3.5 brand-text" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                        <path d="M12 17.3l-5.4 3 1-5.8-4.4-4.3 6-.9L12 3l2.8 5.3 6 .9-4.4 4.3 1 5.8z" />
-                      </svg>
-                      {p.stars}
-                    </div>
-                  )}
+                  <div className="absolute bottom-2 right-2 opacity-15 brand-text pointer-events-none select-none z-0">
+                    <PuzzlePieceIcon className="w-16 h-16 sm:w-20 sm:h-20" />
+                  </div>
+                  <div className="relative z-10">
+                    <h4 className="text-sm font-semibold line-clamp-1">{p.name}</h4>
+                    <p className="mt-2 text-sm opacity-80 line-clamp-2">{p.desc}</p>
+                    {typeof p.stars === "number" && (
+                      <div className="mt-3 text-xs opacity-80 inline-flex items-center gap-1 brand-text">
+                        <svg className="w-3.5 h-3.5 brand-text" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                          <path d="M12 17.3l-5.4 3 1-5.8-4.4-4.3 6-.9L12 3l2.8 5.3 6 .9-4.4 4.3 1 5.8z" />
+                        </svg>
+                        {p.stars}
+                      </div>
+                    )}
+                  </div>
                 </Reveal>
               ))}
               <Reveal
@@ -546,10 +551,16 @@ function Plugins() {
                 href="https://plugins.astrbot.app"
                 target="_blank"
                 rel="noreferrer"
-                className="block rounded-2xl border border-ui p-4 sm:p-5 hover:bg-[var(--brand-soft)] transition flex items-center justify-center"
+                className="group block relative overflow-hidden rounded-2xl border border-ui p-4 sm:p-5 hover:bg-[var(--brand-soft)] transition flex items-center justify-center"
                 delay={100 + 8 * 60}
               >
-                <span className="text-sm font-medium brand-text">{t("plugins.more")}</span>
+                <div className="absolute bottom-2 right-2 opacity-15 brand-text pointer-events-none select-none z-0">
+                  <EllipsisHorizontalIcon className="w-16 h-16 sm:w-20 sm:h-20" />
+                </div>
+                <span className="relative z-10 flex items-center gap-2 text-base sm:text-lg font-semibold brand-text">
+                  {t("plugins.more")} 
+                  <ArrowRightIcon className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+                </span>
               </Reveal>
             </>
           )}
@@ -644,7 +655,7 @@ function Community() {
         <div className="mt-10 text-center">
           <Reveal as="h3" className="text-base font-semibold" delay={0}>{t("community.contributorsTitle")}</Reveal>
           <Reveal className="mt-4 flex justify-center" animation="fade" delay={120}>
-            <Image src="https://contrib.rocks/image?repo=AstrBotDevs/AstrBot" width={800} height={200} alt="AstrBot 贡献者" className="rounded-xl border border-ui" unoptimized />
+            <Image src="https://contrib.rocks/image?repo=AstrBotDevs/AstrBot" width={800} height={200} alt="AstrBot 贡献者" className="rounded-xl" unoptimized />
           </Reveal>
           <Reveal as="p" className="mt-3 text-sm opacity-80" delay={200}>{t("community.contributorsNote")}</Reveal>
         </div>

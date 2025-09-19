@@ -3,7 +3,7 @@
   "hero": {"slogan": "マルチプラットフォーム LLM ボット基盤", "subSlogan": "クロスプラットフォームなAIチャットボットを構築・展開・管理", "startButton": "はじめる", "githubButton": "GitHub"},
   "platforms": {"title": "マルチプラットフォーム連携", "current": "現在"},
   "models": {"title": "対応モデルプロバイダー", "subtitle": "テキスト生成、画像理解、STT、TTS、Embedding などに対応"},
-  "plugins": {"title": "豊富なプラグインエコシステム", "subtitle": "様々なシナリオに簡単拡張", "more": "さらに見る →"},
+  "plugins": {"title": "豊富なプラグインエコシステム", "subtitle": "様々なシナリオに簡単拡張", "more": "さらに見る"},
   "community": {"title": "活発なコミュニティ", "subtitle": "小さな火花も野火となる。", "contributorsTitle": "貢献者", "contributorsNote": "すべてのOSS貢献者に感謝します。", "stars": "GitHub Stars", "forks": "GitHub Forks", "contributors": "貢献者", "plugins": "プラグイン"},
   "more": {"title": "その他", "kbLabel": "ナレッジベース", "kbDesc": "AIナレッジベース内蔵、セットアップ不要", "codeLabel": "コードランナー", "codeDesc": "Dockerベースのサンドボックス実行", "searchLabel": "ウェブ検索", "searchDesc": "LLMをオンラインに", "memoryLabel": "長期記憶", "memoryDesc": "実験的な長期記憶（近日）"},
   "carousel": {"prev": "前へ", "next": "次へ"},

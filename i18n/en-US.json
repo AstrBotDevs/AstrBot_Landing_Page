@@ -3,7 +3,7 @@
   "hero": {"slogan": "Multi-platform LLM Bot Infrastructure", "subSlogan": "Build, deploy, and manage cross-platform AI chatbots", "startButton": "Get Started", "githubButton": "GitHub"},
   "platforms": {"title": "Multi-platform Integrations", "current": "Current"},
   "models": {"title": "Supported Model Providers", "subtitle": "Support for Text Gen, Vision, STT, TTS, Embedding and more"},
-  "plugins": {"title": "Rich Plugin Ecosystem", "subtitle": "Extend bots easily for various scenarios", "more": "More plugins →"},
+  "plugins": {"title": "Rich Plugin Ecosystem", "subtitle": "Extend bots easily for various scenarios", "more": "More plugins"},
   "community": {"title": "Thriving Community", "subtitle": "Small sparks can start a prairie fire.", "contributorsTitle": "Contributors", "contributorsNote": "Thanks to every open-source contributor.", "stars": "GitHub Stars", "forks": "GitHub Forks", "contributors": "Contributors", "plugins": "Plugins"},
   "more": {"title": "More things", "kbLabel": "Knowledge Base", "kbDesc": "Built-in AI knowledge base, zero hassle", "codeLabel": "Code Runner", "codeDesc": "Docker-based sandboxed code runner", "searchLabel": "Web Search", "searchDesc": "Bring the LLM online", "memoryLabel": "Long-term Memory", "memoryDesc": "Experimental long-term memory (coming soon)"},
   "carousel": {"prev": "Previous", "next": "Next"},
