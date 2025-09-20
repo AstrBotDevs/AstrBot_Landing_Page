@@ -10,33 +10,40 @@ type OrbDef = {
 
 export default function OrbsLayer() {
   const [scrollY, setScrollY] = useState(0);
+  const scrollYRef = React.useRef(0);
 
   useEffect(() => {
     let raf = 0 as number | 0;
-    const onScroll = () => {
-      if (!raf) {
-        raf = requestAnimationFrame(() => {
-          setScrollY(window.scrollY || 0);
-          raf = 0 as number | 0;
-        }) as unknown as number;
+    const readScroll = () => (window.scrollY || 0);
+    const update = () => {
+      raf = 0 as number | 0;
+      const y = readScroll();
+      if (y !== scrollYRef.current) {
+        scrollYRef.current = y;
+        setScrollY(y);
       }
     };
-    onScroll();
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update) as unknown as number;
+    };
+    // Initialize once
+    scrollYRef.current = readScroll();
+    setScrollY(scrollYRef.current);
     window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
     return () => {
       if (raf) cancelAnimationFrame(raf);
       window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
     };
   }, []);
 
   const parallaxY = useMemo(() => {
-    // Slight parallax: move a bit slower than content
     return -(scrollY * 0.06);
   }, [scrollY]);
 
-  // Generate a smooth HSL color based on scroll position and orb index
   const colorFor = (index: number): string => {
-    const hue = (scrollY * 0.12 + index * 28) % 360; // scroll-driven hue with per-orb phase offset
+    const hue = (scrollY * 0.12 + index * 28) % 360; 
     const saturation = 70;
     const lightness = 62;
     return `hsl(${hue}deg ${saturation}% ${lightness}%)`;
