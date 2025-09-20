@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import webui1 from "../../public/webui-1.webp";
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState, useRef, useCallback, useSyncExternalStore } from "react";
+import FullpageScroller from "@/components/FullpageScroller";
 import { useI18n } from "../components/i18n/I18nProvider";
 import Reveal from "../components/Reveal";
 import { SparklesIcon, HeartIcon, PuzzlePieceIcon, EllipsisHorizontalIcon, ArrowRightIcon, ChevronDownIcon } from "@heroicons/react/24/solid";
@@ -16,88 +17,42 @@ function formatCompactNumber(n: number): string {
 }
 
 export default function Home() {
+  const slides = [
+    <Hero key="s-hero" />,
+    <Platforms key="s-platforms" />,
+    <Providers key="s-providers" />,
+    <Plugins key="s-plugins" />,
+    <Community key="s-community" />,
+    <FinalStack key="s-final" />,
+  ];
   return (
     <div className="min-h-screen flex flex-col font-sans">
       <Navbar />
-      <Hero />
-      <StickyFadeSection zIndex={10} heightVh={220} fadeStart={0.60} fadeEnd={0.92}>
-        <Platforms />
-      </StickyFadeSection>
-      <StickyFadeSection zIndex={20} heightVh={220} fadeStart={0.60} fadeEnd={0.92}>
-        <Providers />
-      </StickyFadeSection>
-      <StickyFadeSection zIndex={30} heightVh={200} fadeStart={0.58} fadeEnd={0.9}>
-        <Plugins />
-      </StickyFadeSection>
-      <StickyFadeSection zIndex={40} heightVh={200} fadeStart={0.58} fadeEnd={0.9}>
-        <Community />
-      </StickyFadeSection>
-      <MoreThings />
-      <GetStarted />
-      <SiteFooter />
+      <FullpageScroller slides={slides} />
     </div>
   );
 }
 
 function useScrollY() {
-  const [scrollY, setScrollY] = useState(0);
-  useEffect(() => {
-    let raf = 0 as number | 0;
-    const onScroll = () => {
-      if (!raf) {
-        raf = requestAnimationFrame(() => {
-          setScrollY(window.scrollY || 0);
-          raf = 0 as number | 0;
-        }) as unknown as number;
-      }
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
+  const subscribe = (cb: () => void) => {
+    const on = () => cb();
+    window.addEventListener("scroll", on, { passive: true });
+    window.addEventListener("resize", on, { passive: true });
+    // Initialize once to ensure first snapshot is accurate
+    cb();
     return () => {
-      if (raf) cancelAnimationFrame(raf);
-      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("scroll", on);
+      window.removeEventListener("resize", on);
     };
-  }, []);
-  return scrollY;
+  };
+  const getSnapshot = () => (typeof window !== "undefined" ? window.scrollY || 0 : 0);
+  const getServerSnapshot = () => 0;
+  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 }
 
-// Compute a 0..1 fade progress for a tall wrapper with a sticky child
-function useSectionFade(
-  wrapperRef: { current: HTMLElement | null },
-  fadeStart: number = 0.55,
-  fadeEnd: number = 0.9
-) {
-  const [opacity, setOpacity] = useState(1);
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    let raf = 0 as number | 0;
-    const update = () => {
-      const el = wrapperRef.current as HTMLElement | null;
-      if (!el) return setOpacity(1);
-      const rect = el.getBoundingClientRect();
-      const total = Math.max(1, el.offsetHeight);
-      const scrolled = Math.min(Math.max(0, -rect.top), total);
-      const progress = scrolled / total; // 0..1
-      const t = Math.min(1, Math.max(0, (progress - fadeStart) / Math.max(0.0001, (fadeEnd - fadeStart))));
-      const eased = 1 - (t * t * (3 - 2 * t)); // smoothstep ease-out for fade
-      setOpacity(eased);
-    };
-    const onScroll = () => {
-      if (!raf) raf = requestAnimationFrame(() => { update(); raf = 0 as number | 0; }) as unknown as number;
-    };
-    const onResize = () => { update(); };
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onResize, { passive: true });
-    return () => {
-      if (raf) cancelAnimationFrame(raf);
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onResize);
-    };
-  }, [wrapperRef, fadeStart, fadeEnd]);
-  return opacity;
-}
+// Legacy fade hook removed after fullpage refactor
 
+/* Legacy: kept for reference; no longer used after fullpage refactor
 function StickyFadeSection({
   children,
   zIndex,
@@ -121,6 +76,7 @@ function StickyFadeSection({
     </section>
   );
 }
+*/
 
 function Navbar() {
   const [openLang, setOpenLang] = useState(false);
@@ -369,7 +325,14 @@ function Hero() {
         </Reveal>
       </div>
       <div className="absolute inset-x-0 bottom-4 z-20 flex justify-center">
-        <a href="#features" aria-label="Scroll down">
+        <a
+          href="#features"
+          aria-label="Scroll down"
+          onClick={(e) => {
+            e.preventDefault();
+            try { window?.dispatchEvent(new CustomEvent<number>("fullpage:move", { detail: 1 })); } catch {}
+          }}
+        >
           <svg className="w-16 h-16 text-foreground animate-arrow-bounce" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <path d="M6 9l6 6 6-6" />
           </svg>
@@ -440,11 +403,17 @@ function Platforms() {
           </div>
           <div className="lg:col-span-10">
             <div className="mx-auto w-full max-w-[960px] rounded-xl border border-ui overflow-hidden bg-background/80 backdrop-blur p-4 sm:p-6">
-              <div className="relative h-[340px] sm:h-[360px] md:h-[460px] lg:h-[560px] xl:h-[640px]">
+              <div className="relative h-[38vh] sm:h-[44vh] md:h-[52vh] lg:h-[60vh] xl:h-[66vh] rounded-xl overflow-hidden">
                 {slides.map((s, i) => (
                   <div key={s.key} className={`absolute inset-0 flex items-center justify-center transition-opacity duration-500 ${i === index ? "opacity-100" : "opacity-0"}`} aria-hidden={i !== index}>
                     {s.src ? (
-                      <Image src={s.src} alt={`${s.label} 平台演示`} width={1200} height={800} className="max-h-full w-auto mt-2 sm:mt-4 rounded-xl px-2 object-contain" />
+                      <Image
+                        src={s.src}
+                        alt={`${s.label} 平台演示`}
+                        fill
+                        sizes="(min-width: 1024px) 960px, 92vw"
+                        className="object-contain"
+                      />
                     ) : (
                       <div className="text-center text-sm opacity-80"><span>{t("platforms.vocechatSupport")}</span></div>
                     )}
@@ -500,7 +469,7 @@ function Providers() {
     { name: "FastGPT", src: "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/fastgpt-color.svg" },
   ];
   return (
-    <section className="relative overflow-hidden min-h-[calc(100vh-64px)] flex items-center py-12 sm:py-16" style={{ backgroundColor: "var(--section-surface)" }}>
+    <section className="relative overflow-hidden h-full flex items-center py-12 sm:py-16" style={{ backgroundColor: "var(--section-surface)" }}>
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10" style={provParallax}>
         <div className="absolute -top-8 -left-10 w-64 h-64 rounded-full blur-3xl opacity-15 brand-bg animate-orb-pulse" />
         <div className="absolute bottom-[-40px] right-1/4 w-72 h-72 rounded-full blur-3xl opacity-10 animate-orb-pulse" style={{ backgroundColor: "#22d3ee" }} />
@@ -688,10 +657,14 @@ function Community() {
   );
 
   return (
-    <section className="relative overflow-hidden py-12 sm:py-16" style={{ backgroundColor: "var(--section-surface)" }}>
+    <section className="relative h-full flex items-center py-12 sm:py-16" style={{ backgroundColor: "var(--section-surface)" }}>
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10" style={commParallax}>
         <div className="absolute top-[-20px] right-[-40px] w-60 h-60 rounded-full blur-3xl opacity-10 brand-bg animate-orb-pulse" />
         <div className="absolute bottom-[-50px] left-1/5 w-72 h-72 rounded-full blur-3xl opacity-10" style={{ backgroundColor: "#a78bfa" }} />
+        <div className="absolute top-[6%] left-[8%] w-40 h-40 rounded-full blur-3xl opacity-15 animate-orb-sway animate-orb-pulse" style={{ backgroundColor: "#60a5fa", animationDelay: "0.6s, 1.2s, 2s" }} />
+        <div className="absolute top-[30%] right-[14%] w-52 h-52 rounded-full blur-3xl opacity-10 animate-orb-sway animate-orb-pulse" style={{ backgroundColor: "#22d3ee", animationDelay: "1.2s, 2.4s, 3.4s" }} />
+        <div className="absolute bottom-[12%] right-[8%] w-56 h-56 rounded-full blur-3xl opacity-10 animate-orb-sway animate-orb-pulse" style={{ backgroundColor: "#f59e0b", animationDelay: "2.2s, 3.6s, 4.2s" }} />
+        <div className="absolute bottom-[28%] left-[18%] w-48 h-48 rounded-full blur-3xl opacity-10 animate-orb-sway animate-orb-pulse" style={{ backgroundColor: "#60a5fa", animationDelay: "3s, 4.2s, 5s" }} />
       </div>
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <Reveal as="h2" className="text-center text-3xl sm:text-4xl font-semibold tracking-tight gradient-title" delay={0}>{t("community.title")}</Reveal>
@@ -747,7 +720,16 @@ function Community() {
         <div className="mt-10 text-center">
           <Reveal as="h3" className="text-base font-semibold" delay={0}>{t("community.contributorsTitle")}</Reveal>
           <Reveal className="mt-4 flex justify-center" animation="fade" delay={120}>
-            <Image src="https://contrib.rocks/image?repo=AstrBotDevs/AstrBot" width={800} height={200} alt="AstrBot 贡献者" className="rounded-xl" unoptimized style={{ width: "auto", height: "auto" }} />
+            <div className="relative w-full max-w-5xl h-[22vh] sm:h-[26vh] md:h-[30vh]">
+              <Image
+                src="https://contrib.rocks/image?repo=AstrBotDevs/AstrBot"
+                alt="AstrBot 贡献者"
+                fill
+                sizes="(min-width: 1024px) 60vw, 90vw"
+                className="object-contain rounded-xl"
+                unoptimized
+              />
+            </div>
           </Reveal>
           <Reveal as="p" className="mt-3 text-sm opacity-80" delay={200}>{t("community.contributorsNote")}</Reveal>
         </div>
@@ -846,12 +828,10 @@ function SiteFooter() {
   const scrollY = useScrollY();
   const footerRef = useRef<HTMLElement | null>(null);
   const [parallaxY, setParallaxY] = useState(0);
-
   useEffect(() => {
     const el = footerRef.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
-    // Move opposite to scroll a little, but clamp to avoid hiding orbs
     const y = Math.max(-60, Math.min(60, -rect.top * 0.06));
     setParallaxY(y);
   }, [scrollY]);
@@ -920,3 +900,18 @@ function SiteFooter() {
       </footer>
   );
 }
+
+function FinalStack() {
+  return (
+    <div className="h-full overflow-auto" data-scroll-mask>
+      <div className="min-h-full flex flex-col pt-16 sm:pt-20">
+        <MoreThings />
+        <GetStarted />
+        <div className="mt-auto">
+          <SiteFooter />
+        </div>
+      </div>
+    </div>
+  );
+}
+

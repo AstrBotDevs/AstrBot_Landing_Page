@@ -6,13 +6,9 @@ type RevealProps = {
   as?: keyof React.JSX.IntrinsicElements | React.ElementType;
   className?: string;
   children: React.ReactNode;
-  /** 动画类型：上移渐显 or 纯渐显 */
   animation?: "up" | "fade";
-  /** 触发后是否只执行一次 */
   once?: boolean;
-  /** 动画延迟（毫秒） */
   delay?: number;
-  /** IntersectionObserver 参数 */
   threshold?: number;
   rootMargin?: string;
 };
@@ -35,7 +31,7 @@ export default function Reveal({
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    if (visible && once) return; // 已可见且只执行一次
+    if (visible && once) return; 
 
     const io = new IntersectionObserver(
       (entries) => {

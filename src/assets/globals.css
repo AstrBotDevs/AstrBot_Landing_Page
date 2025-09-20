@@ -33,13 +33,11 @@
     "Liberation Mono", "Courier New", monospace;
 }
 
-/* Brand font utility */
 .font-lexend {
   font-family: "Lexend", system-ui, -apple-system, Segoe UI, Roboto, Helvetica,
     Arial, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
-/* big bouncing arrow animation */
 @keyframes arrow-bounce {
   0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
   40% { transform: translateY(8px); }
@@ -50,7 +48,6 @@
   animation: arrow-bounce 1.8s infinite;
 }
 
-/* skeleton loading */
 .skeleton {
   position: relative;
   overflow: hidden;
@@ -76,7 +73,6 @@ html.dark .skeleton, :root[data-theme="dark"] .skeleton {
   }
 }
 
-/* ring loader */
 .loader-ring {
   width: 48px;
   height: 48px;
@@ -96,7 +92,6 @@ html.dark .loader-ring, :root[data-theme="dark"] .loader-ring {
 }
 /* Remove OS auto-dark; theme is fully controlled via .dark / data-theme */
 
-/* Explicit dark mode override when html has .dark or data-theme="dark" */
 html.dark, :root[data-theme="dark"] {
   --background: #0a0a0a;
   --foreground: #ededed;
@@ -104,7 +99,6 @@ html.dark, :root[data-theme="dark"] {
   --footer-bg: #0f1115;
 }
 
-/* Section surface background (used by Providers / Community) */
 :root {
   --section-surface: rgba(0,0,0,0.02);
 }
@@ -119,23 +113,21 @@ body {
   transition: background-color .2s ease, color .2s ease;
 }
 
-/* Explicitly control UA theming to avoid browser auto-forced dark overriding our toggle */
 html { color-scheme: light; }
 html.dark, :root[data-theme="dark"] { color-scheme: dark; }
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 64px; /* match navbar h-16 */
+  scroll-padding-top: 64px; 
 }
 
-/* Temporarily disable snap when JS is animating */
 html.snap-temp-disable {
   scroll-snap-type: none !important;
 }
 
 /* Brand theme: SteelBlue */
 :root {
-  --brand: #4682B4; /* SteelBlue */
+  --brand: #4682B4; 
   --brand-strong: #3a6a90;
   --brand-soft: rgba(70,130,180,0.10);
 }
@@ -143,11 +135,8 @@ html.snap-temp-disable {
 .brand-text { color: var(--brand); }
 .brand-bg { background-color: var(--brand); }
 .brand-border { border-color: var(--brand); }
-
-/* Unified UI border utility */
 .border-ui { border-color: var(--border-ui) !important; }
 
-/* Unify theme transition timing across interactive elements */
 a, button, .btn-brand, .btn-outline-brand, .tag-brand, .border-ui {
   transition: color .2s ease, background-color .2s ease, border-color .2s ease, opacity .2s ease;
 }
@@ -156,6 +145,7 @@ a, button, .btn-brand, .btn-outline-brand, .tag-brand, .border-ui {
   background-color: var(--brand);
   color: #fff;
 }
+
 .btn-brand:hover { filter: brightness(1.05); }
 
 .btn-outline-brand {
@@ -179,12 +169,10 @@ a, button, .btn-brand, .btn-outline-brand, .tag-brand, .border-ui {
   color: transparent;
 }
 
-/* Mobile polish */
 a, button, input, textarea {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* subtle float animation for decorative orbs */
 @keyframes orb-float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-8px); }
@@ -195,7 +183,6 @@ a, button, input, textarea {
   will-change: transform;
 }
 
-/* enhanced sway animation with color shifting */
 @keyframes orb-sway {
   0% { 
     transform: translate(0, 0) rotate(0deg);
@@ -226,7 +213,6 @@ a, button, input, textarea {
   will-change: transform, filter;
 }
 
-/* size pulsing animation for hero and footer orbs */
 @keyframes orb-pulse-size {
   0% { transform: scale(1); }
   30% { transform: scale(1.15); }
@@ -239,9 +225,6 @@ a, button, input, textarea {
   will-change: transform;
 }
 
-/* =============================
-   Entrance reveal animations
-   ============================= */
 @keyframes reveal-up {
   from { opacity: 0; transform: translateY(12px); }
   to { opacity: 1; transform: translateY(0); }
@@ -262,10 +245,8 @@ a, button, input, textarea {
   animation: reveal-fade .8s ease-out forwards;
 }
 
-/* 初始隐藏（用于还未触发时的占位和状态） */
 .reveal-init { opacity: 0; transform: translateY(8px); }
 
-/* delay utilities */
 .reveal-delay-0   { animation-delay: 0s; }
 .reveal-delay-100 { animation-delay: .1s; }
 .reveal-delay-150 { animation-delay: .15s; }
@@ -275,7 +256,6 @@ a, button, input, textarea {
 .reveal-delay-500 { animation-delay: .5s; }
 .reveal-delay-600 { animation-delay: .6s; }
 
-/* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .reveal-up,
   .reveal-fade {
@@ -291,3 +271,18 @@ a, button, input, textarea {
   to   { opacity: 1; transform: scale(1) translateY(0); }
 }
 .animate-dropdown { animation: dropdown-in .16s ease-out; }
+
+/* FullpageScroller minimal styles */
+.fps-container {
+  --t-duration: .3s;
+  height: 100vh;
+  margin-top: calc(0px - 64px); /* navbar height */
+  overflow: hidden;
+  line-height: 1.7em;
+}
+.fps-container.moving { --t-duration: 0s; }
+.fps-screen { height: 100vh; position: relative; }
+.fps-track { top: 0; left: 0; width: 100vw; transition: transform var(--t-duration) ease; }
+.fps-track-demo { position: fixed; z-index: 15; pointer-events: none; }
+
+.rounded-xl { overflow: hidden; }
