@@ -5,7 +5,7 @@ import webui1 from "../../public/webui-1.webp";
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useI18n } from "../components/i18n/I18nProvider";
 import Reveal from "../components/Reveal";
-import { SparklesIcon, HeartIcon, PuzzlePieceIcon, EllipsisHorizontalIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
+import { SparklesIcon, HeartIcon, PuzzlePieceIcon, EllipsisHorizontalIcon, ArrowRightIcon, ChevronDownIcon } from "@heroicons/react/24/solid";
 
 function formatCompactNumber(n: number): string {
   if (!Number.isFinite(n)) return "";
@@ -147,12 +147,12 @@ function Navbar() {
             </button>
           </li>
           <li ref={langRef} className="relative">
-            <button aria-expanded={openLang} onClick={() => setOpenLang((v) => !v)} className="inline-flex items-center gap-2 h-9 px-3 rounded-full border border-ui opacity-80 hover:opacity-100 transition duration-200">
-              <span className="current-language transition-colors duration-200 text-[var(--foreground)]">{langLabel}</span>
-              <span aria-hidden className="transition-colors duration-200 text-[var(--foreground)]">▾</span>
+            <button aria-expanded={openLang} onClick={() => setOpenLang((v) => !v)} className="inline-flex items-center gap-2 h-9 px-3 rounded-full border border-ui opacity-80 hover:opacity-100 transition-colors duration-200 text-[var(--foreground)]">
+              <span className="current-language">{langLabel}</span>
+              <ChevronDownIcon aria-hidden className={`w-4 h-4 transition-transform duration-200 ${openLang ? 'rotate-180' : ''}`} />
             </button>
             {openLang && (
-              <ul className="absolute right-0 mt-2 w-36 rounded-lg border border-ui bg-background shadow">
+              <ul className="absolute right-0 mt-5 w-28 rounded-lg border border-ui bg-background shadow-lg origin-top-right animate-dropdown">
                 <li className="px-3 py-2 hover:bg-black/[.04] dark:hover:bg-white/[.06] cursor-pointer" onClick={() => { setLocale("zh-CN"); setOpenLang(false); }}>简体中文</li>
                 <li className="px-3 py-2 hover:bg-black/[.04] dark:hover:bg-white/[.06] cursor-pointer" onClick={() => { setLocale("en-US"); setOpenLang(false); }}>English</li>
                 <li className="px-3 py-2 hover:bg-black/[.04] dark:hover:bg-white/[.06] cursor-pointer" onClick={() => { setLocale("ja-JP"); setOpenLang(false); }}>日本語</li>
@@ -175,7 +175,7 @@ function Navbar() {
       {openMenu && (
         <div className="md:hidden absolute left-0 right-0 top-16 z-40">
           <div className="mx-auto max-w-6xl px-4 sm:px-6 pb-4 mt-2">
-            <div className="rounded-2xl border border-ui bg-background/90 backdrop-blur shadow-lg p-4">
+            <div className="rounded-2xl border border-ui bg-background/90 backdrop-blur shadow-lg p-4 animate-dropdown origin-top">
               <ul className="flex flex-col gap-2 text-sm">
                 <li><a href="https://docs.astrbot.app" className="inline-flex items-center h-10 px-3 rounded-full border border-ui opacity-80 hover:opacity-100 transition">{t("nav.quickStart")}</a></li>
                 <li><a href="https://plugins.astrbot.app/" className="inline-flex items-center h-10 px-3 rounded-full border border-ui opacity-80 hover:opacity-100 transition">{t("nav.plugin")}</a></li>
@@ -204,9 +204,7 @@ function Navbar() {
                       <circle cx="12" cy="12" r="9" />
                       <path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18" />
                     </svg>
-                    <svg className={`w-4 h-4 transition-transform ${openLangMobile ? 'rotate-180' : ''}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                      <path d="M6 9l6 6 6-6" />
-                    </svg>
+                    <ChevronDownIcon className={`w-4 h-4 transition-transform duration-200 ${openLangMobile ? 'rotate-180' : ''}`} aria-hidden />
                   </button>
                   {openLangMobile && (
                     <div className="flex items-center gap-2 flex-wrap">
