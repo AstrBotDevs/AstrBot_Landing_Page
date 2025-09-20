@@ -119,37 +119,37 @@ function Navbar() {
         </div>
         <ul className="hidden md:flex items-center gap-3 text-sm">
           <li>
-            <a href="https://docs.astrbot.app" className="inline-flex items-center h-9 px-3 rounded-full border border-ui opacity-80 hover:opacity-100 transition">
+            <a href="https://docs.astrbot.app" className="inline-flex items-center h-9 px-3 rounded-full border border-ui opacity-80 hover:opacity-100 transition duration-200">
               {t("nav.quickStart")}
             </a>
           </li>
           <li>
-            <a href="https://plugins.astrbot.app/" className="inline-flex items-center h-9 px-3 rounded-full border border-ui opacity-80 hover:opacity-100 transition">
+            <a href="https://plugins.astrbot.app/" className="inline-flex items-center h-9 px-3 rounded-full border border-ui opacity-80 hover:opacity-100 transition duration-200">
               {t("nav.plugin")}
             </a>
           </li>
           <li>
-            <a href="https://github.com/AstrBotDevs/AstrBot" className="inline-flex items-center h-9 px-3 rounded-full border border-ui opacity-80 hover:opacity-100 transition">
+            <a href="https://github.com/AstrBotDevs/AstrBot" className="inline-flex items-center h-9 px-3 rounded-full border border-ui opacity-80 hover:opacity-100 transition duration-200">
               {t("nav.github")}
             </a>
           </li>
           <li>
             <button onClick={toggleTheme} aria-label="切换深浅模式" className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-ui" style={{ lineHeight: 1 }}>
               <span className="grid place-items-center">
-                <svg className="w-4 h-4 brand-text col-start-1 row-start-1 transition-opacity duration-300" style={{opacity: isDark ? 0 : 1}} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                <svg className="w-4 h-4 brand-text col-start-1 row-start-1 transition-opacity duration-200" style={{opacity: isDark ? 0 : 1}} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                   <circle cx="12" cy="12" r="5" />
                   <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
                 </svg>
-                <svg className="w-4 h-4 brand-text col-start-1 row-start-1 transition-opacity duration-300" style={{opacity: isDark ? 1 : 0}} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                <svg className="w-4 h-4 brand-text col-start-1 row-start-1 transition-opacity duration-200" style={{opacity: isDark ? 1 : 0}} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                   <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
                 </svg>
               </span>
             </button>
           </li>
           <li ref={langRef} className="relative">
-            <button aria-expanded={openLang} onClick={() => setOpenLang((v) => !v)} className="inline-flex items-center gap-2 h-9 px-3 rounded-full border border-ui">
-              <span className="current-language">{langLabel}</span>
-              <span aria-hidden>▾</span>
+            <button aria-expanded={openLang} onClick={() => setOpenLang((v) => !v)} className="inline-flex items-center gap-2 h-9 px-3 rounded-full border border-ui opacity-80 hover:opacity-100 transition duration-200">
+              <span className="current-language transition-colors duration-200 text-[var(--foreground)]">{langLabel}</span>
+              <span aria-hidden className="transition-colors duration-200 text-[var(--foreground)]">▾</span>
             </button>
             {openLang && (
               <ul className="absolute right-0 mt-2 w-36 rounded-lg border border-ui bg-background shadow">
@@ -198,7 +198,7 @@ function Navbar() {
                     onClick={() => setOpenLangMobile((v) => !v)}
                     aria-expanded={openLangMobile}
                     aria-label="语言"
-                    className="inline-flex h-10 px-3 items-center justify-center rounded-full border border-ui gap-2"
+                    className="inline-flex h-10 px-3 items-center justify-center rounded-full border border-ui gap-2 opacity-80 hover:opacity-100 transition duration-200"
                   >
                     <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                       <circle cx="12" cy="12" r="9" />
@@ -210,9 +210,9 @@ function Navbar() {
                   </button>
                   {openLangMobile && (
                     <div className="flex items-center gap-2 flex-wrap">
-                      <button onClick={() => { setLocale('zh-CN'); setOpenMenu(false); }} className={`inline-flex items-center h-9 px-3 rounded-full border border-ui text-xs ${locale === 'zh-CN' ? 'bg-black/[.06] dark:bg-white/[.08]' : 'opacity-80 hover:opacity-100'}`}>简体中文</button>
-                      <button onClick={() => { setLocale('en-US'); setOpenMenu(false); }} className={`inline-flex items-center h-9 px-3 rounded-full border border-ui text-xs ${locale === 'en-US' ? 'bg-black/[.06] dark:bg-white/[.08]' : 'opacity-80 hover:opacity-100'}`}>English</button>
-                      <button onClick={() => { setLocale('ja-JP'); setOpenMenu(false); }} className={`inline-flex items-center h-9 px-3 rounded-full border border-ui text-xs ${locale === 'ja-JP' ? 'bg-black/[.06] dark:bg-white/[.08]' : 'opacity-80 hover:opacity-100'}`}>日本語</button>
+                  <button onClick={() => { setLocale('zh-CN'); setOpenMenu(false); }} className={`inline-flex items-center h-9 px-3 rounded-full border border-ui text-xs transition duration-200 ${locale === 'zh-CN' ? 'bg-black/[.06] dark:bg-white/[.08]' : 'opacity-80 hover:opacity-100'}`}>简体中文</button>
+                  <button onClick={() => { setLocale('en-US'); setOpenMenu(false); }} className={`inline-flex items-center h-9 px-3 rounded-full border border-ui text-xs transition duration-200 ${locale === 'en-US' ? 'bg-black/[.06] dark:bg-white/[.08]' : 'opacity-80 hover:opacity-100'}`}>English</button>
+                  <button onClick={() => { setLocale('ja-JP'); setOpenMenu(false); }} className={`inline-flex items-center h-9 px-3 rounded-full border border-ui text-xs transition duration-200 ${locale === 'ja-JP' ? 'bg-black/[.06] dark:bg-white/[.08]' : 'opacity-80 hover:opacity-100'}`}>日本語</button>
                     </div>
                   )}
                 </div>
@@ -441,7 +441,9 @@ function Providers() {
               <Reveal key={it.name} delay={100 + idx * 40} className="h-full">
                 <a href={it.href} target="_blank" rel="noreferrer" className="h-full min-h-28 rounded-xl border border-ui p-3 sm:p-4 flex flex-col items-center gap-2 hover:bg-[var(--brand-soft)] transition">
                 <div className="h-10 w-10 rounded-md bg-white dark:bg-white flex items-center justify-center ring-1 ring-black/[.06] dark:ring-white/[.12]">
-                  <Image src={it.src} alt={it.name} width={24} height={24} className="h-6 w-auto" unoptimized style={{ width: "auto", height: "auto" }} />
+                  <div className="relative h-6 w-6">
+                    <Image src={it.src} alt={it.name} fill sizes="24px" className="object-contain" unoptimized />
+                  </div>
                 </div>
                 <span className="text-sm opacity-80 underline underline-offset-4 brand-text">{it.name}</span>
                 </a>
@@ -450,7 +452,9 @@ function Providers() {
               <Reveal key={it.name} delay={100 + idx * 40} className="h-full">
                 <div className="h-full min-h-28 rounded-xl border border-ui p-3 sm:p-4 flex flex-col items-center gap-2">
                 <div className="h-10 w-10 rounded-md bg-white dark:bg-white flex items-center justify-center ring-1 ring-black/[.06] dark:ring-white/[.12]">
-                  <Image src={it.src} alt={it.name} width={24} height={24} className="h-6 w-auto" unoptimized style={{ width: "auto", height: "auto" }} />
+                  <div className="relative h-6 w-6">
+                    <Image src={it.src} alt={it.name} fill sizes="24px" className="object-contain" unoptimized />
+                  </div>
                 </div>
                 <span className="text-sm opacity-80">{it.name}</span>
                 </div>

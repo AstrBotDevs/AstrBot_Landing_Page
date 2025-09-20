@@ -108,7 +108,7 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
-  transition: background-color .3s ease, color .3s ease;
+  transition: background-color .2s ease, color .2s ease;
 }
 
 /* Explicitly control UA theming to avoid browser auto-forced dark overriding our toggle */
@@ -138,6 +138,11 @@ html.snap-temp-disable {
 
 /* Unified UI border utility */
 .border-ui { border-color: var(--border-ui) !important; }
+
+/* Unify theme transition timing across interactive elements */
+a, button, .btn-brand, .btn-outline-brand, .tag-brand, .border-ui {
+  transition: color .2s ease, background-color .2s ease, border-color .2s ease, opacity .2s ease;
+}
 
 .btn-brand {
   background-color: var(--brand);
