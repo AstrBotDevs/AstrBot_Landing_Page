@@ -104,14 +104,6 @@ html.dark, :root[data-theme="dark"] {
   --footer-bg: #0f1115;
 }
 
-/* Section surface background (used by Providers / Community) */
-:root {
-  --section-surface: rgba(0,0,0,0.02);
-}
-html.dark, :root[data-theme="dark"] {
-  --section-surface: rgba(54, 54, 54, 0.318);
-}
-
 body {
   background: var(--background);
   color: var(--foreground);

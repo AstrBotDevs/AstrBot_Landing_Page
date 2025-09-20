@@ -20,18 +20,10 @@ export default function Home() {
     <div className="min-h-screen flex flex-col font-sans">
       <Navbar />
       <Hero />
-      <StickyFadeSection zIndex={10} heightVh={220} fadeStart={0.60} fadeEnd={0.92}>
-        <Platforms />
-      </StickyFadeSection>
-      <StickyFadeSection zIndex={20} heightVh={220} fadeStart={0.60} fadeEnd={0.92}>
-        <Providers />
-      </StickyFadeSection>
-      <StickyFadeSection zIndex={30} heightVh={200} fadeStart={0.58} fadeEnd={0.9}>
-        <Plugins />
-      </StickyFadeSection>
-      <StickyFadeSection zIndex={40} heightVh={200} fadeStart={0.58} fadeEnd={0.9}>
-        <Community />
-      </StickyFadeSection>
+      <Platforms />
+      <Providers />
+      <Plugins />
+      <Community />
       <MoreThings />
       <GetStarted />
       <SiteFooter />
@@ -59,67 +51,6 @@ function useScrollY() {
     };
   }, []);
   return scrollY;
-}
-
-// Compute a 0..1 fade progress for a tall wrapper with a sticky child
-function useSectionFade(
-  wrapperRef: { current: HTMLElement | null },
-  fadeStart: number = 0.55,
-  fadeEnd: number = 0.9
-) {
-  const [opacity, setOpacity] = useState(1);
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    let raf = 0 as number | 0;
-    const update = () => {
-      const el = wrapperRef.current as HTMLElement | null;
-      if (!el) return setOpacity(1);
-      const rect = el.getBoundingClientRect();
-      const total = Math.max(1, el.offsetHeight);
-      const scrolled = Math.min(Math.max(0, -rect.top), total);
-      const progress = scrolled / total; // 0..1
-      const t = Math.min(1, Math.max(0, (progress - fadeStart) / Math.max(0.0001, (fadeEnd - fadeStart))));
-      const eased = 1 - (t * t * (3 - 2 * t)); // smoothstep ease-out for fade
-      setOpacity(eased);
-    };
-    const onScroll = () => {
-      if (!raf) raf = requestAnimationFrame(() => { update(); raf = 0 as number | 0; }) as unknown as number;
-    };
-    const onResize = () => { update(); };
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onResize, { passive: true });
-    return () => {
-      if (raf) cancelAnimationFrame(raf);
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onResize);
-    };
-  }, [wrapperRef, fadeStart, fadeEnd]);
-  return opacity;
-}
-
-function StickyFadeSection({
-  children,
-  zIndex,
-  heightVh = 200,
-  fadeStart = 0.6,
-  fadeEnd = 0.9,
-}: {
-  children: React.ReactNode;
-  zIndex: number;
-  heightVh?: number;
-  fadeStart?: number;
-  fadeEnd?: number;
-}) {
-  const wrapperRef = useRef<HTMLElement | null>(null);
-  const opacity = useSectionFade(wrapperRef, fadeStart, fadeEnd);
-  return (
-    <section ref={wrapperRef} className="relative" style={{ height: `${heightVh}vh` }}>
-      <div className="sticky top-16" style={{ zIndex, opacity }}>
-        {children}
-      </div>
-    </section>
-  );
 }
 
 function Navbar() {
@@ -221,7 +152,7 @@ function Navbar() {
               <ChevronDownIcon aria-hidden className={`w-4 h-4 transition-transform duration-200 ${openLang ? 'rotate-180' : ''}`} />
             </button>
             {openLang && (
-              <ul className="absolute right-0 mt-3 w-28 rounded-lg border border-ui bg-background shadow-lg origin-top-right animate-dropdown">
+              <ul className="absolute right-0 mt-5 w-28 rounded-lg border border-ui bg-background shadow-lg origin-top-right animate-dropdown">
                 <li className="px-3 py-2 hover:bg-black/[.04] dark:hover:bg-white/[.06] cursor-pointer" onClick={() => { setLocale("zh-CN"); setOpenLang(false); }}>简体中文</li>
                 <li className="px-3 py-2 hover:bg-black/[.04] dark:hover:bg-white/[.06] cursor-pointer" onClick={() => { setLocale("en-US"); setOpenLang(false); }}>English</li>
                 <li className="px-3 py-2 hover:bg-black/[.04] dark:hover:bg-white/[.06] cursor-pointer" onClick={() => { setLocale("ja-JP"); setOpenLang(false); }}>日本語</li>
@@ -476,8 +407,6 @@ function Platforms() {
 
 function Providers() {
   const { t } = useI18n();
-  const scrollY = useScrollY();
-  const provParallax = { transform: `translateY(${scrollY * 0.03}px)`, willChange: "transform" } as React.CSSProperties;
   const items = [
     { name: "OpenAI", src: "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/openai.svg" },
     { name: "xAI", src: "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/xai.svg" },
@@ -500,11 +429,7 @@ function Providers() {
     { name: "FastGPT", src: "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/fastgpt-color.svg" },
   ];
   return (
-    <section className="relative overflow-hidden min-h-[calc(100vh-64px)] flex items-center py-12 sm:py-16" style={{ backgroundColor: "var(--section-surface)" }}>
-      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10" style={provParallax}>
-        <div className="absolute -top-8 -left-10 w-64 h-64 rounded-full blur-3xl opacity-15 brand-bg animate-orb-pulse" />
-        <div className="absolute bottom-[-40px] right-1/4 w-72 h-72 rounded-full blur-3xl opacity-10 animate-orb-pulse" style={{ backgroundColor: "#22d3ee" }} />
-      </div>
+    <section className="min-h-[calc(100vh-64px)] flex items-center py-12 sm:py-16">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
   <Reveal as="h2" className="text-center text-3xl sm:text-4xl font-semibold tracking-tight mb-6 sm:mb-8 gradient-title" delay={0}>{t("models.title")}</Reveal>
   <Reveal as="p" className="text-center mt-2 text-sm opacity-80 mb-10 sm:mb-12" delay={150}>{t("models.subtitle")}</Reveal>
@@ -658,8 +583,6 @@ function Plugins() {
 
 function Community() {
   const { t } = useI18n();
-  const scrollY = useScrollY();
-  const commParallax = { transform: `translateY(${scrollY * 0.02}px)`, willChange: "transform" } as React.CSSProperties;
   const [stats, setStats] = useState<{ stars: number; forks: number; contributors: number; plugins: number }>({ stars: 0, forks: 0, contributors: 0, plugins: 0 });
   useEffect(() => {
     fetch("/api/plugins", { cache: "no-store" })
@@ -688,11 +611,7 @@ function Community() {
   );
 
   return (
-    <section className="relative overflow-hidden py-12 sm:py-16" style={{ backgroundColor: "var(--section-surface)" }}>
-      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10" style={commParallax}>
-        <div className="absolute top-[-20px] right-[-40px] w-60 h-60 rounded-full blur-3xl opacity-10 brand-bg animate-orb-pulse" />
-        <div className="absolute bottom-[-50px] left-1/5 w-72 h-72 rounded-full blur-3xl opacity-10" style={{ backgroundColor: "#a78bfa" }} />
-      </div>
+    <section className="py-12 sm:py-16">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <Reveal as="h2" className="text-center text-3xl sm:text-4xl font-semibold tracking-tight gradient-title" delay={0}>{t("community.title")}</Reveal>
         <Reveal as="p" className="text-center mt-2 mb-10 text-sm opacity-80" delay={150}>{t("community.subtitle")}</Reveal>
