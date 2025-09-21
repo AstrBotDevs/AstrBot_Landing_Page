@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "../assets/globals.css";
-import OrbsLayer from "../components/OrbsLayer";
 import I18nProvider from "../components/i18n/I18nProvider";
 
 export const metadata: Metadata = {
@@ -31,7 +30,6 @@ export default function RootLayout({
     <html lang="zh-CN">
       <body className={`antialiased`}>
         <div className="relative">
-        <OrbsLayer />
         <I18nProvider>
           <div className="relative z-20">
             {children}
