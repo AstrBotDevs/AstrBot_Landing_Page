@@ -16,14 +16,6 @@
   font-display: swap;
 }
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --border-ui: rgba(0,0,0,0.12);
-  /* Footer background (light) */
-  --footer-bg: #f3f4f6; /* gray-100 */
-}
-
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -44,6 +36,20 @@
   0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
   40% { transform: translateY(8px); }
   60% { transform: translateY(4px); }
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --border-ui: rgba(0,0,0,0.12);
+
+  /* Footer background (light) */
+  --footer-bg: #f3f4f6; 
+
+  /* Brand */
+  --brand: #354370;
+  --brand-strong: #2b3558;
+  --brand-soft: rgba(53,67,112,0.10);
 }
 
 .animate-arrow-bounce {
@@ -94,7 +100,6 @@ html.dark .loader-ring, :root[data-theme="dark"] .loader-ring {
 @keyframes loader-spin {
   to { transform: rotate(360deg); }
 }
-/* Remove OS auto-dark; theme is fully controlled via .dark / data-theme */
 
 /* Explicit dark mode override when html has .dark or data-theme="dark" */
 html.dark, :root[data-theme="dark"] {
@@ -102,6 +107,11 @@ html.dark, :root[data-theme="dark"] {
   --foreground: #ededed;
   --border-ui: rgba(255,255,255,0.28);
   --footer-bg: #0f1115;
+  
+  /* Lighter brand colors for dark mode */
+  --brand: #5a6b9a;
+  --brand-strong: #6b7baa;
+  --brand-soft: rgba(90,107,154,0.15);
 }
 
 body {
@@ -117,19 +127,12 @@ html.dark, :root[data-theme="dark"] { color-scheme: dark; }
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 64px; /* match navbar h-16 */
+  scroll-padding-top: 64px; 
 }
 
 /* Temporarily disable snap when JS is animating */
 html.snap-temp-disable {
   scroll-snap-type: none !important;
-}
-
-/* Brand theme: SteelBlue */
-:root {
-  --brand: #4682B4; /* SteelBlue */
-  --brand-strong: #3a6a90;
-  --brand-soft: rgba(70,130,180,0.10);
 }
 
 .brand-text { color: var(--brand); }
@@ -165,7 +168,7 @@ a, button, .btn-brand, .btn-outline-brand, .tag-brand, .border-ui {
 }
 
 .gradient-title {
-  background-image: linear-gradient(90deg, var(--brand) 0%, #6aa1ff 50%, #22d3ee 100%);
+  background-image: linear-gradient(90deg, var(--brand) 0%, #5a6b9a 50%, #4a5c8a 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
