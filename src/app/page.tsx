@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import webui1 from "../../public/webui-1.webp";
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState, useRef, useCallback, useSyncExternalStore } from "react";
 import { useI18n } from "../components/i18n/I18nProvider";
 import Reveal from "../components/Reveal";
 import { SparklesIcon, HeartIcon, PuzzlePieceIcon, EllipsisHorizontalIcon, ArrowRightIcon, ChevronDownIcon } from "@heroicons/react/24/solid";
@@ -32,17 +32,17 @@ export default function Home() {
 }
 
 function useScrollY() {
-  const [scrollY, setScrollY] = useState(0);
-  useEffect(() => {
+  const subscribe = useCallback((onStoreChange: () => void) => {
     let raf = 0 as number | 0;
     const onScroll = () => {
       if (!raf) {
         raf = requestAnimationFrame(() => {
-          setScrollY(window.scrollY || 0);
           raf = 0 as number | 0;
+          onStoreChange();
         }) as unknown as number;
       }
     };
+    // Initial read after mount
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
@@ -50,7 +50,9 @@ function useScrollY() {
       window.removeEventListener("scroll", onScroll);
     };
   }, []);
-  return scrollY;
+  const getSnapshot = useCallback(() => (typeof window === "undefined" ? 0 : window.scrollY || 0), []);
+  const getServerSnapshot = useCallback(() => 0, []);
+  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 }
 
 function Navbar() {
