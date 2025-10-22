@@ -1,7 +1,6 @@
 {
   "nav": {"quickStart": "Quick Start", "plugin": "Plugins", "github": "GitHub"},
-  "hero": {"slogan": "Multi-platform LLM Bot Infrastructure", "subSlogan": "Build, deploy, and manage cross-platform AI chatbots", "startButton": "Get Started", "githubButton": "GitHub"},
-  "platforms": {"title": "Multi-platform Integrations", "current": "Current"},
+  "hero": {"slogan": "Multi-platform LLM Bot Infrastructure", "subSlogan": "Multi-platform LLM Bot Infrastructure", "startButton": "Get Started", "githubButton": "GitHub"},
   "models": {"title": "Supported Model Providers", "subtitle": "Support for Text Gen, Vision, STT, TTS, Embedding and more"},
   "plugins": {"title": "Rich Plugin Ecosystem", "subtitle": "Extend bots easily for various scenarios", "more": "More plugins"},
   "community": {"title": "Thriving Community", "subtitle": "Small sparks can start a prairie fire.", "contributorsTitle": "Contributors", "contributorsNote": "Thanks to every open-source contributor.", "stars": "GitHub Stars", "forks": "GitHub Forks", "contributors": "Contributors", "plugins": "Plugins"},

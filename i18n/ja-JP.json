@@ -1,7 +1,6 @@
 {
   "nav": {"quickStart": "クイックスタート", "plugin": "プラグイン", "github": "GitHub"},
-  "hero": {"slogan": "マルチプラットフォーム LLM ボット基盤", "subSlogan": "クロスプラットフォームなAIチャットボットを構築・展開・管理", "startButton": "はじめる", "githubButton": "GitHub"},
-  "platforms": {"title": "マルチプラットフォーム連携", "current": "現在"},
+  "hero": {"slogan": "マルチプラットフォーム LLM ボット基盤", "subSlogan": "マルチプラットフォーム LLM ボット基盤", "startButton": "はじめる", "githubButton": "GitHub"},
   "models": {"title": "対応モデルプロバイダー", "subtitle": "テキスト生成、画像理解、STT、TTS、Embedding などに対応"},
   "plugins": {"title": "豊富なプラグインエコシステム", "subtitle": "様々なシナリオに簡単拡張", "more": "さらに見る"},
   "community": {"title": "活発なコミュニティ", "subtitle": "小さな火花も野火となる。", "contributorsTitle": "貢献者", "contributorsNote": "すべてのOSS貢献者に感謝します。", "stars": "GitHub Stars", "forks": "GitHub Forks", "contributors": "貢献者", "plugins": "プラグイン"},
