@@ -36,6 +36,8 @@ export interface LogoLoopProps {
   ariaLabel?: string;
   className?: string;
   style?: React.CSSProperties;
+  // Extra class applied to each <img> logo element for per-usage styling
+  imgClassName?: string;
 }
 
 const ANIMATION_CONFIG = {
@@ -201,7 +203,8 @@ export const LogoLoop = React.memo<LogoLoopProps>(
     scaleOnHover = false,
     ariaLabel = 'Partner logos',
     className,
-    style
+    style,
+    imgClassName
   }) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const trackRef = useRef<HTMLDivElement>(null);
@@ -295,7 +298,8 @@ export const LogoLoop = React.memo<LogoLoopProps>(
               '[image-rendering:-webkit-optimize-contrast]',
               'motion-reduce:transition-none',
               scaleOnHover &&
-                'transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] group-hover/item:scale-120'
+                'transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] group-hover/item:scale-120',
+              imgClassName
             )}
             src={item.src}
             srcSet={item.srcSet}
@@ -348,7 +352,7 @@ export const LogoLoop = React.memo<LogoLoopProps>(
           </li>
         );
       },
-      [scaleOnHover]
+      [scaleOnHover, imgClassName]
     );
 
     const logoLists = useMemo(

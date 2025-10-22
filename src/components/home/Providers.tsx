@@ -47,6 +47,7 @@ export default function Providers() {
               direction="left"
               logoHeight={56}
               gap={48}
+              imgClassName="logo-mono"
               pauseOnHover
               scaleOnHover
               fadeOut
@@ -60,6 +61,7 @@ export default function Providers() {
               direction="right"
               logoHeight={56}
               gap={44}
+              imgClassName="logo-mono"
               pauseOnHover
               scaleOnHover
               fadeOut
@@ -73,6 +75,7 @@ export default function Providers() {
               direction="left"
               logoHeight={56}
               gap={52}
+              imgClassName="logo-mono"
               pauseOnHover
               scaleOnHover
               fadeOut

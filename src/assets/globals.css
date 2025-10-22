@@ -286,3 +286,16 @@ a, button, input, textarea {
   to   { opacity: 1; transform: scale(1) translateY(0); }
 }
 .animate-dropdown { animation: dropdown-in .16s ease-out; }
+
+/* =============================
+   Monochrome logo utility
+   - Light: black logos
+   - Dark: white logos
+   ============================= */
+.logo-mono {
+  filter: grayscale(1) brightness(0) contrast(2);
+  transition: filter .2s ease;
+}
+html.dark .logo-mono, :root[data-theme="dark"] .logo-mono {
+  filter: grayscale(1) brightness(0) invert(1) contrast(2);
+}
