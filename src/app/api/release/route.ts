@@ -1,3 +1,4 @@
+export const revalidate = 3600;
 type GitHubAsset = {
   name: string;
   browser_download_url: string;

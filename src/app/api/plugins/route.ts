@@ -1,3 +1,4 @@
+export const revalidate = 3600;
 import data from "../../../../data/checkpoint.json";
 
 type PluginItem = { desc: string; stars?: number; repo?: string };
