@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import "../assets/globals.css";
+import { Analytics } from "@vercel/analytics/next"
 import I18nProvider from "../components/i18n/I18nProvider";
+import "../assets/globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
@@ -35,6 +36,7 @@ export default function RootLayout({
             {children}
           </div>
         </I18nProvider>
+        <Analytics />
         </div>
       </body>
     </html>
