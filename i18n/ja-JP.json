@@ -1,5 +1,5 @@
 {
-  "nav": {"quickStart": "クイックスタート", "plugin": "プラグイン", "github": "GitHub"},
+  "nav": {"quickStart": "クイックスタート", "plugin": "プラグイン", "blog": "ブログ", "roadmap": "ロードマップ", "more": "その他", "github": "GitHub"},
   "hero": {"slogan": "マルチプラットフォーム LLM ボット基盤", "subSlogan": "マルチプラットフォーム LLM ボット基盤", "startButton": "はじめる", "githubButton": "GitHub"},
   "models": {"title": "対応モデルプロバイダー", "subtitle": "テキスト生成、画像理解、STT、TTS、Embedding などに対応"},
   "plugins": {"title": "豊富なプラグインエコシステム", "subtitle": "様々なシナリオに簡単拡張", "more": "さらに見る", "view": "表示", "moreCta": "さらに見る"},

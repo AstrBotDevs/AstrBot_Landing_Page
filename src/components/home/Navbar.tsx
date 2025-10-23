@@ -11,7 +11,9 @@ export default function Navbar() {
   const { t, setLocale, locale } = useI18n();
   const navRef = useRef<HTMLElement | null>(null);
   const langRef = useRef<HTMLLIElement | null>(null);
+  const moreRef = useRef<HTMLLIElement | null>(null);
   const [openLangMobile, setOpenLangMobile] = useState(false);
+  const [openMore, setOpenMore] = useState(false);
   const [isDark, setIsDark] = useState(false);
   const [releaseVersion, setReleaseVersion] = useState<string | null>(null);
 
@@ -56,10 +58,11 @@ export default function Navbar() {
       const target = e.target as Node;
       if (openLang && langRef.current && !langRef.current.contains(target)) setOpenLang(false);
       if (openMenu && navRef.current && !navRef.current.contains(target)) setOpenMenu(false);
+      if (openMore && moreRef.current && !moreRef.current.contains(target)) setOpenMore(false);
     };
     document.addEventListener("mousedown", onDocClick);
     return () => document.removeEventListener("mousedown", onDocClick);
-  }, [openLang, openMenu]);
+  }, [openLang, openMenu, openMore]);
 
   const langLabel = locale === "en-US" ? "English" : locale === "ja-JP" ? "日本語" : "简体中文";
 
@@ -81,14 +84,17 @@ export default function Navbar() {
               {t("nav.quickStart")}
             </a>
           </li>
+          
           <li>
-            <a href="https://plugins.astrbot.app/" className="inline-flex items-center h-9 px-3 rounded-full border border-ui opacity-80 hover:opacity-100 transition duration-200">
-              {t("nav.plugin")}
-            </a>
-          </li>
-          <li>
-            <a href="https://github.com/AstrBotDevs/AstrBot" className="inline-flex items-center h-9 px-3 rounded-full border border-ui opacity-80 hover:opacity-100 transition duration-200">
-              {t("nav.github")}
+            <a
+              href="https://github.com/AstrBotDevs/AstrBot"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-ui opacity-80 hover:opacity-100 transition duration-200"
+              aria-label={t("nav.github")}
+              title="GitHub"
+            >
+              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.38.6.1.82-.26.82-.58 0-.29-.01-1.05-.02-2.06-3.34.73-4.04-1.61-4.04-1.61-.55-1.4-1.34-1.77-1.34-1.77-1.1-.77.08-.76.08-.76 1.22.09 1.86 1.26 1.86 1.26 1.08 1.87 2.83 1.33 3.52 1.02.11-.8.42-1.33.76-1.64-2.67-.31-5.47-1.37-5.47-6.08 0-1.34.47-2.44 1.24-3.3-.12-.31-.54-1.55.12-3.22 0 0 1.01-.33 3.31 1.26.96-.27 1.98-.4 3-.41 1.02 0 2.04.14 3 .41 2.3-1.59 3.31-1.26 3.31-1.26.66 1.67.24 2.91.12 3.22.77.86 1.24 1.96 1.24 3.3 0 4.72-2.8 5.77-5.47 6.08.43.38.81 1.1.81 2.22 0 1.61-.02 2.91-.02 3.31 0 .32.22.69.82.57C20.56 21.79 24 17.3 24 12 24 5.37 18.63 0 12 0Z" />
+              </svg>
             </a>
           </li>
           <li>
@@ -117,6 +123,29 @@ export default function Navbar() {
               </ul>
             )}
           </li>
+          <li ref={moreRef} className="relative">
+            <button
+              aria-expanded={openMore}
+              onClick={() => setOpenMore((v) => !v)}
+              className="inline-flex items-center gap-2 h-9 px-3 rounded-full border border-ui opacity-80 hover:opacity-100 transition-colors duration-200 text-[var(--foreground)]"
+            >
+              <span>{t("nav.more")}</span>
+              <ChevronDownIcon aria-hidden className={`w-4 h-4 transition-transform duration-200 ${openMore ? 'rotate-180' : ''}`} />
+            </button>
+            {openMore && (
+              <ul className="absolute right-0 mt-5 w-26 rounded-lg border border-ui bg-background shadow-lg origin-top-right animate-dropdown whitespace-nowrap">
+                <li>
+                  <a href="https://plugins.astrbot.app/" className="block px-3 py-2 hover:bg-black/[.04] dark:hover:bg-white/[.06]">{t("nav.plugin")}</a>
+                </li>
+                <li>
+                  <a href="https://blog.astrbot.app" className="block px-3 py-2 hover:bg-black/[.04] dark:hover:bg-white/[.06]">{t("nav.blog")}</a>
+                </li>
+                <li>
+                  <a href="https://astrbot.featurebase.app/roadmap" className="block px-3 py-2 hover:bg-black/[.04] dark:hover:bg-white/[.06]">{t("nav.roadmap")}</a>
+                </li>
+              </ul>
+            )}
+          </li>
         </ul>
         <button
           className="md:hidden inline-flex items-center justify-center h-9 w-9 rounded-lg border border-ui bg-background/80 backdrop-blur transition active:scale-[0.98]"
@@ -137,7 +166,20 @@ export default function Navbar() {
               <ul className="flex flex-col gap-2 text-sm">
                 <li><a href="https://docs.astrbot.app" className="inline-flex items-center h-10 px-3 rounded-full border border-ui opacity-80 hover:opacity-100 transition">{t("nav.quickStart")}</a></li>
                 <li><a href="https://plugins.astrbot.app/" className="inline-flex items-center h-10 px-3 rounded-full border border-ui opacity-80 hover:opacity-100 transition">{t("nav.plugin")}</a></li>
-                <li><a href="https://github.com/AstrBotDevs/AstrBot" className="inline-flex items-center h-10 px-3 rounded-full border border-ui opacity-80 hover:opacity-100 transition">{t("nav.github")}</a></li>
+                <li><a href="https://blog.astrbot.app" className="inline-flex items-center h-10 px-3 rounded-full border border-ui opacity-80 hover:opacity-100 transition">{t("nav.blog")}</a></li>
+                <li><a href="https://astrbot.featurebase.app/roadmap" className="inline-flex items-center h-10 px-3 rounded-full border border-ui opacity-80 hover:opacity-100 transition">{t("nav.roadmap")}</a></li>
+                <li>
+                  <a
+                    href="https://github.com/AstrBotDevs/AstrBot"
+                    className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-ui opacity-80 hover:opacity-100 transition"
+                    aria-label={t("nav.github")}
+                    title="GitHub"
+                  >
+                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                      <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.38.6.1.82-.26.82-.58 0-.29-.01-1.05-.02-2.06-3.34.73-4.04-1.61-4.04-1.61-.55-1.4-1.34-1.77-1.34-1.77-1.1-.77.08-.76.08-.76 1.22.09 1.86 1.26 1.86 1.26 1.08 1.87 2.83 1.33 3.52 1.02.11-.8.42-1.33.76-1.64-2.67-.31-5.47-1.37-5.47-6.08 0-1.34.47-2.44 1.24-3.3-.12-.31-.54-1.55.12-3.22 0 0 1.01-.33 3.31 1.26.96-.27 1.98-.4 3-.41 1.02 0 2.04.14 3 .41 2.3-1.59 3.31-1.26 3.31-1.26.66 1.67.24 2.91.12 3.22.77.86 1.24 1.96 1.24 3.3 0 4.72-2.8 5.77-5.47 6.08.43.38.81 1.1.81 2.22 0 1.61-.02 2.91-.02 3.31 0 .32.22.69.82.57C20.56 21.79 24 17.3 24 12 24 5.37 18.63 0 12 0Z" />
+                    </svg>
+                  </a>
+                </li>
               </ul>
               <div className="mt-3 pt-3 border-t border-ui">
                 <div className="flex items-center gap-2 flex-wrap">

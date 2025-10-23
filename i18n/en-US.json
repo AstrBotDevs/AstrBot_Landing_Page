@@ -1,5 +1,5 @@
 {
-  "nav": {"quickStart": "Quick Start", "plugin": "Plugins", "github": "GitHub"},
+  "nav": {"quickStart": "Quick Start", "plugin": "Plugins", "blog": "Blog", "roadmap": "Roadmap", "more": "More", "github": "GitHub"},
   "hero": {"slogan": "Multi-platform LLM Bot Infrastructure", "subSlogan": "Multi-platform LLM Bot Infrastructure", "startButton": "Get Started", "githubButton": "GitHub"},
   "models": {"title": "Supported Model Providers", "subtitle": "Support for Text Gen, Vision, STT, TTS, Embedding and more"},
   "plugins": {"title": "Rich Plugin Ecosystem", "subtitle": "Extend bots easily for various scenarios", "more": "More plugins", "view": "View", "moreCta": "More plugins"},
