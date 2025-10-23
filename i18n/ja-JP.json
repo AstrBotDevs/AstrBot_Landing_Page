@@ -1,13 +1,15 @@
 {
-  "nav": {"quickStart": "クイックスタート", "plugin": "プラグイン", "github": "GitHub"},
+  "nav": {"quickStart": "クイックスタート", "plugin": "プラグイン", "blog": "ブログ", "roadmap": "ロードマップ", "more": "その他", "github": "GitHub"},
   "hero": {"slogan": "マルチプラットフォーム LLM ボット基盤", "subSlogan": "マルチプラットフォーム LLM ボット基盤", "startButton": "はじめる", "githubButton": "GitHub"},
   "models": {"title": "対応モデルプロバイダー", "subtitle": "テキスト生成、画像理解、STT、TTS、Embedding などに対応"},
-  "plugins": {"title": "豊富なプラグインエコシステム", "subtitle": "様々なシナリオに簡単拡張", "more": "さらに見る"},
+  "plugins": {"title": "豊富なプラグインエコシステム", "subtitle": "様々なシナリオに簡単拡張", "more": "さらに見る", "view": "表示", "moreCta": "さらに見る"},
   "community": {"title": "活発なコミュニティ", "subtitle": "小さな火花も野火となる。", "contributorsTitle": "貢献者", "contributorsNote": "すべてのOSS貢献者に感謝します。", "stars": "GitHub Stars", "forks": "GitHub Forks", "contributors": "貢献者", "plugins": "プラグイン"},
   "more": {"title": "その他", "kbLabel": "ナレッジベース", "kbDesc": "AIナレッジベース内蔵、セットアップ不要", "codeLabel": "コードランナー", "codeDesc": "Dockerベースのサンドボックス実行", "searchLabel": "ウェブ検索", "searchDesc": "LLMをオンラインに", "memoryLabel": "長期記憶", "memoryDesc": "実験的な長期記憶（近日）"},
   "carousel": {"prev": "前へ", "next": "次へ"},
   "platforms": {"title": "マルチプラットフォーム連携", "current": "現在", "vocechatSupport": "AstrBot は VoceChat に対応しています。"},
   "getStarted": {"title": "はじめる 🥳", "doc": "ドキュメント", "subtitle": "Docker・pip・Windows インストーラーで素早く導入。"},
+  "backToTop": "ページトップへ",
+  "business": {"title": "事業・ビジネス協力", "subtitle": "ビジネスに関するお問い合わせはお気軽にご連絡ください", "contact": "community@astrbot.app"},
   "footer": {
     "resources": "リソース",
     "community": "コミュニティ",
