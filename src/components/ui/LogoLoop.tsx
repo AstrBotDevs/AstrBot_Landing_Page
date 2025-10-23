@@ -213,6 +213,7 @@ export const LogoLoop = React.memo<LogoLoopProps>(
     const [seqWidth, setSeqWidth] = useState<number>(0);
     const [copyCount, setCopyCount] = useState<number>(ANIMATION_CONFIG.MIN_COPIES);
     const [isHovered, setIsHovered] = useState<boolean>(false);
+    const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
     const targetVelocity = useMemo(() => {
       const magnitude = Math.abs(speed);
@@ -234,7 +235,12 @@ export const LogoLoop = React.memo<LogoLoopProps>(
 
   useResizeObserver(updateDimensions, containerRef, seqRef);
 
-  useImageLoader(seqRef, updateDimensions);
+  const handleImagesReady = useCallback(() => {
+    updateDimensions();
+    setIsLoaded(true);
+  }, [updateDimensions]);
+
+  useImageLoader(seqRef, handleImagesReady);
 
     useAnimationLoop(trackRef, targetVelocity, seqWidth, isHovered, pauseOnHover);
 
@@ -254,6 +260,8 @@ export const LogoLoop = React.memo<LogoLoopProps>(
           'relative overflow-x-hidden group',
           '[--logoloop-gap:32px]',
           '[--logoloop-logoHeight:28px]',
+          'transition-opacity duration-300',
+          isLoaded ? 'opacity-100' : 'opacity-0',
           // Theme-agnostic fade via mask-image on the container edges
           fadeOut &&
             '[@supports(mask-image:linear-gradient(#000,#000))]:[mask-image:linear-gradient(to_right,transparent_0%,#000_10%,#000_90%,transparent_100%)]',
@@ -262,7 +270,7 @@ export const LogoLoop = React.memo<LogoLoopProps>(
           scaleOnHover && 'py-[calc(var(--logoloop-logoHeight)*0.1)]',
           className
         ),
-      [fadeOut, scaleOnHover, className]
+      [fadeOut, scaleOnHover, className, isLoaded]
     );
 
     const handleMouseEnter = useCallback(() => {
