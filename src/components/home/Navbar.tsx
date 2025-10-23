@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { useI18n } from "../i18n/I18nProvider";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
+import { DocumentTextIcon, MapIcon, PuzzlePieceIcon, GlobeAmericasIcon, GlobeAsiaAustraliaIcon } from "@heroicons/react/24/outline";
 
 export default function Navbar() {
   const [openLang, setOpenLang] = useState(false);
@@ -80,7 +81,7 @@ export default function Navbar() {
         </div>
         <ul className="hidden md:flex items-center gap-3 text-sm">
           <li>
-            <a href="https://docs.astrbot.app" className="inline-flex items-center h-9 px-3 rounded-full border border-ui opacity-80 hover:opacity-100 transition duration-200">
+            <a href="https://docs.astrbot.app/what-is-astrbot.html" className="inline-flex items-center h-9 px-3 rounded-full border border-ui opacity-80 hover:opacity-100 transition duration-200">
               {t("nav.quickStart")}
             </a>
           </li>
@@ -117,9 +118,24 @@ export default function Navbar() {
             </button>
             {openLang && (
               <ul className="absolute right-0 mt-5 w-28 rounded-lg border border-ui bg-background shadow-lg origin-top-right animate-dropdown">
-                <li className="px-3 py-2 hover:bg-black/[.04] dark:hover:bg-white/[.06] cursor-pointer" onClick={() => { setLocale("zh-CN"); setOpenLang(false); }}>简体中文</li>
-                <li className="px-3 py-2 hover:bg-black/[.04] dark:hover:bg-white/[.06] cursor-pointer" onClick={() => { setLocale("en-US"); setOpenLang(false); }}>English</li>
-                <li className="px-3 py-2 hover:bg-black/[.04] dark:hover:bg-white/[.06] cursor-pointer" onClick={() => { setLocale("ja-JP"); setOpenLang(false); }}>日本語</li>
+                <li className="px-3 py-2 hover:bg-black/[.04] dark:hover:bg-white/[.06]">
+                  <button onClick={() => { setLocale("zh-CN"); setOpenLang(false); }} className="flex items-center gap-2 w-full text-left">
+                    <GlobeAsiaAustraliaIcon className="w-4 h-4 opacity-80" aria-hidden />
+                    <span>简体中文</span>
+                  </button>
+                </li>
+                <li className="px-3 py-2 hover:bg-black/[.04] dark:hover:bg-white/[.06]">
+                  <button onClick={() => { setLocale("en-US"); setOpenLang(false); }} className="flex items-center gap-2 w-full text-left">
+                    <GlobeAmericasIcon className="w-4 h-4 opacity-80" aria-hidden />
+                    <span>English</span>
+                  </button>
+                </li>
+                <li className="px-3 py-2 hover:bg-black/[.04] dark:hover:bg-white/[.06]">
+                  <button onClick={() => { setLocale("ja-JP"); setOpenLang(false); }} className="flex items-center gap-2 w-full text-left">
+                    <GlobeAsiaAustraliaIcon className="w-4 h-4 opacity-80" aria-hidden />
+                    <span>日本語</span>
+                  </button>
+                </li>
               </ul>
             )}
           </li>
@@ -135,13 +151,22 @@ export default function Navbar() {
             {openMore && (
               <ul className="absolute right-0 mt-5 w-26 rounded-lg border border-ui bg-background shadow-lg origin-top-right animate-dropdown whitespace-nowrap">
                 <li>
-                  <a href="https://plugins.astrbot.app/" className="block px-3 py-2 hover:bg-black/[.04] dark:hover:bg-white/[.06]">{t("nav.plugin")}</a>
+                  <a href="https://plugins.astrbot.app/" className="flex items-center gap-2 px-3 py-2 hover:bg-black/[.04] dark:hover:bg-white/[.06]">
+                    <PuzzlePieceIcon className="w-4 h-4 opacity-80" aria-hidden />
+                    <span>{t("nav.plugin")}</span>
+                  </a>
                 </li>
                 <li>
-                  <a href="https://blog.astrbot.app" className="block px-3 py-2 hover:bg-black/[.04] dark:hover:bg-white/[.06]">{t("nav.blog")}</a>
+                  <a href="https://blog.astrbot.app" className="flex items-center gap-2 px-3 py-2 hover:bg-black/[.04] dark:hover:bg-white/[.06]">
+                    <DocumentTextIcon className="w-4 h-4 opacity-80" aria-hidden />
+                    <span>{t("nav.blog")}</span>
+                  </a>
                 </li>
                 <li>
-                  <a href="https://astrbot.featurebase.app/roadmap" className="block px-3 py-2 hover:bg-black/[.04] dark:hover:bg-white/[.06]">{t("nav.roadmap")}</a>
+                  <a href="https://astrbot.featurebase.app/roadmap" className="flex items-center gap-2 px-3 py-2 hover:bg-black/[.04] dark:hover:bg-white/[.06]">
+                    <MapIcon className="w-4 h-4 opacity-80" aria-hidden />
+                    <span>{t("nav.roadmap")}</span>
+                  </a>
                 </li>
               </ul>
             )}
@@ -164,10 +189,25 @@ export default function Navbar() {
           <div className="mx-auto max-w-6xl px-4 sm:px-6 pb-4 mt-2">
             <div className="rounded-2xl border border-ui bg-background/90 backdrop-blur shadow-lg p-4 animate-dropdown origin-top">
               <ul className="flex flex-col gap-2 text-sm">
-                <li><a href="https://docs.astrbot.app" className="inline-flex items-center h-10 px-3 rounded-full border border-ui opacity-80 hover:opacity-100 transition">{t("nav.quickStart")}</a></li>
-                <li><a href="https://plugins.astrbot.app/" className="inline-flex items-center h-10 px-3 rounded-full border border-ui opacity-80 hover:opacity-100 transition">{t("nav.plugin")}</a></li>
-                <li><a href="https://blog.astrbot.app" className="inline-flex items-center h-10 px-3 rounded-full border border-ui opacity-80 hover:opacity-100 transition">{t("nav.blog")}</a></li>
-                <li><a href="https://astrbot.featurebase.app/roadmap" className="inline-flex items-center h-10 px-3 rounded-full border border-ui opacity-80 hover:opacity-100 transition">{t("nav.roadmap")}</a></li>
+                <li><a href="https://docs.astrbot.app/what-is-astrbot.html" className="inline-flex items-center h-10 px-3 rounded-full border border-ui opacity-80 hover:opacity-100 transition">{t("nav.quickStart")}</a></li>
+                <li>
+                  <a href="https://plugins.astrbot.app/" className="inline-flex items-center gap-2 h-10 px-3 rounded-full border border-ui opacity-80 hover:opacity-100 transition">
+                    <PuzzlePieceIcon className="w-4 h-4" aria-hidden />
+                    <span>{t("nav.plugin")}</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="https://blog.astrbot.app" className="inline-flex items-center gap-2 h-10 px-3 rounded-full border border-ui opacity-80 hover:opacity-100 transition">
+                    <DocumentTextIcon className="w-4 h-4" aria-hidden />
+                    <span>{t("nav.blog")}</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="https://astrbot.featurebase.app/roadmap" className="inline-flex items-center gap-2 h-10 px-3 rounded-full border border-ui opacity-80 hover:opacity-100 transition">
+                    <MapIcon className="w-4 h-4" aria-hidden />
+                    <span>{t("nav.roadmap")}</span>
+                  </a>
+                </li>
                 <li>
                   <a
                     href="https://github.com/AstrBotDevs/AstrBot"
@@ -208,9 +248,18 @@ export default function Navbar() {
                   </button>
                   {openLangMobile && (
                     <div className="flex items-center gap-2 flex-wrap">
-                      <button onClick={() => { setLocale('zh-CN'); setOpenMenu(false); }} className={`inline-flex items-center h-9 px-3 rounded-full border border-ui text-xs transition duration-200 ${locale === 'zh-CN' ? 'bg-black/[.06] dark:bg-white/[.08]' : 'opacity-80 hover:opacity-100'}`}>简体中文</button>
-                      <button onClick={() => { setLocale('en-US'); setOpenMenu(false); }} className={`inline-flex items-center h-9 px-3 rounded-full border border-ui text-xs transition duration-200 ${locale === 'en-US' ? 'bg-black/[.06] dark:bg-white/[.08]' : 'opacity-80 hover:opacity-100'}`}>English</button>
-                      <button onClick={() => { setLocale('ja-JP'); setOpenMenu(false); }} className={`inline-flex items-center h-9 px-3 rounded-full border border-ui text-xs transition duration-200 ${locale === 'ja-JP' ? 'bg-black/[.06] dark:bg-white/[.08]' : 'opacity-80 hover:opacity-100'}`}>日本語</button>
+                      <button onClick={() => { setLocale('zh-CN'); setOpenMenu(false); }} className={`inline-flex items-center gap-2 h-9 px-3 rounded-full border border-ui text-xs transition duration-200 ${locale === 'zh-CN' ? 'bg-black/[.06] dark:bg-white/[.08]' : 'opacity-80 hover:opacity-100'}`}>
+                        <GlobeAsiaAustraliaIcon className="w-4 h-4" aria-hidden />
+                        <span>简体中文</span>
+                      </button>
+                      <button onClick={() => { setLocale('en-US'); setOpenMenu(false); }} className={`inline-flex items-center gap-2 h-9 px-3 rounded-full border border-ui text-xs transition duration-200 ${locale === 'en-US' ? 'bg-black/[.06] dark:bg-white/[.08]' : 'opacity-80 hover:opacity-100'}`}>
+                        <GlobeAmericasIcon className="w-4 h-4" aria-hidden />
+                        <span>English</span>
+                      </button>
+                      <button onClick={() => { setLocale('ja-JP'); setOpenMenu(false); }} className={`inline-flex items-center gap-2 h-9 px-3 rounded-full border border-ui text-xs transition duration-200 ${locale === 'ja-JP' ? 'bg-black/[.06] dark:bg-white/[.08]' : 'opacity-80 hover:opacity-100'}`}>
+                        <GlobeAsiaAustraliaIcon className="w-4 h-4" aria-hidden />
+                        <span>日本語</span>
+                      </button>
                     </div>
                   )}
                 </div>
