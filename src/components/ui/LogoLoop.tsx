@@ -38,6 +38,8 @@ export interface LogoLoopProps {
   style?: React.CSSProperties;
   // Extra class applied to each <img> logo element for per-usage styling
   imgClassName?: string;
+  // Optional reveal delay (ms) for fading the track, useful to stagger multiple rows
+  revealDelay?: number;
 }
 
 const ANIMATION_CONFIG = {
@@ -204,16 +206,17 @@ export const LogoLoop = React.memo<LogoLoopProps>(
     ariaLabel = 'Partner logos',
     className,
     style,
-    imgClassName
+    imgClassName,
+    revealDelay = 0
   }) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const trackRef = useRef<HTMLDivElement>(null);
     const seqRef = useRef<HTMLUListElement>(null);
 
-    const [seqWidth, setSeqWidth] = useState<number>(0);
-    const [copyCount, setCopyCount] = useState<number>(ANIMATION_CONFIG.MIN_COPIES);
-    const [isHovered, setIsHovered] = useState<boolean>(false);
-    const [isLoaded, setIsLoaded] = useState<boolean>(false);
+  const [seqWidth, setSeqWidth] = useState<number>(0);
+  const [copyCount, setCopyCount] = useState<number>(ANIMATION_CONFIG.MIN_COPIES);
+  const [isHovered, setIsHovered] = useState<boolean>(false);
+  const [imagesReady, setImagesReady] = useState<boolean>(false);
 
     const targetVelocity = useMemo(() => {
       const magnitude = Math.abs(speed);
@@ -237,10 +240,17 @@ export const LogoLoop = React.memo<LogoLoopProps>(
 
   const handleImagesReady = useCallback(() => {
     updateDimensions();
-    setIsLoaded(true);
+    setImagesReady(true);
   }, [updateDimensions]);
 
   useImageLoader(seqRef, handleImagesReady);
+
+  // Safety: ensure we don't stay hidden forever if images neither load nor error
+  useEffect(() => {
+    if (imagesReady) return;
+    const id = window.setTimeout(() => setImagesReady(true), 2500);
+    return () => window.clearTimeout(id);
+  }, [imagesReady]);
 
     useAnimationLoop(trackRef, targetVelocity, seqWidth, isHovered, pauseOnHover);
 
@@ -260,8 +270,6 @@ export const LogoLoop = React.memo<LogoLoopProps>(
           'relative overflow-x-hidden group',
           '[--logoloop-gap:32px]',
           '[--logoloop-logoHeight:28px]',
-          'transition-opacity duration-300',
-          isLoaded ? 'opacity-100' : 'opacity-0',
           // Theme-agnostic fade via mask-image on the container edges
           fadeOut &&
             '[@supports(mask-image:linear-gradient(#000,#000))]:[mask-image:linear-gradient(to_right,transparent_0%,#000_10%,#000_90%,transparent_100%)]',
@@ -270,7 +278,7 @@ export const LogoLoop = React.memo<LogoLoopProps>(
           scaleOnHover && 'py-[calc(var(--logoloop-logoHeight)*0.1)]',
           className
         ),
-      [fadeOut, scaleOnHover, className, isLoaded]
+      [fadeOut, scaleOnHover, className]
     );
 
     const handleMouseEnter = useCallback(() => {
@@ -382,6 +390,8 @@ export const LogoLoop = React.memo<LogoLoopProps>(
     const containerStyle = useMemo(
       (): React.CSSProperties => ({
         width: toCssLength(width) ?? '100%',
+        // Reserve height to avoid layout shift before images are ready
+        minHeight: `var(--logoloop-logoHeight)`,
         ...cssVariables,
         ...style
       }),
@@ -398,12 +408,22 @@ export const LogoLoop = React.memo<LogoLoopProps>(
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
+        {/* Actual animated track; fade in when images are ready */}
         <div
-          className={cx('flex w-max will-change-transform select-none', 'motion-reduce:transform-none')}
+          className={cx('flex w-max will-change-transform select-none', 'motion-reduce:transform-none', 'transition-opacity duration-300', imagesReady ? 'opacity-100' : 'opacity-0')}
+          style={imagesReady ? ({ transitionDelay: `${Math.max(0, revealDelay)}ms` } as React.CSSProperties) : undefined}
           ref={trackRef}
         >
           {logoLists}
         </div>
+
+        {/* Lightweight skeleton placeholder to prevent visual jump */}
+        {!imagesReady && (
+          <div
+            aria-hidden
+            className={cx('h-[var(--logoloop-logoHeight)] w-full rounded-md', 'bg-black/[.06] dark:bg-white/[.08]', 'animate-pulse')}
+          />
+        )}
       </div>
     );
   }
