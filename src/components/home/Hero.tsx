@@ -1,67 +1,38 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Reveal from "../Reveal";
 import TextType from "../ui/TextType";
 import { useI18n } from "../i18n/I18nProvider";
+import { useScrollY } from "../hooks/useScrollY";
 import { formatCompactNumber } from "../utils/number";
 import webui1 from "../../../public/webui-1.webp";
 
 export default function Hero() {
+  const scrollY = useScrollY();
   const { t } = useI18n();
-  const rootRef = useRef<HTMLElement | null>(null);
+  const parallax1 = { transform: `translateY(${scrollY * 0.08}px)` } as React.CSSProperties;
+  const parallax2 = { transform: `translateY(${scrollY * 0.06}px)` } as React.CSSProperties;
+  const parallax3 = { transform: `translateY(${scrollY * 0.04}px)` } as React.CSSProperties;
+  const parallax4 = { transform: `translateY(${scrollY * 0.02}px)` } as React.CSSProperties;
+  const parallaxImage = { transform: `translateY(${scrollY * -0.04}px)` } as React.CSSProperties;
+  const isAtTop = scrollY <= 10;
+  const tiltDeg = Math.max(0, 8 - scrollY * 0.08); // start ~8deg at top, ease to 0deg as you scroll
   const [heroStars, setHeroStars] = useState<number | null>(null);
-
-  useEffect(() => {
-    let rafId = 0;
-    const el = rootRef.current;
-    if (!el) return;
-
-    const frame = () => {
-      const sy = window.scrollY || window.pageYOffset || 0;
-      el.style.setProperty("--p1", `${sy * 0.08}px`);
-      el.style.setProperty("--p2", `${sy * 0.06}px`);
-      el.style.setProperty("--p3", `${sy * 0.04}px`);
-      el.style.setProperty("--p4", `${sy * 0.02}px`);
-      el.style.setProperty("--pi", `${sy * -0.04}px`);
-      const tilt = Math.max(0, 8 - sy * 0.08);
-      el.style.setProperty("--tilt", `${tilt}deg`);
-      rafId = requestAnimationFrame(frame);
-    };
-    rafId = requestAnimationFrame(frame);
-    return () => cancelAnimationFrame(rafId);
-  }, []);
-
   useEffect(() => {
     fetch("/api/plugins", { cache: "no-store" })
       .then((r) => r.json())
       .then((d) => setHeroStars(typeof d?.github?.stars === "number" ? d.github.stars : null))
       .catch(() => setHeroStars(null));
   }, []);
-
   return (
-    <section ref={rootRef} className="relative overflow-hidden min-h-[calc(100vh-64px)] flex flex-col items-start">
-  <div
-    className="absolute -z-10 left-1/2 -translate-x-1/2 top-[-200px] h-[480px] w-[480px] rounded-full bg-[#6aa1ff]/20 animate-orb-pulse"
-    style={{ animationDelay: "0s", boxShadow: "0 0 140px 80px rgba(106,161,255,0.28)", contain: "paint" }}
-  />
-  <div
-    className="absolute -z-10 top-[8%] left-[-120px] h-[280px] w-[280px] rounded-full bg-[#f0abfc]/30 animate-orb-pulse"
-    style={{ transform: "translateZ(0) translateY(var(--p1))", animationDelay: "1s", boxShadow: "0 0 120px 60px rgba(240,171,252,0.30)", contain: "paint" }}
-  />
-  <div
-    className="absolute -z-10 top-[18%] right-[-140px] h-[340px] w-[340px] rounded-full bg-[#a78bfa]/25 animate-orb-pulse"
-    style={{ transform: "translateZ(0) translateY(var(--p2))", animationDelay: "2.5s", boxShadow: "0 0 130px 70px rgba(167,139,250,0.25)", contain: "paint" }}
-  />
-  <div
-    className="absolute -z-10 bottom-[14%] left-[10%] h-[320px] w-[320px] rounded-full bg-[#22d3ee]/25 animate-orb-pulse"
-    style={{ transform: "translateZ(0) translateY(var(--p3))", animationDelay: "4s", boxShadow: "0 0 120px 60px rgba(34,211,238,0.25)", contain: "paint" }}
-  />
-  <div
-    className="absolute -z-10 bottom-[-60px] right-[22%] h-[260px] w-[260px] rounded-full bg-[#f59e0b]/20 animate-orb-pulse"
-    style={{ transform: "translateZ(0) translateY(var(--p4))", animationDelay: "5.5s", boxShadow: "0 0 110px 55px rgba(245,158,11,0.22)", contain: "paint" }}
-  />
+    <section className="relative overflow-hidden min-h-[calc(100vh-64px)] flex flex-col items-start">
+      <div className="absolute -z-10 left-1/2 -translate-x-1/2 top-[-200px] h-[480px] w-[480px] rounded-full bg-[#6aa1ff]/20 blur-3xl animate-orb-pulse" style={{ animationDelay: "0s" }} />
+      <div className="absolute -z-10 top-[8%] left-[-120px] h-[280px] w-[280px] rounded-full bg-[#f0abfc]/30 blur-3xl animate-orb-pulse" style={{...parallax1, animationDelay: "1s"}} />
+      <div className="absolute -z-10 top-[18%] right-[-140px] h-[340px] w-[340px] rounded-full bg-[#a78bfa]/25 blur-3xl animate-orb-pulse" style={{...parallax2, animationDelay: "2.5s"}} />
+      <div className="absolute -z-10 bottom-[14%] left-[10%] h-[320px] w-[320px] rounded-full bg-[#22d3ee]/25 blur-3xl animate-orb-pulse" style={{...parallax3, animationDelay: "4s"}} />
+      <div className="absolute -z-10 bottom-[-60px] right-[22%] h-[260px] w-[260px] rounded-full bg-[#f59e0b]/20 blur-3xl animate-orb-pulse" style={{...parallax4, animationDelay: "5.5s"}} />
       <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 pt-16 sm:pt-24 lg:pt-28 pb-10">
         <div className="flex flex-col items-center text-center gap-6">
             <h1 className="slogan text-5xl sm:text-5xl font-semibold tracking-tight brand-text">
@@ -100,20 +71,20 @@ export default function Hero() {
             </div>
         </div>
       </div>
-      <div className="absolute inset-x-0 bottom-0 z-10 flex justify-center" style={{ transform: "translateZ(0) translateY(var(--pi))" }}>
+      <div className="absolute inset-x-0 bottom-0 z-10 flex justify-center will-change-transform" style={parallaxImage}>
         <Reveal animation="fade" delay={300}>
           <div style={{ perspective: "1100px" }}>
             <Image
-              src={webui1}
+              src={isAtTop ? "/webui-1.webp" : webui1}
               alt="AstrBot WebUI界面"
               width={1200}
               height={800}
               sizes="(min-width: 1280px) 50vw, (min-width: 1024px) 60vw, 92vw"
-              placeholder="blur"
+              placeholder={isAtTop ? "empty" : "blur"}
               priority
               quality={70}
-              style={{ transform: "translateZ(0) rotateX(var(--tilt))", transformOrigin: "bottom center" }}
-              className="hidden sm:block h-auto w-auto max-w-[92vw] md:max-w-[60vw] xl:max-w-[50vw] max-h-[70vh] object-contain drop-shadow-xl rounded-2xl transition-transform duration-500 ease-out will-change-transform"
+              style={{ transform: `rotateX(${tiltDeg}deg)`, transformOrigin: "bottom center" }}
+              className="hidden sm:block h-auto w-auto max-w-[92vw] md:max-w-[60vw] xl:max-w-[50vw] max-h-[70vh] object-contain drop-shadow-xl rounded-2xl transition-transform duration-500 ease-out"
             />
           </div>
         </Reveal>
