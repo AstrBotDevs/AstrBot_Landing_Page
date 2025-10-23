@@ -8,6 +8,7 @@
   "carousel": {"prev": "上一张", "next": "下一张"},
   "platforms": {"title": "多消息平台接入", "current": "当前平台", "vocechatSupport": "AstrBot 支持接入 VoceChat。"},
   "getStarted": {"title": "开始使用 🥳", "doc": "查看文档", "subtitle": "支持 Docker、pip、Windows 一键安装器等方式快速部署。"},
+  "backToTop": "返回顶部",
   "business": {"title": "项目及商务合作", "subtitle": "如有商务合作需求，欢迎与我们联系", "contact": "community@astrbot.app"},
   "footer": {
     "resources": "资源",

@@ -8,6 +8,7 @@
   "carousel": {"prev": "前へ", "next": "次へ"},
   "platforms": {"title": "マルチプラットフォーム連携", "current": "現在", "vocechatSupport": "AstrBot は VoceChat に対応しています。"},
   "getStarted": {"title": "はじめる 🥳", "doc": "ドキュメント", "subtitle": "Docker・pip・Windows インストーラーで素早く導入。"},
+  "backToTop": "ページトップへ",
   "business": {"title": "事業・ビジネス協力", "subtitle": "ビジネスに関するお問い合わせはお気軽にご連絡ください", "contact": "community@astrbot.app"},
   "footer": {
     "resources": "リソース",

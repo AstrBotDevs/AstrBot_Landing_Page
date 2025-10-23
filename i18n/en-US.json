@@ -8,6 +8,7 @@
   "carousel": {"prev": "Previous", "next": "Next"},
   "platforms": {"title": "Multi-platform Integrations", "current": "Current", "vocechatSupport": "AstrBot supports VoceChat."},
   "getStarted": {"title": "Get Started 🥳", "doc": "Read Docs", "subtitle": "Deploy quickly via Docker, pip, or Windows installer."},
+  "backToTop": "Back to top",
   "business": {"title": "Business & Partnerships", "subtitle": "For business inquiries, please contact us", "contact": "community@astrbot.app"},
   "footer": {
     "resources": "Resources",

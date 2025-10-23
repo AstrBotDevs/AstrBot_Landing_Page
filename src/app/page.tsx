@@ -10,6 +10,7 @@ import Community from "../components/home/Community";
 import MoreThings from "../components/home/MoreThings";
 import GetStarted from "../components/home/GetStarted";
 import SiteFooter from "../components/home/SiteFooter";
+import BackToTop from "../components/ui/BackToTop";
 
 export default function Home() {
   return (
@@ -24,6 +25,7 @@ export default function Home() {
       <GetStarted />
       <Business />
       <SiteFooter />
+      <BackToTop />
     </div>
   );
 }
