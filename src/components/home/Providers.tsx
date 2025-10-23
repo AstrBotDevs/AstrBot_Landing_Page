@@ -155,6 +155,7 @@ export default function Providers() {
               logoHeight={72}
               gap={56}
               imgClassName="logo-mono"
+              revealDelay={0}
               pauseOnHover
               scaleOnHover
               fadeOut
@@ -169,6 +170,7 @@ export default function Providers() {
               logoHeight={72}
               gap={52}
               imgClassName="logo-mono"
+              revealDelay={150}
               pauseOnHover
               scaleOnHover
               fadeOut
@@ -183,6 +185,7 @@ export default function Providers() {
               logoHeight={72}
               gap={60}
               imgClassName="logo-mono"
+              revealDelay={300}
               pauseOnHover
               scaleOnHover
               fadeOut
@@ -197,6 +200,7 @@ export default function Providers() {
               logoHeight={72}
               gap={54}
               imgClassName="logo-mono"
+              revealDelay={450}
               pauseOnHover
               scaleOnHover
               fadeOut
