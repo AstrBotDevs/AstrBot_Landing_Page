@@ -15,7 +15,7 @@ export default function GetStarted() {
         </Reveal>
         <Reveal as="p" className="text-center mt-2 mb-8 text-sm opacity-80" delay={150}>{t("getStarted.subtitle")}</Reveal>
         <Reveal className="flex items-center justify-center" delay={300}>
-          <a href="https://docs.astrbot.app" target="_blank" className="inline-flex items-center justify-center h-11 px-5 rounded-full btn-brand text-sm font-medium hover:opacity-90 transition">{t("getStarted.doc")}</a>
+          <a href="https://docs.astrbot.app/what-is-astrbot.html" target="_blank" className="inline-flex items-center justify-center h-11 px-5 rounded-full btn-brand text-sm font-medium hover:opacity-90 transition">{t("getStarted.doc")}</a>
         </Reveal>
       </div>
     </section>

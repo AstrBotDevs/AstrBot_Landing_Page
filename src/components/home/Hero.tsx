@@ -45,7 +45,7 @@ export default function Hero() {
               />
             </h1>
             {/* Subtitle removed as requested */}
-            <Reveal className="trendshift-badge mt-6 flex justify-center gap-3" delay={300}>
+            <Reveal className="trendshift-badge mt-6 flex flex-wrap sm:flex-nowrap justify-center gap-3" delay={300}>
               <a href="https://trendshift.io/api/badge/repositories/12875">
                 <Image src="https://trendshift.io/api/badge/repositories/12875" alt="AstrBot | Trendshift" width={250} height={55} unoptimized priority loading="eager" fetchPriority="high" />
               </a>
@@ -55,7 +55,7 @@ export default function Hero() {
             </Reveal>
             <div className="hero-buttons mt-6 flex flex-row flex-nowrap items-center justify-center gap-2 sm:gap-3">
               <Reveal as="span" delay={400}>
-                <a href="https://docs.astrbot.app" className="inline-flex items-center justify-center h-12 sm:h-11 px-5 rounded-full btn-brand text-sm font-medium transition">{t("hero.startButton")}</a>
+                <a href="https://docs.astrbot.app/what-is-astrbot.html" className="inline-flex items-center justify-center h-12 sm:h-11 px-5 rounded-full btn-brand text-sm font-medium transition">{t("hero.startButton")}</a>
               </Reveal>
               <Reveal as="span" delay={500}>
                 <a href="https://github.com/AstrBotDevs/AstrBot" className="inline-flex items-center justify-center h-12 sm:h-11 px-5 rounded-full btn-outline-brand text-sm font-medium transition border" target="_blank">
