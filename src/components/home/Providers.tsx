@@ -3,50 +3,157 @@
 import Reveal from "../Reveal";
 import { useI18n } from "../i18n/I18nProvider";
 import LogoLoop from "../ui/LogoLoop";
+import type { LogoItem } from "../ui/LogoLoop";
 
 export default function Providers() {
   const { t } = useI18n();
-  type ProviderItem = { name: string; src: string; href?: string };
-  const items: ProviderItem[] = [
-    { name: "OpenAI", src: "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/openai.svg" },
-    { name: "xAI", src: "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/xai.svg" },
-    { name: "Anthropic", src: "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/anthropic.svg" },
-    { name: "Ollama", src: "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/ollama.svg" },
-    { name: "LM Studio", src: "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/lmstudio.svg" },
-    { name: "Gemini", src: "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/gemini-color.svg" },
-    { name: "DeepSeek", src: "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/deepseek.svg" },
-    { name: "智谱 AI", src: "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/zhipu.svg" },
-    { name: "Kimi", src: "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/kimi.svg" },
-    { name: "MiniMax", src: "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/minimax.svg" },
-    { name: "FishAudio", src: "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/fishaudio.svg" },
-    { name: "Azure", src: "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/azure.svg" },
-    { name: "302.AI", src: "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/ai302-color.svg", href: "https://302.ai/?ref=rr1M3l&snid=1757049012429930388_SbBUfEJs&x_collect_uid=d57a632ff7304a00880a3a0dfd293683" },
-    { name: "PPIO派欧云", src: "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/ppio.svg" },
-    { name: "硅基流动", src: "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/siliconcloud.svg" },
-    { name: "优云智算", src: "/show/ucloud_compshare.png", href: "https://www.compshare.cn/?ytag=GPU_YY-gh_astrbot&referral_code=FV7DcGowN4hB5UuXKgpE74" },
-    { name: "Dify", src: "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/dify-color.svg" },
-    { name: "阿里云百炼", src: "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/alibabacloud-color.svg" },
-    { name: "FastGPT", src: "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/fastgpt-color.svg" },
+  // 更新后的 Provider 列表与链接；其中 302.AI 与 优云智算保留彩色，不应用滤镜
+  const all: LogoItem[] = [
+    { src: "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/openai.svg", alt: "OpenAI", title: "OpenAI" },
+    {
+      node: (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          className="h-[var(--logoloop-logoHeight)] w-auto block object-contain [-webkit-user-drag:none] pointer-events-none [image-rendering:-webkit-optimize-contrast]"
+          src="https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/gemini-color.svg"
+          alt="Gemini"
+          title="Gemini"
+          loading="lazy"
+          decoding="async"
+          draggable={false}
+        />
+      ),
+      title: "Gemini",
+    },
+    { src: "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/anthropic.svg", alt: "Anthropic", title: "Anthropic" },
+    { src: "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/xai.svg", alt: "xAI", title: "xAI" },
+    { src: "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/kimi.svg", alt: "Kimi", title: "Kimi" },
+    { src: "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/deepseek.svg", alt: "DeepSeek", title: "DeepSeek" },
+    { src: "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/zhipu.svg", alt: "智谱 AI", title: "智谱 AI" },
+    { src: "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/minimax.svg", alt: "MiniMax", title: "MiniMax" },
+    { src: "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/ollama.svg", alt: "Ollama", title: "Ollama" },
+    { src: "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/lmstudio.svg", alt: "LM Studio", title: "LM Studio" },
+    {
+      node: (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          className="h-[var(--logoloop-logoHeight)] w-auto block object-contain [-webkit-user-drag:none] pointer-events-none [image-rendering:-webkit-optimize-contrast]"
+          src="/show/tokenpony.png"
+          alt="小马算力"
+          title="小马算力"
+          loading="lazy"
+          decoding="async"
+          draggable={false}
+        />
+      ),
+      href: "https://www.tokenpony.cn/3YPyf",
+      title: "小马算力",
+    },
+    // 优云智算（保留彩色、不要滤镜）
+    {
+      node: (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          className="h-[var(--logoloop-logoHeight)] w-auto block object-contain"
+          src="/show/ucloud_compshare.png"
+          alt="优云智算"
+          title="优云智算"
+          loading="lazy"
+          decoding="async"
+          draggable={false}
+        />
+      ),
+      href: "https://www.compshare.cn/?ytag=GPU_YY-gh_astrbot&referral_code=FV7DcGowN4hB5UuXKgpE74",
+      title: "优云智算",
+    },
+    {
+      node: (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          className="h-[var(--logoloop-logoHeight)] w-auto block object-contain"
+          src="https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/ai302-color.svg"
+          alt="302.AI"
+          title="302.AI"
+          loading="lazy"
+          decoding="async"
+          draggable={false}
+        />
+      ),
+      href: "https://share.302.ai/rr1M3l",
+      title: "302.AI",
+    },
+    { src: "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/ppio.svg", alt: "PPIO派欧云", title: "PPIO派欧云" },
+    { src: "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/siliconcloud.svg", alt: "硅基流动", title: "硅基流动" },
+    {
+      node: (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          className="h-[var(--logoloop-logoHeight)] w-auto block object-contain [-webkit-user-drag:none] pointer-events-none [image-rendering:-webkit-optimize-contrast]"
+          src="https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/dify-color.svg"
+          alt="Dify"
+          title="Dify"
+          loading="lazy"
+          decoding="async"
+          draggable={false}
+        />
+      ),
+      title: "Dify",
+    },
+    { src: "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/coze.svg", alt: "Coze", title: "Coze" },
+    {
+      node: (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          className="h-[var(--logoloop-logoHeight)] w-auto block object-contain [-webkit-user-drag:none] pointer-events-none [image-rendering:-webkit-optimize-contrast]"
+          src="https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/alibabacloud-color.svg"
+          alt="阿里云百炼"
+          title="阿里云百炼"
+          loading="lazy"
+          decoding="async"
+          draggable={false}
+        />
+      ),
+      title: "阿里云百炼",
+    },
+    {
+      node: (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          className="h-[var(--logoloop-logoHeight)] w-auto block object-contain [-webkit-user-drag:none] pointer-events-none [image-rendering:-webkit-optimize-contrast]"
+          src="https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/fastgpt-color.svg"
+          alt="FastGPT"
+          title="FastGPT"
+          loading="lazy"
+          decoding="async"
+          draggable={false}
+        />
+      ),
+      title: "FastGPT",
+    },
+    { src: "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/fishaudio.svg", alt: "FishAudio", title: "FishAudio" },
+    { src: "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/azure.svg", alt: "Azure", title: "Azure" },
   ];
-  // 将 provider 按轮询分成 3 组，避免每行内容完全一致
-  const groups: ProviderItem[][] = [[], [], []];
-  items.forEach((it, idx) => {
-    groups[idx % 3].push(it);
+  // 将 provider 按轮询分成 4 组，避免每行内容完全一致
+  const groups: LogoItem[][] = [[], [], [], []];
+  all.forEach((it, idx) => {
+    groups[idx % 4].push(it);
   });
-  const [group1, group2, group3] = groups.map((g) => g.map((it) => ({ src: it.src, alt: it.name, title: it.name, href: it.href })));
+  const [group1, group2, group3, group4] = groups;
   return (
     <section className="min-h-[calc(100vh-64px)] flex items-center py-12 sm:py-16">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <Reveal as="h2" className="text-center text-3xl sm:text-4xl font-semibold tracking-tight mb-6 sm:mb-8 gradient-title" delay={0}>{t("models.title")}</Reveal>
-        <Reveal as="p" className="text-center mt-2 text-sm opacity-80 mb-10 sm:mb-12" delay={150}>{t("models.subtitle")}</Reveal>
+      <div className="w-full">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <Reveal as="h2" className="text-center text-3xl sm:text-4xl font-semibold tracking-tight mb-6 sm:mb-8 gradient-title" delay={0}>{t("models.title")}</Reveal>
+          <Reveal as="p" className="text-center mt-2 text-sm opacity-80 mb-10 sm:mb-12" delay={150}>{t("models.subtitle")}</Reveal>
+        </div>
         <div className="mt-6 space-y-6 sm:space-y-8">
           <Reveal delay={100}>
             <LogoLoop
               logos={group1}
               speed={130}
               direction="left"
-              logoHeight={56}
-              gap={48}
+              logoHeight={72}
+              gap={56}
               imgClassName="logo-mono"
               pauseOnHover
               scaleOnHover
@@ -59,8 +166,8 @@ export default function Providers() {
               logos={group2}
               speed={110}
               direction="right"
-              logoHeight={56}
-              gap={44}
+              logoHeight={72}
+              gap={52}
               imgClassName="logo-mono"
               pauseOnHover
               scaleOnHover
@@ -73,13 +180,27 @@ export default function Providers() {
               logos={group3}
               speed={150}
               direction="left"
-              logoHeight={56}
-              gap={52}
+              logoHeight={72}
+              gap={60}
               imgClassName="logo-mono"
               pauseOnHover
               scaleOnHover
               fadeOut
               ariaLabel={`${t("models.title")} row 3`}
+            />
+          </Reveal>
+          <Reveal delay={550}>
+            <LogoLoop
+              logos={group4}
+              speed={120}
+              direction="right"
+              logoHeight={72}
+              gap={54}
+              imgClassName="logo-mono"
+              pauseOnHover
+              scaleOnHover
+              fadeOut
+              ariaLabel={`${t("models.title")} row 4`}
             />
           </Reveal>
         </div>
