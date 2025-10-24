@@ -63,7 +63,7 @@ export default function BackToTop() {
       iconClassName="w-6 h-6"
       onClick={scrollToTop}
       className={[
-        "!fixed right-15 bottom-20 z-40",
+        "!fixed right-5 sm:right-15 bottom-20 z-40",
         "transition-opacity transition-transform duration-300",
         visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3 pointer-events-none",
       ].join(" ")}
