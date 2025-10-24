@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Reveal from "../Reveal";
+import Reveal from "../ui/Reveal";
 import { useI18n } from "../i18n/I18nProvider";
 import { PuzzlePieceIcon, ArrowRightIcon, EllipsisHorizontalIcon } from "@heroicons/react/24/solid";
 import CardSwap, { Card } from "../ui/CardSwap";

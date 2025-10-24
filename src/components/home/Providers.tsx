@@ -1,12 +1,36 @@
 "use client";
 
-import Reveal from "../Reveal";
+import React, { useEffect, useState } from "react";
+import Reveal from "../ui/Reveal";
 import { useI18n } from "../i18n/I18nProvider";
 import LogoLoop from "../ui/LogoLoop";
 import type { LogoItem } from "../ui/LogoLoop";
 
 export default function Providers() {
   const { t } = useI18n();
+  // 响应式：在移动端减小图标高度与间距
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    try {
+      const query = '(max-width: 639.98px)'; // Tailwind sm 断点前
+      const mq = window.matchMedia(query);
+      setIsMobile(mq.matches);
+
+      // 优先使用标准事件；若不支持，则回退到 window.resize
+      if (typeof mq.addEventListener === 'function') {
+        const onChange = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+        mq.addEventListener('change', onChange);
+        return () => mq.removeEventListener('change', onChange);
+      }
+
+      const onResize = () => setIsMobile(window.matchMedia(query).matches);
+      window.addEventListener('resize', onResize);
+      return () => window.removeEventListener('resize', onResize);
+    } catch {
+      setIsMobile(false);
+      return () => {};
+    }
+  }, []);
   // 更新后的 Provider 列表与链接；其中 302.AI 与 优云智算保留彩色，不应用滤镜
   const all: LogoItem[] = [
     { src: "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/openai.svg", alt: "OpenAI", title: "OpenAI" },
@@ -139,6 +163,12 @@ export default function Providers() {
     groups[idx % 4].push(it);
   });
   const [group1, group2, group3, group4] = groups;
+  // 高度与间距：桌面与移动端分别配置
+  const H = isMobile ? 52 : 72;
+  const GAP1 = isMobile ? 36 : 56;
+  const GAP2 = isMobile ? 32 : 52;
+  const GAP3 = isMobile ? 38 : 60;
+  const GAP4 = isMobile ? 34 : 54;
   return (
     <section className="min-h-[calc(100vh-64px)] flex items-center py-12 sm:py-16">
       <div className="w-full">
@@ -152,8 +182,8 @@ export default function Providers() {
               logos={group1}
               speed={130}
               direction="left"
-              logoHeight={72}
-              gap={56}
+              logoHeight={H}
+              gap={GAP1}
               imgClassName="logo-mono"
               revealDelay={0}
               pauseOnHover
@@ -167,8 +197,8 @@ export default function Providers() {
               logos={group2}
               speed={110}
               direction="right"
-              logoHeight={72}
-              gap={52}
+              logoHeight={H}
+              gap={GAP2}
               imgClassName="logo-mono"
               revealDelay={150}
               pauseOnHover
@@ -182,8 +212,8 @@ export default function Providers() {
               logos={group3}
               speed={150}
               direction="left"
-              logoHeight={72}
-              gap={60}
+              logoHeight={H}
+              gap={GAP3}
               imgClassName="logo-mono"
               revealDelay={300}
               pauseOnHover
@@ -197,8 +227,8 @@ export default function Providers() {
               logos={group4}
               speed={120}
               direction="right"
-              logoHeight={72}
-              gap={54}
+              logoHeight={H}
+              gap={GAP4}
               imgClassName="logo-mono"
               revealDelay={450}
               pauseOnHover

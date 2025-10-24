@@ -1,4 +1,8 @@
 {
+  "site": {
+    "title": "AstrBot | Multi-platform LLM Bot Infrastructure",
+    "description": "AstrBot — Build, deploy, and manage cross-platform intelligent chatbots fast."
+  },
   "nav": {"quickStart": "Quick Start", "plugin": "Plugins", "blog": "Blog", "roadmap": "Roadmap", "more": "More", "github": "GitHub"},
   "hero": {"slogan": "Multi-platform LLM Bot Infrastructure", "subSlogan": "Multi-platform LLM Bot Infrastructure", "startButton": "Get Started", "githubButton": "GitHub"},
   "models": {"title": "Supported Model Providers", "subtitle": "Support for Text Gen, Vision, STT, TTS, Embedding and more"},

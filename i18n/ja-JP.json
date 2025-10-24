@@ -1,4 +1,8 @@
 {
+  "site": {
+    "title": "AstrBot | マルチプラットフォーム LLM ボット基盤",
+    "description": "AstrBot —— 複数プラットフォーム対応のインテリジェントチャットボットを素早く構築・デプロイ・管理。"
+  },
   "nav": {"quickStart": "クイックスタート", "plugin": "プラグイン", "blog": "ブログ", "roadmap": "ロードマップ", "more": "その他", "github": "GitHub"},
   "hero": {"slogan": "マルチプラットフォーム LLM ボット基盤", "subSlogan": "マルチプラットフォーム LLM ボット基盤", "startButton": "はじめる", "githubButton": "GitHub"},
   "models": {"title": "対応モデルプロバイダー", "subtitle": "テキスト生成、画像理解、STT、TTS、Embedding などに対応"},
