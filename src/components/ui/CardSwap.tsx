@@ -103,15 +103,12 @@ const CardSwap: React.FC<CardSwapProps> = ({
 
   const childArr = useMemo(() => Children.toArray(children) as ReactElement<CardProps>[], [children]);
   const refs = useMemo<CardRef[]>(() => childArr.map(() => React.createRef<HTMLDivElement>()), [childArr]);
-
   const order = useRef<number[]>(Array.from({ length: childArr.length }, (_, i) => i));
-
   const tlRef = useRef<gsap.core.Timeline | null>(null);
   const intervalRef = useRef<number | null>(null);
   const container = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(true);
 
-  // Observe viewport visibility and pause/resume accordingly
   useEffect(() => {
     const node = container.current;
     if (!node) return;
@@ -205,7 +202,7 @@ const CardSwap: React.FC<CardSwapProps> = ({
         if (intervalRef.current) window.clearInterval(intervalRef.current);
       };
       const resume = () => {
-        if (!inView) return; // don't resume if not visible
+        if (!inView) return;
         tlRef.current?.play();
         intervalRef.current = window.setInterval(swap, delay);
       };

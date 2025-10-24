@@ -11,7 +11,7 @@ export default function Providers() {
   const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
     try {
-      const query = '(max-width: 639.98px)'; // Tailwind sm 断点前
+      const query = '(max-width: 639.98px)'; 
       const mq = window.matchMedia(query);
       setIsMobile(mq.matches);
       if (typeof mq.addEventListener === 'function') {

@@ -13,7 +13,6 @@ export function useScrollY() {
         }) as unknown as number;
       }
     };
-    // Initial read after mount
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => {

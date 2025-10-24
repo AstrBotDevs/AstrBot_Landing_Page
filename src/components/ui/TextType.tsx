@@ -4,9 +4,9 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 
 type TextTypeProps = {
   text: string[];
-  typingSpeed?: number; // ms per character
-  pauseDuration?: number; // ms to wait after a phrase completes
-  deleteSpeed?: number; // ms per character when deleting
+  typingSpeed?: number;
+  pauseDuration?: number;
+  deleteSpeed?: number;
   loop?: boolean;
   showCursor?: boolean;
   cursorCharacter?: string;

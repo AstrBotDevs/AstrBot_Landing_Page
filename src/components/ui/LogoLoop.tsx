@@ -36,9 +36,7 @@ export interface LogoLoopProps {
   ariaLabel?: string;
   className?: string;
   style?: React.CSSProperties;
-  // Extra class applied to each <img> logo element for per-usage styling
   imgClassName?: string;
-  // Optional reveal delay (ms) for fading the track, useful to stagger multiple rows
   revealDelay?: number;
 }
 
@@ -244,8 +242,6 @@ export const LogoLoop = React.memo<LogoLoopProps>(
   }, [updateDimensions]);
 
   useImageLoader(seqRef, handleImagesReady);
-
-  // Safety: ensure we don't stay hidden forever if images neither load nor error
   useEffect(() => {
     if (imagesReady) return;
     const id = window.setTimeout(() => setImagesReady(true), 2500);
@@ -270,7 +266,6 @@ export const LogoLoop = React.memo<LogoLoopProps>(
           'relative overflow-x-hidden group',
           '[--logoloop-gap:32px]',
           '[--logoloop-logoHeight:28px]',
-          // Theme-agnostic fade via mask-image on the container edges
           fadeOut &&
             '[@supports(mask-image:linear-gradient(#000,#000))]:[mask-image:linear-gradient(to_right,transparent_0%,#000_10%,#000_90%,transparent_100%)]',
           fadeOut &&
@@ -390,7 +385,6 @@ export const LogoLoop = React.memo<LogoLoopProps>(
     const containerStyle = useMemo(
       (): React.CSSProperties => ({
         width: toCssLength(width) ?? '100%',
-        // Reserve height to avoid layout shift before images are ready
         minHeight: `var(--logoloop-logoHeight)`,
         ...cssVariables,
         ...style
