@@ -2,6 +2,8 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
+import MorphCircleIconButton from "../ui/MorphCircleIconButton";
+import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
 import Reveal from "../ui/Reveal";
 import { useI18n } from "../i18n/I18nProvider";
 
@@ -75,16 +77,44 @@ export default function Platforms() {
                     )}
                   </div>
                 ))}
-                <button aria-label={t("carousel.prev")} onClick={() => { go(-1); startAuto(); }} className="absolute left-3 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full border border-ui bg-background/80 backdrop-blur flex items-center justify-center">
-                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <path d="M15 6l-6 6 6 6" />
-                  </svg>
-                </button>
-                <button aria-label={t("carousel.next")} onClick={() => { go(1); startAuto(); }} className="absolute right-3 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full border border-ui bg-background/80 backdrop-blur flex items-center justify-center">
-                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <path d="M9 6l6 6-6 6" />
-                  </svg>
-                </button>
+                <MorphCircleIconButton
+                  as="button"
+                  ariaLabel={t("carousel.prev")}
+                  size={40}
+                  ease="power3.out"
+                  baseColor="var(--foreground)"
+                  buttonColor="var(--background)"
+                  iconColor="var(--foreground)"
+                  hoverIconColor="var(--background)"
+                  borderColor="var(--border-ui)"
+                  glassBlur={0}
+                  Icon={ArrowLeftIcon}
+                  iconClassName="w-5 h-5"
+                  onClick={() => {
+                    go(-1);
+                    startAuto();
+                  }}
+                  className="!absolute left-3 top-1/2 -translate-y-1/2"
+                />
+                <MorphCircleIconButton
+                  as="button"
+                  ariaLabel={t("carousel.next")}
+                  size={40}
+                  ease="power3.out"
+                  baseColor="var(--foreground)"
+                  buttonColor="var(--background)"
+                  iconColor="var(--foreground)"
+                  hoverIconColor="var(--background)"
+                  borderColor="var(--border-ui)"
+                  glassBlur={0}
+                  Icon={ArrowRightIcon}
+                  iconClassName="w-5 h-5"
+                  onClick={() => {
+                    go(1);
+                    startAuto();
+                  }}
+                  className="!absolute right-3 top-1/2 -translate-y-1/2"
+                />
               </div>
               <div className="flex items-center justify-center gap-2 pt-4">
                 {slides.map((s, i) => (
