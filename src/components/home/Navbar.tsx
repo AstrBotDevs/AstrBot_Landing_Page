@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { useI18n } from "../i18n/I18nProvider";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
-import { DocumentTextIcon, MapIcon, PuzzlePieceIcon, GlobeAmericasIcon, GlobeAsiaAustraliaIcon } from "@heroicons/react/24/outline";
+import { DocumentTextIcon, MapIcon, PuzzlePieceIcon, GlobeAmericasIcon, GlobeAsiaAustraliaIcon, BookOpenIcon } from "@heroicons/react/24/outline";
 
 export default function Navbar() {
   const [openLang, setOpenLang] = useState(false);
@@ -81,8 +81,9 @@ export default function Navbar() {
         </div>
         <ul className="hidden md:flex items-center gap-3 text-sm">
           <li>
-            <a href="https://docs.astrbot.app/what-is-astrbot.html" className="inline-flex items-center h-9 px-3 rounded-full border border-ui opacity-80 hover:opacity-100 transition duration-200">
-              {t("nav.quickStart")}
+            <a href="https://docs.astrbot.app/what-is-astrbot.html" className="inline-flex items-center gap-2 h-9 px-3 rounded-full border border-ui opacity-80 hover:opacity-100 transition duration-200">
+              <BookOpenIcon className="w-4 h-4" aria-hidden />
+              <span>{t("nav.quickStart")}</span>
             </a>
           </li>
           
@@ -189,7 +190,12 @@ export default function Navbar() {
           <div className="mx-auto max-w-6xl px-4 sm:px-6 pb-4 mt-2">
             <div className="rounded-2xl border border-ui bg-background/90 backdrop-blur shadow-lg p-4 animate-dropdown origin-top">
               <ul className="flex flex-col gap-2 text-sm">
-                <li><a href="https://docs.astrbot.app/what-is-astrbot.html" className="inline-flex items-center h-10 px-3 rounded-full border border-ui opacity-80 hover:opacity-100 transition">{t("nav.quickStart")}</a></li>
+                <li>
+                  <a href="https://docs.astrbot.app/what-is-astrbot.html" className="inline-flex items-center gap-2 h-10 px-3 rounded-full border border-ui opacity-80 hover:opacity-100 transition">
+                    <BookOpenIcon className="w-4 h-4" aria-hidden />
+                    <span>{t("nav.quickStart")}</span>
+                  </a>
+                </li>
                 <li>
                   <a href="https://plugins.astrbot.app/" className="inline-flex items-center gap-2 h-10 px-3 rounded-full border border-ui opacity-80 hover:opacity-100 transition">
                     <PuzzlePieceIcon className="w-4 h-4" aria-hidden />
@@ -211,13 +217,14 @@ export default function Navbar() {
                 <li>
                   <a
                     href="https://github.com/AstrBotDevs/AstrBot"
-                    className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-ui opacity-80 hover:opacity-100 transition"
+                    className="inline-flex items-center gap-2 h-10 px-3 rounded-full border border-ui opacity-80 hover:opacity-100 transition"
                     aria-label={t("nav.github")}
                     title="GitHub"
                   >
                     <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
                       <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.38.6.1.82-.26.82-.58 0-.29-.01-1.05-.02-2.06-3.34.73-4.04-1.61-4.04-1.61-.55-1.4-1.34-1.77-1.34-1.77-1.1-.77.08-.76.08-.76 1.22.09 1.86 1.26 1.86 1.26 1.08 1.87 2.83 1.33 3.52 1.02.11-.8.42-1.33.76-1.64-2.67-.31-5.47-1.37-5.47-6.08 0-1.34.47-2.44 1.24-3.3-.12-.31-.54-1.55.12-3.22 0 0 1.01-.33 3.31 1.26.96-.27 1.98-.4 3-.41 1.02 0 2.04.14 3 .41 2.3-1.59 3.31-1.26 3.31-1.26.66 1.67.24 2.91.12 3.22.77.86 1.24 1.96 1.24 3.3 0 4.72-2.8 5.77-5.47 6.08.43.38.81 1.1.81 2.22 0 1.61-.02 2.91-.02 3.31 0 .32.22.69.82.57C20.56 21.79 24 17.3 24 12 24 5.37 18.63 0 12 0Z" />
                     </svg>
+                    <span>{t("nav.github")}</span>
                   </a>
                 </li>
               </ul>

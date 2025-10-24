@@ -36,13 +36,31 @@ export default function Hero() {
       <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 pt-16 sm:pt-24 lg:pt-28 pb-10">
         <div className="flex flex-col items-center text-center gap-6">
             <h1 className="slogan text-5xl sm:text-5xl font-semibold tracking-tight brand-text">
-              <TextType
-                text={["AstrBot", "We rise together", "back to the moon and beyond"]}
-                typingSpeed={75}
-                pauseDuration={1500}
-                showCursor={true}
-                cursorCharacter="_"
-              />
+              {/* 移动端：仅打 AstrBot */}
+              <span className="block sm:hidden">
+                <TextType
+                  text={["AstrBot AI", "OmniMind"]}
+                  typingSpeed={75}
+                  pauseDuration={1500}
+                  showCursor={true}
+                  cursorCharacter="_"
+                />
+              </span>
+              {/* 桌面端：完整打字内容 */}
+              <span className="hidden sm:grid">
+                <span className="col-start-1 row-start-1">
+                  <TextType
+                    text={["AstrBot AI", "We rise together", "back to the moon and beyond"]}
+                    typingSpeed={75}
+                    pauseDuration={1500}
+                    showCursor={true}
+                    cursorCharacter="_"
+                  />
+                </span>
+                <span className="col-start-1 row-start-1 invisible select-none pointer-events-none" aria-hidden>
+                  back to the moon and beyond
+                </span>
+              </span>
             </h1>
             {/* Subtitle removed as requested */}
             <Reveal className="trendshift-badge mt-6 flex flex-wrap sm:flex-nowrap justify-center gap-3" delay={300}>
