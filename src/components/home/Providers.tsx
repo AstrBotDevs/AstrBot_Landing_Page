@@ -8,15 +8,12 @@ import type { LogoItem } from "../ui/LogoLoop";
 
 export default function Providers() {
   const { t } = useI18n();
-  // 响应式：在移动端减小图标高度与间距
   const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
     try {
       const query = '(max-width: 639.98px)'; // Tailwind sm 断点前
       const mq = window.matchMedia(query);
       setIsMobile(mq.matches);
-
-      // 优先使用标准事件；若不支持，则回退到 window.resize
       if (typeof mq.addEventListener === 'function') {
         const onChange = (e: MediaQueryListEvent) => setIsMobile(e.matches);
         mq.addEventListener('change', onChange);
@@ -31,7 +28,7 @@ export default function Providers() {
       return () => {};
     }
   }, []);
-  // 更新后的 Provider 列表与链接；其中 302.AI 与 优云智算保留彩色，不应用滤镜
+  // 302.AI 与 优云智算保留彩色，不应用滤镜
   const all: LogoItem[] = [
     { src: "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/openai.svg", alt: "OpenAI", title: "OpenAI" },
     {

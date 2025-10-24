@@ -10,6 +10,7 @@ import { formatCompactNumber } from "../utils/number";
 import webuiLight from "../../../public/show/webui-light.webp";
 import webuiDark from "../../../public/show/webui-dark.webp";
 import { useTheme } from "../hooks/useTheme";
+import ScrollDownButton from "../ui/ScrollDownButton";
 
 export default function Hero() {
   const scrollY = useScrollY();
@@ -112,11 +113,7 @@ export default function Hero() {
         </Reveal>
       </div>
       <div className="absolute inset-x-0 bottom-12 z-20 flex justify-center">
-        <a href="#features" aria-label="Scroll down">
-          <svg className="w-16 h-16 brand-text animate-arrow-bounce" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="M6 9l6 6 6-6" />
-          </svg>
-        </a>
+        <ScrollDownButton href="#features" />
       </div>
       <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-transparent to-background z-[15]" />
     </section>
