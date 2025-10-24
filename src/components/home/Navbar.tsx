@@ -150,7 +150,7 @@ export default function Navbar() {
               <ChevronDownIcon aria-hidden className={`w-4 h-4 transition-transform duration-200 ${openMore ? 'rotate-180' : ''}`} />
             </button>
             {openMore && (
-              <ul className="absolute right-0 mt-5 w-26 rounded-lg border border-ui bg-background shadow-lg origin-top-right animate-dropdown whitespace-nowrap">
+              <ul className="absolute right-0 mt-5 w-auto rounded-lg border border-ui bg-background shadow-lg origin-top-right animate-dropdown whitespace-nowrap">
                 <li>
                   <a href="https://plugins.astrbot.app/" className="flex items-center gap-2 px-3 py-2 hover:bg-black/[.04] dark:hover:bg-white/[.06]">
                     <PuzzlePieceIcon className="w-4 h-4 opacity-80" aria-hidden />

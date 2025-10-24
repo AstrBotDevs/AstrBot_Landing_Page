@@ -34,15 +34,8 @@ export const I18nContext = createContext<{
   setLocale: (l: Locale) => void;
 }>({ locale: "zh-CN", t: (k) => k, setLocale: () => {} });
 
-export default function I18nProvider({ children }: { children: React.ReactNode }) {
-  const [locale, setLocaleState] = useState<Locale>("zh-CN");
-
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem("locale") as Locale | null;
-      if (saved && DICTS[saved]) setLocaleState(saved);
-    } catch {}
-  }, []);
+export default function I18nProvider({ children, initialLocale }: { children: React.ReactNode; initialLocale?: Locale }) {
+  const [locale, setLocaleState] = useState<Locale>(initialLocale ?? "en-US");
 
   useEffect(() => {
     try { document.documentElement.lang = locale; } catch {}
@@ -55,7 +48,13 @@ export default function I18nProvider({ children }: { children: React.ReactNode }
 
   const setLocale = (l: Locale) => {
     setLocaleState(l);
-    try { localStorage.setItem("locale", l); } catch {}
+    try {
+      localStorage.setItem("locale", l);
+    } catch {}
+    try {
+      const maxAge = 60 * 60 * 24 * 365; 
+      document.cookie = `locale=${l}; path=/; max-age=${maxAge}`;
+    } catch {}
   };
 
   return (
