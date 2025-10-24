@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { cookies, headers } from "next/headers";
 import { Analytics } from "@vercel/analytics/next"
 import I18nProvider from "../components/i18n/I18nProvider";
 import "../assets/globals.css";
@@ -22,16 +23,37 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  type Locale = "zh-CN" | "en-US" | "ja-JP";
+  const cookieStore = await cookies();
+  const headerStore = await headers();
+  const rawCookie = cookieStore.get("locale")?.value as string | undefined;
+  const accept = headerStore.get("accept-language") || "";
+
+  const normalize = (v: string | undefined): Locale | undefined => {
+    if (!v) return undefined;
+    if (v === "zh-CN" || v === "en-US" || v === "ja-JP") return v;
+    return undefined;
+  };
+
+  const detectFromHeader = (al: string): Locale => {
+    const low = al.toLowerCase();
+    if (low.startsWith("zh") || low.includes(",zh")) return "zh-CN";
+    if (low.startsWith("ja") || low.includes(",ja")) return "ja-JP";
+    return "en-US";
+  };
+
+  const initialLocale: Locale = normalize(rawCookie) ?? detectFromHeader(accept);
+
   return (
-    <html lang="zh-CN">
+    <html lang={initialLocale}>
       <body className={`antialiased`}>
         <div className="relative">
-        <I18nProvider>
+        <I18nProvider initialLocale={initialLocale}>
           <div className="relative z-20">
             {children}
           </div>
