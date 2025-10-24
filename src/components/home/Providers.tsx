@@ -1,6 +1,6 @@
 "use client";
 
-import Reveal from "../Reveal";
+import Reveal from "../ui/Reveal";
 import { useI18n } from "../i18n/I18nProvider";
 import LogoLoop from "../ui/LogoLoop";
 import type { LogoItem } from "../ui/LogoLoop";

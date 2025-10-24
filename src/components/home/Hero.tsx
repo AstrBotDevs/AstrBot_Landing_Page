@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import Reveal from "../Reveal";
+import Reveal from "../ui/Reveal";
 import TextType from "../ui/TextType";
 import { useI18n } from "../i18n/I18nProvider";
 import { useScrollY } from "../hooks/useScrollY";
