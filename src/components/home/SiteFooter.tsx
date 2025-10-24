@@ -15,7 +15,6 @@ export default function SiteFooter() {
     const el = footerRef.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
-    // Move opposite to scroll a little, but clamp to avoid hiding orbs
     const y = Math.max(-60, Math.min(60, -rect.top * 0.06));
     setParallaxY(y);
   }, [scrollY]);
