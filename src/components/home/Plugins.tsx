@@ -13,6 +13,12 @@ export default function Plugins() {
   const [loading, setLoading] = useState<boolean>(true);
   const [hasFetched, setHasFetched] = useState<boolean>(false);
   const sectionRef = useRef<HTMLDivElement | null>(null);
+  // 保持与 CardSwap 一致的尺寸与间距，避免骨架屏与实卡片间距不一致
+  const CARD_WIDTH = 520;
+  const CARD_HEIGHT = 180;
+  const CARD_DISTANCE = 54;
+  const VERTICAL_DISTANCE = 54;
+  const SKEW = 6; // 与 CardSwap 默认 skewAmount 一致
   useEffect(() => {
     const fetchLocal = () => {
       setLoading(true);
@@ -70,16 +76,52 @@ export default function Plugins() {
           </div>
           <div className="relative h-[420px] sm:h-[480px] lg:h-[560px] lg:justify-self-end w-full">
           {loading ? (
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="loader-ring" aria-label="loading" />
+            // 3D 骨架屏：在加载时展示与 CardSwap 一致的 3D 堆叠与间距，但不启动轮播
+            <div
+              className="absolute bottom-0 right-0 transform translate-x-[5%] translate-y-[20%] origin-bottom-right perspective-[900px] overflow-visible max-[1024px]:translate-x-[10%] max-[1024px]:translate-y-[15%] max-[1024px]:scale-[0.9] max-[768px]:right-auto max-[768px]:left-1/2 max-[768px]:origin-bottom max-[768px]:-translate-x-1/2 max-[768px]:translate-y-[10%] max-[768px]:scale-[0.8] max-[480px]:translate-y-[5%] max-[480px]:scale-[0.65]"
+              style={{ width: CARD_WIDTH, height: CARD_HEIGHT }}
+              aria-busy="true"
+              aria-live="polite"
+            >
+              {Array.from({ length: 9 }).map((_, i, arr) => {
+                const total = arr.length;
+                const x = i * CARD_DISTANCE;
+                const y = -i * VERTICAL_DISTANCE;
+                const z = -i * CARD_DISTANCE * 1.5;
+                const zIndex = total - i;
+                const transform = `translate(-50%, -50%) translate3d(${x}px, ${y}px, ${z}px) skewY(${SKEW}deg)`;
+                return (
+                  <Card
+                    key={`skeleton-${i}`}
+                    style={{ width: CARD_WIDTH, height: CARD_HEIGHT, transform, zIndex: zIndex as unknown as number }}
+                    className="p-5 sm:p-6 select-none pointer-events-none"
+                    aria-hidden="true"
+                  >
+                    <div className="h-full w-full">
+                      <div className="animate-pulse">
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="h-4 w-32 sm:w-40 rounded bg-foreground/10" />
+                          <div className="h-4 w-10 rounded bg-foreground/10" />
+                        </div>
+                        <div className="mt-4 space-y-2">
+                          <div className="h-3 w-[90%] rounded bg-foreground/10" />
+                          <div className="h-3 w-[85%] rounded bg-foreground/10" />
+                          <div className="h-3 w-[70%] rounded bg-foreground/10" />
+                        </div>
+                        <div className="mt-5 h-4 w-20 rounded bg-foreground/10" />
+                      </div>
+                    </div>
+                  </Card>
+                );
+              })}
             </div>
           ) : plugins.length > 0 ? (
             <>
               <CardSwap
-                width={520}
-                height={180}
-                cardDistance={54}
-                verticalDistance={54}
+                width={CARD_WIDTH}
+                height={CARD_HEIGHT}
+                cardDistance={CARD_DISTANCE}
+                verticalDistance={VERTICAL_DISTANCE}
                 delay={5200}
                 pauseOnHover
                 onCardClick={(idx) => {
