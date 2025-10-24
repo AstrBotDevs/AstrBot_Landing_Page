@@ -13,12 +13,11 @@ export default function Plugins() {
   const [loading, setLoading] = useState<boolean>(true);
   const [hasFetched, setHasFetched] = useState<boolean>(false);
   const sectionRef = useRef<HTMLDivElement | null>(null);
-  // 保持与 CardSwap 一致的尺寸与间距，避免骨架屏与实卡片间距不一致
   const CARD_WIDTH = 520;
   const CARD_HEIGHT = 180;
   const CARD_DISTANCE = 54;
   const VERTICAL_DISTANCE = 54;
-  const SKEW = 6; // 与 CardSwap 默认 skewAmount 一致
+  const SKEW = 6; 
   useEffect(() => {
     const fetchLocal = () => {
       setLoading(true);
@@ -62,7 +61,7 @@ export default function Plugins() {
   }, [hasFetched]);
   return (
     <section ref={sectionRef} className="min-h-[calc(100vh-64px)] flex items-center py-12 sm:py-16 overflow-hidden">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 w-full">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 w-full relative -translate-y-2 sm:-translate-y-3 lg:-translate-y-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           <div className="lg:pr-6">
             <Reveal as="h2" className="text-left text-3xl sm:text-4xl font-semibold tracking-tight mb-4 gradient-title" delay={0}>
@@ -76,7 +75,6 @@ export default function Plugins() {
           </div>
           <div className="relative h-[420px] sm:h-[480px] lg:h-[560px] lg:justify-self-end w-full">
           {loading ? (
-            // 3D 骨架屏：在加载时展示与 CardSwap 一致的 3D 堆叠与间距，但不启动轮播
             <div
               className="absolute bottom-0 right-0 transform translate-x-[5%] translate-y-[20%] origin-bottom-right perspective-[900px] overflow-visible max-[1024px]:translate-x-[10%] max-[1024px]:translate-y-[15%] max-[1024px]:scale-[0.9] max-[768px]:right-auto max-[768px]:left-1/2 max-[768px]:origin-bottom max-[768px]:-translate-x-1/2 max-[768px]:translate-y-[10%] max-[768px]:scale-[0.8] max-[480px]:translate-y-[5%] max-[480px]:scale-[0.65]"
               style={{ width: CARD_WIDTH, height: CARD_HEIGHT }}

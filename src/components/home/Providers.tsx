@@ -167,7 +167,7 @@ export default function Providers() {
   const GAP3 = isMobile ? 38 : 60;
   const GAP4 = isMobile ? 34 : 54;
   return (
-    <section className="min-h-[calc(100vh-64px)] flex items-center py-12 sm:py-16">
+    <section className="min-h-[calc(100vh-64px)] flex items-center py-12 sm:py-16 bg-[var(--brand-soft)]">
       <div className="w-full">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <Reveal as="h2" className="text-center text-3xl sm:text-4xl font-semibold tracking-tight mb-6 sm:mb-8 gradient-title" delay={0}>{t("models.title")}</Reveal>

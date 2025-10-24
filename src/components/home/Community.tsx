@@ -35,7 +35,7 @@ export default function Community() {
   );
 
   return (
-    <section className="py-12 sm:py-16">
+    <section className="py-12 sm:py-16 bg-[var(--brand-soft)]">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <Reveal as="h2" className="text-center text-3xl sm:text-4xl font-semibold tracking-tight gradient-title" delay={0}>{t("community.title")}</Reveal>
         <Reveal as="p" className="text-center mt-2 mb-10 text-sm opacity-80" delay={150}>{t("community.subtitle")}</Reveal>
