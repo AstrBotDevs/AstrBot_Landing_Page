@@ -1,13 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Reveal from "../ui/Reveal";
 import TextType from "../ui/TextType";
 import { useI18n } from "../i18n/I18nProvider";
 import { useScrollY } from "../hooks/useScrollY";
 import { formatCompactNumber } from "../utils/number";
-import webui1 from "../../../public/webui-1.webp";
+import webuiLight from "../../../public/show/webui-light.webp";
+import webuiDark from "../../../public/show/webui-dark.webp";
+import { useTheme } from "../hooks/useTheme";
 
 export default function Hero() {
   const scrollY = useScrollY();
@@ -20,6 +22,8 @@ export default function Hero() {
   const isAtTop = scrollY <= 10;
   const tiltDeg = Math.max(0, 8 - scrollY * 0.08); // start ~8deg at top, ease to 0deg as you scroll
   const [heroStars, setHeroStars] = useState<number | null>(null);
+  const isDarkTheme = useTheme();
+  const heroImg = useMemo(() => (isDarkTheme ? webuiDark : webuiLight), [isDarkTheme]);
   useEffect(() => {
     fetch("/api/plugins", { cache: "no-store" })
       .then((r) => r.json())
@@ -93,7 +97,7 @@ export default function Hero() {
         <Reveal animation="fade" delay={300}>
           <div style={{ perspective: "1100px" }}>
             <Image
-              src={isAtTop ? "/webui-1.webp" : webui1}
+              src={heroImg}
               alt="AstrBot WebUI界面"
               width={1200}
               height={800}
