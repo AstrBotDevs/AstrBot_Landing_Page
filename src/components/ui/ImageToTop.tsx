@@ -22,6 +22,23 @@ type ImageToTopProps = {
   title?: string;
 };
 
+type Status = "hidden" | "visible" | "leaving";
+
+function useScrollAbove(threshold = 200) {
+  const [isAbove, setIsAbove] = useState(false);
+  useEffect(() => {
+    const onScroll = () => {
+      try {
+        setIsAbove((window.scrollY || document.documentElement.scrollTop || 0) >= threshold);
+      } catch {}
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [threshold]);
+  return isAbove;
+}
+
 export default function ImageToTop({
   imageUrl = "/backtotop.png",
   threshold = 200,
@@ -41,64 +58,29 @@ export default function ImageToTop({
   ariaLabel = "返回顶部",
   title = "返回顶部",
 }: ImageToTopProps) {
-  const [isShow, setIsShow] = useState(false);
-  const [isLeaving, setIsLeaving] = useState(false);
-  const [isLeaved, setIsLeaved] = useState(false);
-  const [isEnding, setIsEnding] = useState(false);
-  const lockRef = useRef(false);
-  const isLeavingRef = useRef(false);
-  const thresholdRef = useRef(threshold);
+  const isAbove = useScrollAbove(threshold);
+  const [status, setStatus] = useState<Status>("hidden");
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
-  const t120Ref = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const t390Ref = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const t1500Ref = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const t2000Ref = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const handleScroll = () => {
-    if (lockRef.current) return;
-    try {
-      const scrollTop = window.scrollY || document.documentElement.scrollTop || 0;
-      if (scrollTop >= thresholdRef.current) {
-        setIsShow(prev => {
-          if (!prev && !isLeavingRef.current) {
-            setIsLeaved(false);
-          }
-          return true;
-        });
-      } else {
-        setIsShow(false);
-      }
-    } catch {}
-  };
-
+  // toggle visible/hidden based on scroll, ignore changes while leaving
   useEffect(() => {
-    handleScroll();
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+    setStatus(prev => {
+      if (prev === "leaving") return prev;
+      if (isAbove && prev === "hidden") return "visible";
+      if (!isAbove && prev === "visible") return "hidden";
+      return prev;
+    });
+  }, [isAbove]);
 
-  useEffect(() => {
-    isLeavingRef.current = isLeaving;
-  }, [isLeaving]);
-
-  useEffect(() => {
-    thresholdRef.current = threshold;
-  }, [threshold]);
-
-  useEffect(() => {
-    return () => {
-      [t120Ref, t390Ref, t1500Ref, t2000Ref].forEach(ref => {
-        if (ref.current) clearTimeout(ref.current);
-      });
-    };
-  }, []);
+  const spriteHeight = frameHeight * framesCount;
+  const safeHoverIndex = Math.max(0, Math.min(framesCount - 1, hoverFrameIndex));
+  const safeEndingIndex = Math.max(0, Math.min(framesCount - 1, endingFrameIndex));
+  const offset2 = frameHeight * safeHoverIndex + offsetFixFrame2;
+  const offset3 = frameHeight * safeEndingIndex + (offsetFixFrame3 ?? offsetFixFrame2);
 
   const handleClick = () => {
-    if (lockRef.current) return;
-    lockRef.current = true;
-    setIsLeaving(true);
+    if (status !== "visible") return;
+    setStatus("leaving");
     try {
       const prefersReduced =
         typeof window !== "undefined" &&
@@ -110,54 +92,31 @@ export default function ImageToTop({
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
     } catch {}
+  };
 
-    t120Ref.current = setTimeout(() => {
-      setIsEnding(true);
-    }, 120);
-
-    t390Ref.current = setTimeout(() => {
-      setIsLeaving(false);
-      setIsLeaved(true);
-    }, 390);
-
-    t1500Ref.current = setTimeout(() => {
-      setIsShow(false);
-    }, 1500);
-
-    t2000Ref.current = setTimeout(() => {
-      setIsLeaving(false);
-      setIsEnding(false);
-      setIsShow(false);
-      setIsLeaved(false);
-      lockRef.current = false;
-    }, 2000);
+  const onAnimationEnd: React.AnimationEventHandler<HTMLDivElement> = (e) => {
+    // only react to container slide-out finishing
+    if (status === "leaving" && e.animationName === "slide-out") {
+      setStatus("hidden");
+    }
   };
 
   const classes = [
     "back-to-top",
-    isShow ? "load" : "",
-    isLeaving ? "ani-leave" : "",
-    isLeaved ? "leaved" : "",
-    isEnding ? "ending" : "",
+    status,
     className || "",
-  ]
-    .filter(Boolean)
-    .join(" ");
-
-  const spriteHeight = frameHeight * framesCount;
-  const safeHoverIndex = Math.max(0, Math.min(framesCount - 1, hoverFrameIndex));
-  const safeEndingIndex = Math.max(0, Math.min(framesCount - 1, endingFrameIndex));
-  const offset2 = frameHeight * safeHoverIndex + offsetFixFrame2;
-  const offset3 = frameHeight * safeEndingIndex + (offsetFixFrame3 ?? offsetFixFrame2);
+  ].filter(Boolean).join(" ");
 
   return (
     <>
       <div
+        ref={containerRef}
         className={classes}
         onClick={handleClick}
+        onAnimationEnd={onAnimationEnd}
         aria-label={ariaLabel}
         title={title}
-        data-hide-mobile={!showOnMobile ? "true" : "false"}
+  data-hide-mobile={showOnMobile ? "false" : "true"}
         style={{
           "--frame-w": `${frameWidth}px`,
           "--frame-h": `${frameHeight}px`,
@@ -182,14 +141,17 @@ export default function ImageToTop({
           background: url(${imageUrl}) no-repeat 0 0;
           background-size: var(--frame-w) var(--sprite-h);
           opacity: 0.6;
-          transition: opacity 0.3s, right 0.8s;
           cursor: pointer;
           background-repeat: no-repeat;
+          /* disable transitions; keyframes will drive motion */
+          transition: none;
         }
 
-        .back-to-top:hover {
-          opacity: 1;
-        }
+        .back-to-top.hidden { pointer-events: none; }
+        .back-to-top.visible { pointer-events: auto; animation: slide-in 800ms ease-in-out forwards; }
+        .back-to-top.leaving { pointer-events: none; animation: slide-out 800ms ease-in-out forwards; }
+
+        .back-to-top.visible:hover { opacity: 1; }
 
         .back-to-top .frame2 {
           position: absolute;
@@ -203,20 +165,13 @@ export default function ImageToTop({
           transform: translate(var(--frame2-shift-x), var(--frame2-shift-y)) scale(var(--frame2-scale));
           transform-origin: center center;
           opacity: 0;
-          transition: opacity 120ms ease-out;
           pointer-events: none;
           z-index: 1;
         }
 
-        .back-to-top:hover .frame2,
-        .back-to-top.ani-leave .frame2 {
-          opacity: 1;
-        }
-
-        .back-to-top.ending .frame2 {
-          opacity: 0;
-          transition: opacity 60ms ease-in;
-        }
+        /* hover shows frame2 overlay; leaving keeps it for the first 120ms then fades it out */
+        .back-to-top.visible:hover .frame2 { animation: frame2-fade-in 120ms ease-out forwards; }
+        .back-to-top.leaving .frame2 { opacity: 1; animation: frame2-fade-out 60ms ease-in 120ms forwards; }
 
         .back-to-top::after {
           content: "";
@@ -229,44 +184,22 @@ export default function ImageToTop({
           background: url(${imageUrl}) no-repeat 0 0;
           background-size: var(--frame-w) var(--sprite-h);
           background-position: 0 calc(-1 * var(--offset-3));
-          transition: opacity 0.3s;
           opacity: 0;
           pointer-events: none;
         }
 
-        .back-to-top.load {
-          right: 0;
-        }
+        /* show third frame immediately while leaving to avoid flashing frame1 */
+        .back-to-top.leaving::after { animation: end-fade-in 60ms linear forwards; }
 
-        .back-to-top.ani-leave {
-          animation: ani-leave 800ms ease-in-out forwards;
-        }
-
-
-        @keyframes ani-leave {
-          0% { right: 0; }
-          100% { right: calc(-1 * var(--frame-w)); }
-        }
-
-        .back-to-top.leaved,
-        .back-to-top.ending {
-          pointer-events: none;
-        }
-
-        .back-to-top.leaved {
-          background: none;
-          transition: none;
-        }
-
-        .back-to-top.ending::after {
-          opacity: 1;
-          transition-delay: 0s;
-        }
+        @keyframes slide-in  { from { right: calc(-1 * var(--frame-w)); } to { right: 0; } }
+        @keyframes slide-out { from { right: 0; }                          to { right: calc(-1 * var(--frame-w)); } }
+        @keyframes frame2-fade-in { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes frame2-fade-out { from { opacity: 1; } to { opacity: 0; } }
+        @keyframes end-fade-in { from { opacity: 0; } to { opacity: 1; } }
 
         @media (max-width: ${mobileBreakpoint}px) {
           .back-to-top[data-hide-mobile="true"] { display: none; }
         }
-
       `}</style>
     </>
   );
