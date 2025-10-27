@@ -67,7 +67,7 @@ const Prism: React.FC<PrismProps> = ({
       alpha: transparent,
       antialias: false
     });
-    const gl = renderer.gl;
+    const { gl } = renderer;
     gl.disable(gl.DEPTH_TEST);
     gl.disable(gl.CULL_FACE);
     gl.disable(gl.BLEND);
@@ -77,9 +77,17 @@ const Prism: React.FC<PrismProps> = ({
       inset: '0',
       width: '100%',
       height: '100%',
-      display: 'block'
+      display: 'block',
+      opacity: '0',
+      transition: 'opacity 800ms ease'
     } as Partial<CSSStyleDeclaration>);
     container.appendChild(gl.canvas);
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        gl.canvas.style.opacity = '1';
+      });
+    });
 
     const vertex = /* glsl */ `
       attribute vec2 position;

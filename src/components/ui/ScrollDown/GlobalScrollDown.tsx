@@ -17,8 +17,8 @@ export default function GlobalScrollDown({ bottomOffsetPx = 48 }: Props) {
       setHide(false);
       return;
     }
-    // 为了避免箭头“落在”页脚区域内，收缩视口底部，提前隐藏
-    const safeZone = Math.max(0, bottomOffsetPx + 80); // 箭头尺寸与涟漪余量
+
+    const safeZone = Math.max(0, bottomOffsetPx + 80); 
     const io = new IntersectionObserver(
       (entries) => {
         const vis = entries.some((e) => e.isIntersecting);
@@ -28,10 +28,9 @@ export default function GlobalScrollDown({ bottomOffsetPx = 48 }: Props) {
     );
     io.observe(footer);
 
-    // 兜底：在滚动时根据 footer 顶部与视口底部的距离，提前隐藏
     const onScroll = () => {
       const rect = (footer as HTMLElement).getBoundingClientRect();
-      const distFromBottom = window.innerHeight - rect.top; // >0 表示 footer 已进入视口
+      const distFromBottom = window.innerHeight - rect.top; 
       setHide(distFromBottom > (window.innerHeight > 0 ? 0 : 0) || rect.top < window.innerHeight - safeZone);
     };
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -49,7 +48,7 @@ export default function GlobalScrollDown({ bottomOffsetPx = 48 }: Props) {
     e.preventDefault();
     try {
       const scrollY = window.scrollY || window.pageYOffset || 0;
-      const EPS = 4; // 容差
+      const EPS = 4; 
       const sections = Array.from(document.querySelectorAll("section[id]") as NodeListOf<HTMLElement>)
         .filter((el) => !el.closest("footer"))
         .filter((el) => {
@@ -65,7 +64,6 @@ export default function GlobalScrollDown({ bottomOffsetPx = 48 }: Props) {
 
       if (sections.length === 0) return;
 
-      // 使用屏幕顶部下方的一点来判断当前所处的 section，避免边界卡住
       const probeY = Math.min(window.innerHeight - 2, Math.max(2, 64 + 2));
       const probeX = Math.max(1, Math.floor(window.innerWidth / 2));
       const elAtPoint = document.elementFromPoint(probeX, probeY) as HTMLElement | null;
@@ -75,7 +73,6 @@ export default function GlobalScrollDown({ bottomOffsetPx = 48 }: Props) {
       if (sectionAtPoint) {
         currentIdx = sections.findIndex((s) => s.el === sectionAtPoint);
       }
-      // 回退：用滚动位置推断当前索引
       if (currentIdx < 0) {
         for (let i = 0; i < sections.length; i++) {
           if (sections[i].pageTop <= scrollY + EPS) currentIdx = i;
@@ -83,7 +80,6 @@ export default function GlobalScrollDown({ bottomOffsetPx = 48 }: Props) {
         }
       }
 
-      // 已在最后一个区块 -> 滚到 footer 顶部
       if (currentIdx >= sections.length - 1) {
         const footer = document.querySelector("footer") as HTMLElement | null;
         if (footer) footer.scrollIntoView({ behavior: "smooth", block: "start" });

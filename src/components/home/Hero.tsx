@@ -49,7 +49,7 @@ export default function Hero() {
                   style={{ textShadow: "0 0 24px rgba(255,255,255,0.28), 0 2px 10px rgba(255,255,255,0.35)" }}
                 />
               </span>
-              {/* 桌面端：完整打字内容 */}
+              {/* 桌面端：完整内容 */}
               <span className="hidden sm:grid">
                 <span className="col-start-1 row-start-1">
                   <TextType
@@ -67,7 +67,7 @@ export default function Hero() {
                 </span>
               </span>
             </h1>
-            {/* 徽章区块按要求移除 */}
+            {/* 徽章太丑了，删了 */}
             <div className="hero-buttons mt-6 flex flex-row flex-nowrap items-center justify-center gap-2 sm:gap-3">
               <Reveal as="span" delay={400}>
                 <a href="https://docs.astrbot.app/what-is-astrbot.html" className="inline-flex items-center justify-center h-12 sm:h-11 px-5 rounded-full btn-brand text-sm font-medium transition">{t("hero.startButton")}</a>
@@ -83,7 +83,6 @@ export default function Hero() {
             </div>
         </div>
       </div>
-      {/* 下箭头滚动按钮已全局化至 GlobalScrollDown */}
       <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-transparent to-background z-[15]" />
     </section>
   );
