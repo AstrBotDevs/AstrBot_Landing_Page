@@ -18,15 +18,15 @@ export default function Hero() {
   }, []);
   return (
     <section className="relative overflow-hidden min-h-[calc(100vh-64px)] flex flex-col items-center justify-center bg-black text-white">
-      {/* Prism 背景 */}
-      <div className="absolute inset-0 z-0">
+      {/* Prism 背景（仅桌面显示）；移动端回退到原有的纯黑背景 */}
+      <div className="hidden sm:block absolute inset-0 z-0">
         <Prism
           animationType="3drotate"
           timeScale={0.3}
           scale={4.3}
           height={2.5}
           baseWidth={4.5}
-          noise={0}
+          noise={0.15}
           glow={0.5}
           hueShift={-0.14}
           colorFrequency={1.15}
