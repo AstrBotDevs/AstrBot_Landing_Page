@@ -3,6 +3,7 @@ import { cookies, headers } from "next/headers";
 import { Analytics } from "@vercel/analytics/next";
 import I18nProvider from "../components/i18n/I18nProvider";
 import "../assets/globals.css";
+import GlobalScrollDown from "../components/ui/ScrollDown/GlobalScrollDown";
 import {
   type Locale,
   normalizeLocale,
@@ -58,7 +59,7 @@ export default async function RootLayout({
   const initialLocale: Locale = normalizeLocale(rawCookie) ?? detectLocaleFromAccept(accept);
 
   return (
-    <html lang={initialLocale}>
+    <html lang={initialLocale} className="dark" data-theme="dark">
       <body className={`antialiased`}>
         <div className="relative">
         <I18nProvider initialLocale={initialLocale}>
@@ -66,6 +67,7 @@ export default async function RootLayout({
             {children}
           </div>
         </I18nProvider>
+        <GlobalScrollDown />
         <Analytics />
         </div>
       </body>

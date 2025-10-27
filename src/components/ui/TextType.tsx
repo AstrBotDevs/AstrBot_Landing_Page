@@ -11,6 +11,7 @@ type TextTypeProps = {
   showCursor?: boolean;
   cursorCharacter?: string;
   className?: string;
+  style?: React.CSSProperties;
 };
 
 const prefersReducedMotion = () =>
@@ -25,6 +26,7 @@ const TextType: React.FC<TextTypeProps> = ({
   showCursor = true,
   cursorCharacter = "|",
   className = "",
+  style,
 }) => {
   const [index, setIndex] = useState(0);
   const [display, setDisplay] = useState("");
@@ -79,7 +81,7 @@ const TextType: React.FC<TextTypeProps> = ({
   }, [text, index, display, phase, typingSpeed, pauseDuration, deleteSpeed, reduced]);
 
   return (
-    <span className={className} aria-label={display}>
+    <span className={className} style={style} aria-label={display}>
       {display}
       {showCursor && (
         <span
