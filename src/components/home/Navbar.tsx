@@ -44,9 +44,10 @@ export default function Navbar() {
   const langLabel = locale === "en-US" ? "English" : locale === "ja-JP" ? "日本語" : "简体中文";
 
   return (
-    <nav ref={navRef} className="relative sticky top-0 z-50 backdrop-blur bg-background/80 border-b border-ui">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 h-16 flex items-center justify-between">
-        <div className="flex items-center gap-3">
+    <nav ref={navRef} className="fixed top-0 left-0 right-0 z-50">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 h-16 flex items-center">
+        <div className="glass-nav w-full h-12 rounded-2xl px-3 sm:px-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
           <Image src="/logo.webp" alt="AstrBot" width={32} height={32} />
           <span className="text-lg sm:text-xl font-semibold tracking-tight font-lexend">AstrBot</span>
           {releaseVersion && (
@@ -54,8 +55,8 @@ export default function Navbar() {
               {releaseVersion}
             </span>
           )}
-        </div>
-        <ul className="hidden md:flex items-center gap-3 text-sm">
+          </div>
+          <ul className="hidden md:flex items-center gap-3 text-sm">
           <li>
             <a href="https://docs.astrbot.app/what-is-astrbot.html" className="inline-flex items-center gap-2 h-9 px-3 rounded-full border border-ui opacity-80 hover:opacity-100 transition duration-200">
               <BookOpenIcon className="w-4 h-4" aria-hidden />
@@ -82,7 +83,7 @@ export default function Navbar() {
               <ChevronDownIcon aria-hidden className={`w-4 h-4 transition-transform duration-200 ${openLang ? 'rotate-180' : ''}`} />
             </button>
             {openLang && (
-              <ul className="absolute right-0 mt-5 w-28 rounded-lg border border-ui bg-background shadow-lg origin-top-right animate-dropdown">
+              <ul className="glass-menu absolute right-0 mt-5 w-28 rounded-xl origin-top-right animate-dropdown">
                 <li className="px-3 py-2 hover:bg-black/[.04] dark:hover:bg-white/[.06]">
                   <button onClick={() => { setLocale("zh-CN"); setOpenLang(false); }} className="flex items-center gap-2 w-full text-left">
                     <GlobeAsiaAustraliaIcon className="w-4 h-4 opacity-80" aria-hidden />
@@ -114,7 +115,7 @@ export default function Navbar() {
               <ChevronDownIcon aria-hidden className={`w-4 h-4 transition-transform duration-200 ${openMore ? 'rotate-180' : ''}`} />
             </button>
             {openMore && (
-              <ul className="absolute right-0 mt-5 w-auto rounded-lg border border-ui bg-background shadow-lg origin-top-right animate-dropdown whitespace-nowrap">
+              <ul className="glass-menu absolute right-0 mt-5 w-auto rounded-xl origin-top-right animate-dropdown whitespace-nowrap">
                 <li>
                   <a href="https://plugins.astrbot.app/" className="flex items-center gap-2 px-3 py-2 hover:bg-black/[.04] dark:hover:bg-white/[.06]">
                     <PuzzlePieceIcon className="w-4 h-4 opacity-80" aria-hidden />
@@ -138,21 +139,22 @@ export default function Navbar() {
           </li>
         </ul>
         <button
-          className="md:hidden inline-flex items-center justify-center h-9 w-9 rounded-lg border border-ui bg-background/80 backdrop-blur transition active:scale-[0.98]"
+          className="md:hidden inline-flex items-center justify-center h-9 w-9 rounded-xl glass-chip transition active:scale-[0.98]"
           onClick={() => setOpenMenu((v) => !v)}
           aria-label="menu"
           aria-expanded={openMenu}
         >
           <div className="relative w-4 h-4">
-            <span className={`absolute left-1/2 top-1/2 h-0.5 w-4 -translate-x-1/2 -translate-y-1/2 bg-foreground transition-transform duration-300 ${openMenu ? 'rotate-45' : '-translate-y-[4px]'}`} />
-            <span className={`absolute left-1/2 top-1/2 h-0.5 w-4 -translate-x-1/2 -translate-y-1/2 bg-foreground transition-transform duration-300 ${openMenu ? '-rotate-45' : 'translate-y-[4px]'}`} />
+            <span className={`absolute left-1/2 top-1/2 h-0.5 w-4 -translate-x-1/2 -translate-y-1/2 bg-foreground/90 rounded transition-transform duration-300 ${openMenu ? 'rotate-45' : '-translate-y-[4px]'}`} />
+            <span className={`absolute left-1/2 top-1/2 h-0.5 w-4 -translate-x-1/2 -translate-y-1/2 bg-foreground/90 rounded transition-transform duration-300 ${openMenu ? '-rotate-45' : 'translate-y-[4px]'}`} />
           </div>
         </button>
+        </div>
       </div>
       {openMenu && (
         <div className="md:hidden absolute left-0 right-0 top-16 z-40">
           <div className="mx-auto max-w-6xl px-4 sm:px-6 pb-4 mt-2">
-            <div className="rounded-2xl border border-ui bg-background/90 backdrop-blur shadow-lg p-4 animate-dropdown origin-top">
+            <div className="glass-menu rounded-2xl p-4 animate-dropdown origin-top">
               <ul className="flex flex-col gap-2 text-sm">
                 <li>
                   <a href="https://docs.astrbot.app/what-is-astrbot.html" className="inline-flex items-center gap-2 h-10 px-3 rounded-full border border-ui opacity-80 hover:opacity-100 transition">

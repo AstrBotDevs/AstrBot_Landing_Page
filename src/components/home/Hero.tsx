@@ -17,7 +17,7 @@ export default function Hero() {
       .catch(() => setHeroStars(null));
   }, []);
   return (
-    <section className="relative overflow-hidden min-h-[calc(100vh-64px)] flex flex-col items-center justify-center bg-black text-white">
+  <section className="relative overflow-hidden min-h-screen flex flex-col items-center justify-center bg-black text-white">
       {/* Prism 背景：移动端与桌面端分别使用不同性能配置 */}
       {/* 移动端：低画质、DPR 上限 1.25、30 FPS、屏外暂停 */}
       <div className="block sm:hidden absolute inset-0 z-0">
