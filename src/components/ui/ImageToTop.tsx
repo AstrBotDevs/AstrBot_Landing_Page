@@ -189,7 +189,7 @@ export default function ImageToTop({
         }
 
         /* show third frame immediately while leaving to avoid flashing frame1 */
-        .back-to-top.leaving::after { animation: end-fade-in 60ms linear forwards; }
+        .back-to-top.leaving::after { animation: end-fade-in 60ms linear 180ms forwards; }
 
         @keyframes slide-in  { from { right: calc(-1 * var(--frame-w)); } to { right: 0; } }
         @keyframes slide-out { from { right: 0; }                          to { right: calc(-1 * var(--frame-w)); } }
