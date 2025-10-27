@@ -15,7 +15,6 @@ export default function Navbar() {
   const moreRef = useRef<HTMLLIElement | null>(null);
   const [openLangMobile, setOpenLangMobile] = useState(false);
   const [openMore, setOpenMore] = useState(false);
-  const [isDark, setIsDark] = useState(false);
   const [releaseVersion, setReleaseVersion] = useState<string | null>(null);
 
   useEffect(() => {
@@ -29,30 +28,7 @@ export default function Navbar() {
       .catch(() => setReleaseVersion(null));
   }, []);
 
-  const toggleTheme = () => {
-    const root = document.documentElement;
-    const next = !isDark;
-    setIsDark(next);
-    root.classList.toggle("dark", next);
-    try {
-      root.setAttribute("data-theme", next ? "dark" : "light");
-    } catch {}
-    try {
-      localStorage.setItem("theme", next ? "dark" : "light");
-    } catch {}
-  };
-
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem("theme");
-      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-      const shouldDark = saved ? saved === "dark" : prefersDark;
-      setIsDark(shouldDark);
-      const root = document.documentElement;
-      root.classList.toggle("dark", shouldDark);
-      root.setAttribute("data-theme", shouldDark ? "dark" : "light");
-    } catch {}
-  }, []);
+  // 主题切换已全站禁用，Navbar 不再管理主题状态
 
   useEffect(() => {
     const onDocClick = (e: MouseEvent) => {
@@ -99,19 +75,7 @@ export default function Navbar() {
               </svg>
             </a>
           </li>
-          <li>
-            <button onClick={toggleTheme} aria-label="切换深浅模式" className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-ui" style={{ lineHeight: 1 }}>
-              <span className="grid place-items-center">
-                <svg className="w-4 h-4 brand-text col-start-1 row-start-1 transition-opacity duration-200" style={{opacity: isDark ? 0 : 1}} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                  <circle cx="12" cy="12" r="5" />
-                  <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
-                </svg>
-                <svg className="w-4 h-4 brand-text col-start-1 row-start-1 transition-opacity duration-200" style={{opacity: isDark ? 1 : 0}} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                  <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
-                </svg>
-              </span>
-            </button>
-          </li>
+          {/* 主题切换按钮已移除 */}
           <li ref={langRef} className="relative">
             <button aria-expanded={openLang} onClick={() => setOpenLang((v) => !v)} className="inline-flex items-center gap-2 h-9 px-3 rounded-full border border-ui opacity-80 hover:opacity-100 transition-colors duration-200 text-[var(--foreground)]">
               <span className="current-language">{langLabel}</span>
@@ -230,17 +194,7 @@ export default function Navbar() {
               </ul>
               <div className="mt-3 pt-3 border-t border-ui">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <button onClick={toggleTheme} aria-label="切换深浅模式" className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-ui" style={{ lineHeight: 1 }}>
-                    <span className="grid place-items-center">
-                      <svg className="w-5 h-5 brand-text col-start-1 row-start-1 transition-opacity duration-300" style={{opacity: isDark ? 0 : 1}} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                        <circle cx="12" cy="12" r="5" />
-                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
-                      </svg>
-                      <svg className="w-5 h-5 brand-text col-start-1 row-start-1 transition-opacity duration-300" style={{opacity: isDark ? 1 : 0}} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                        <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
-                      </svg>
-                    </span>
-                  </button>
+                  {/* 主题切换按钮已移除（移动端） */}
                   <button
                     onClick={() => setOpenLangMobile((v) => !v)}
                     aria-expanded={openLangMobile}

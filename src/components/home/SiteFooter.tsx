@@ -1,44 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import { useI18n } from "../i18n/I18nProvider";
-import { useScrollY } from "../hooks/useScrollY";
 import { HeartIcon } from "@heroicons/react/24/solid";
 
 export default function SiteFooter() {
   const { t } = useI18n();
-  const scrollY = useScrollY();
-  const footerRef = useRef<HTMLElement | null>(null);
-  const [parallaxY, setParallaxY] = useState(0);
-
-  useEffect(() => {
-    const el = footerRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const y = Math.max(-60, Math.min(60, -rect.top * 0.06));
-    setParallaxY(y);
-  }, [scrollY]);
   return (
-    <footer ref={footerRef} className="relative overflow-hidden border-t border-ui" style={{ backgroundColor: "var(--footer-bg)" }}>
-      {/* Decorative blurred orbs */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 z-0"
-        style={{ transform: `translateY(${parallaxY}px)`, willChange: "transform" }}
-      >
-        <div
-          className="absolute top-4 left-0 w-72 h-72 rounded-full blur-3xl opacity-25 dark:opacity-20 animate-orb-sway animate-orb-pulse"
-          style={{ backgroundColor: "var(--brand)", animationDelay: "0s, 0.5s, 1s" }}
-        />
-        <div
-          className="absolute bottom-0 left-1/3 w-80 h-80 rounded-full blur-3xl opacity-20 dark:opacity-15 animate-orb-sway animate-orb-pulse"
-          style={{ backgroundColor: "#22d3ee", animationDelay: "0.6s, 1.2s, 3s" }}
-        />
-        <div
-          className="absolute top-6 right-0 w-64 h-64 rounded-full blur-3xl opacity-20 dark:opacity-15 animate-orb-sway animate-orb-pulse"
-          style={{ backgroundColor: "#a78bfa", animationDelay: "1.2s, 2.4s, 5s" }}
-        />
-      </div>
+    <footer className="relative overflow-hidden border-t border-ui" style={{ backgroundColor: "var(--footer-bg)" }}>
 
       <div className="relative z-10 mx-auto max-w-6xl px-6 py-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

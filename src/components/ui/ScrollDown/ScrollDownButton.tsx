@@ -3,7 +3,7 @@
 import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ArrowDownIcon } from "@heroicons/react/24/solid";
-import MorphCircleIconButton from "./MorphCircleIconButton";
+import MorphCircleIconButton from "../MorphCircleIconButton";
 
 export interface ScrollDownButtonProps {
   href?: string;
@@ -17,6 +17,7 @@ export interface ScrollDownButtonProps {
   hoverIconColor?: string;
   borderColor?: string;
   glassBlur?: number;
+  onClick?: React.MouseEventHandler<HTMLAnchorElement>;
 }
 
 const ScrollDownButton: React.FC<ScrollDownButtonProps> = ({
@@ -31,6 +32,7 @@ const ScrollDownButton: React.FC<ScrollDownButtonProps> = ({
   hoverIconColor = "var(--background)",
   borderColor = "var(--border-ui)",
   glassBlur = 10,
+  onClick,
 }) => {
   const rippleRefs = useRef<Array<HTMLSpanElement | null>>([]);
   const rippleTlRef = useRef<gsap.core.Timeline | null>(null);
@@ -60,7 +62,7 @@ const ScrollDownButton: React.FC<ScrollDownButtonProps> = ({
     };
   }, [ease, baseColor]);
 
-  const handleClick: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
+  const defaultHandleClick: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
     if (href && href.startsWith("#")) {
       e.preventDefault();
       const id = href.slice(1);
@@ -106,7 +108,7 @@ const ScrollDownButton: React.FC<ScrollDownButtonProps> = ({
         glassBlur={glassBlur}
         Icon={ArrowDownIcon}
         iconClassName="w-7 h-7"
-        onClick={handleClick as React.MouseEventHandler<HTMLAnchorElement>}
+        onClick={(onClick ?? defaultHandleClick) as React.MouseEventHandler<HTMLAnchorElement>}
         className={className}
       />
     </span>

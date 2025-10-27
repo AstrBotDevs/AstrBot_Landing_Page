@@ -60,7 +60,7 @@ export default function Plugins() {
     return () => io.disconnect();
   }, [hasFetched]);
   return (
-    <section ref={sectionRef} className="min-h-[calc(100vh-64px)] flex items-center py-12 sm:py-16 overflow-hidden">
+    <section ref={sectionRef} id="plugins" className="min-h-[calc(100vh-64px)] flex items-center py-12 sm:py-16 overflow-hidden">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 w-full relative -translate-y-2 sm:-translate-y-3 lg:-translate-y-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           <div className="lg:pr-6">
