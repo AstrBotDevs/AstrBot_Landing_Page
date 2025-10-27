@@ -18,7 +18,27 @@ export default function Hero() {
   }, []);
   return (
     <section className="relative overflow-hidden min-h-[calc(100vh-64px)] flex flex-col items-center justify-center bg-black text-white">
-      {/* Prism 背景（仅桌面显示）；移动端回退到原有的纯黑背景 */}
+      {/* Prism 背景：移动端与桌面端分别使用不同性能配置 */}
+      {/* 移动端：低画质、DPR 上限 1.25、30 FPS、屏外暂停 */}
+      <div className="block sm:hidden absolute inset-0 z-0">
+        <Prism
+          animationType="3drotate"
+          timeScale={0.28}
+          scale={4.3}
+          height={2.5}
+          baseWidth={4.5}
+          noise={0.15}
+          glow={0.5}
+          hueShift={-0.14}
+          colorFrequency={1.15}
+          transparent={false}
+          suspendWhenOffscreen={true}
+          quality="low"
+          maxDpr={1.25}
+          fpsCap={30}
+        />
+      </div>
+      {/* 桌面端：中画质、DPR 上限 1.5、不限 FPS、屏外暂停 */}
       <div className="hidden sm:block absolute inset-0 z-0">
         <Prism
           animationType="3drotate"
@@ -31,7 +51,9 @@ export default function Hero() {
           hueShift={-0.14}
           colorFrequency={1.15}
           transparent={false}
-          suspendWhenOffscreen={false}
+          suspendWhenOffscreen={true}
+          quality="medium"
+          maxDpr={1.5}
         />
       </div>
       <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 py-16 sm:py-24 lg:py-28">

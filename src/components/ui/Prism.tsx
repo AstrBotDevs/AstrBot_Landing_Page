@@ -17,6 +17,10 @@ type PrismProps = {
   bloom?: number;
   suspendWhenOffscreen?: boolean;
   timeScale?: number;
+  quality?: 'low' | 'medium' | 'high';
+  maxDpr?: number;
+  fpsCap?: number | null; 
+  respectReducedMotion?: boolean; 
 };
 
 const Prism: React.FC<PrismProps> = ({
@@ -34,7 +38,11 @@ const Prism: React.FC<PrismProps> = ({
   inertia = 0.05,
   bloom = 1,
   suspendWhenOffscreen = false,
-  timeScale = 0.5
+  timeScale = 0.5,
+  quality = 'medium',
+  maxDpr = 1.5,
+  fpsCap = null,
+  respectReducedMotion = true
 }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
@@ -42,6 +50,13 @@ const Prism: React.FC<PrismProps> = ({
     const container = containerRef.current;
     if (!container) return;
 
+    const prefersReducedMotion = respectReducedMotion && typeof window !== 'undefined'
+      ? window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      : false;
+
+    const baseSteps = quality === 'high' ? 100 : quality === 'low' ? 60 : 80;
+    const steps = prefersReducedMotion ? Math.max(48, Math.floor(baseSteps * 0.75)) : baseSteps;
+    const targetFps = fpsCap && fpsCap > 0 ? fpsCap : prefersReducedMotion ? 30 : 0;
     const H = Math.max(0.001, height);
     const BW = Math.max(0.001, baseWidth);
     const BASE_HALF = BW * 0.5;
@@ -57,11 +72,11 @@ const Prism: React.FC<PrismProps> = ({
     const RSX = 1;
     const RSY = 1;
     const RSZ = 1;
-    const TS = Math.max(0, timeScale || 1);
+    const TS = Math.max(0, prefersReducedMotion ? (timeScale || 1) * 0.6 : (timeScale || 1));
     const HOVSTR = Math.max(0, hoverStrength || 1);
     const INERT = Math.max(0, Math.min(1, inertia || 0.12));
 
-    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    const dpr = Math.min(maxDpr, window.devicePixelRatio || 1);
     const renderer = new Renderer({
       dpr,
       alpha: transparent,
@@ -183,7 +198,7 @@ const Prism: React.FC<PrismProps> = ({
           wob = mat2(c0, c1, c2, c0);
         }
 
-        const int STEPS = 100;
+        const int STEPS = ${steps};
         for (int i = 0; i < STEPS; i++) {
           p = vec3(f, z);
           p.xz = p.xz * wob;
@@ -355,7 +370,18 @@ const Prism: React.FC<PrismProps> = ({
       program.uniforms.uUseBaseWobble.value = 1;
     }
 
+    const fpsInterval = targetFps > 0 ? 1000 / targetFps : 0;
+    let lastTime = 0;
+
     const render = (t: number) => {
+      if (fpsInterval > 0 && lastTime > 0) {
+        const dt = t - lastTime;
+        if (dt < fpsInterval) {
+          raf = requestAnimationFrame(render);
+          return;
+        }
+      }
+      lastTime = t;
       const time = (t - t0) * 0.001;
       program.uniforms.iTime.value = time;
 
@@ -412,6 +438,11 @@ const Prism: React.FC<PrismProps> = ({
       __prismIO?: IntersectionObserver;
     }
 
+    const onVisibility = () => {
+      if (document.visibilityState === 'hidden') stopRAF();
+      else startRAF();
+    };
+
     if (suspendWhenOffscreen) {
       const io = new IntersectionObserver(entries => {
         const vis = entries.some(e => e.isIntersecting);
@@ -423,6 +454,10 @@ const Prism: React.FC<PrismProps> = ({
       (container as PrismContainer).__prismIO = io;
     } else {
       startRAF();
+    }
+
+    if (typeof document !== 'undefined') {
+      document.addEventListener('visibilitychange', onVisibility);
     }
 
     return () => {
@@ -437,6 +472,9 @@ const Prism: React.FC<PrismProps> = ({
         const io = (container as PrismContainer).__prismIO as IntersectionObserver | undefined;
         if (io) io.disconnect();
         delete (container as PrismContainer).__prismIO;
+      }
+      if (typeof document !== 'undefined') {
+        document.removeEventListener('visibilitychange', onVisibility);
       }
       if (gl.canvas.parentElement === container) container.removeChild(gl.canvas);
     };
@@ -456,7 +494,11 @@ const Prism: React.FC<PrismProps> = ({
     hoverStrength,
     inertia,
     bloom,
-    suspendWhenOffscreen
+    suspendWhenOffscreen,
+    quality,
+    maxDpr,
+    fpsCap,
+    respectReducedMotion
   ]);
 
   return <div className="w-full h-full relative" ref={containerRef} />;
