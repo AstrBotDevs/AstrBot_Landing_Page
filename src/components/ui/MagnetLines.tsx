@@ -2,7 +2,6 @@
 
 import React, { useRef, useEffect, CSSProperties } from 'react';
 
-// Allow CSS custom properties like --rotate in inline style objects
 type CSSVars = { [key: `--${string}`]: string | number };
 
 interface MagnetLinesProps {
@@ -36,35 +35,53 @@ const MagnetLines: React.FC<MagnetLinesProps> = ({
 
     const items = container.querySelectorAll<HTMLSpanElement>('span');
 
-    const onPointerMove = (pointer: { x: number; y: number }) => {
+    let latestPointer: { x: number; y: number } | null = null;
+    let animationFrameId: number | null = null;
+
+    const updateItemsRotation = () => {
+      if (!latestPointer) {
+        animationFrameId = null;
+        return;
+      }
+
       items.forEach(item => {
         const rect = item.getBoundingClientRect();
-        const centerX = rect.x + rect.width / 2;
-        const centerY = rect.y + rect.height / 2;
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
 
-        const b = pointer.x - centerX;
-        const a = pointer.y - centerY;
+        const b = latestPointer!.x - centerX;
+        const a = latestPointer!.y - centerY;
         const c = Math.sqrt(a * a + b * b) || 1;
-        const r = ((Math.acos(b / c) * 180) / Math.PI) * (pointer.y > centerY ? 1 : -1);
+        const r = ((Math.acos(b / c) * 180) / Math.PI) * (latestPointer!.y > centerY ? 1 : -1);
 
         item.style.setProperty('--rotate', `${r}deg`);
       });
+
+      animationFrameId = null;
     };
 
     const handlePointerMove = (e: PointerEvent) => {
-      onPointerMove({ x: e.x, y: e.y });
+      latestPointer = { x: e.clientX, y: e.clientY };
+      if (animationFrameId === null) {
+        animationFrameId = window.requestAnimationFrame(updateItemsRotation);
+      }
     };
 
-    window.addEventListener('pointermove', handlePointerMove);
+    window.addEventListener('pointermove', handlePointerMove, { passive: true });
 
+    // Initialize with a sensible default: point at the middle span's center
     if (items.length) {
       const middleIndex = Math.floor(items.length / 2);
       const rect = items[middleIndex].getBoundingClientRect();
-      onPointerMove({ x: rect.x, y: rect.y });
+      latestPointer = { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+      animationFrameId = window.requestAnimationFrame(updateItemsRotation);
     }
 
     return () => {
-      window.removeEventListener('pointermove', handlePointerMove);
+      window.removeEventListener('pointermove', handlePointerMove as EventListener);
+      if (animationFrameId !== null) {
+        window.cancelAnimationFrame(animationFrameId);
+      }
     };
   }, []);
 
