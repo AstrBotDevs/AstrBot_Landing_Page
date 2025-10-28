@@ -142,6 +142,13 @@ html.snap-temp-disable {
 /* Unified UI border utility */
 .border-ui { border-color: var(--border-ui) !important; }
 
+.card-surface {
+  background-color: #f3f4f6; 
+}
+html.dark .card-surface, :root[data-theme="dark"] .card-surface {
+  background-color: #121316; 
+}
+
 /* Unify theme transition timing across interactive elements */
 a, button, .btn-brand, .btn-outline-brand, .tag-brand, .border-ui {
   transition: color .2s ease, background-color .2s ease, border-color .2s ease, opacity .2s ease;

@@ -5,6 +5,7 @@ import Reveal from "../ui/Reveal";
 import { useI18n } from "../i18n/I18nProvider";
 import { PuzzlePieceIcon, ArrowRightIcon, EllipsisHorizontalIcon } from "@heroicons/react/24/solid";
 import CardSwap, { Card } from "../ui/CardSwap";
+import MagnetLines from "../ui/MagnetLines";
 
 export default function Plugins() {
   const { t } = useI18n();
@@ -60,8 +61,33 @@ export default function Plugins() {
     return () => io.disconnect();
   }, [hasFetched]);
   return (
-    <section ref={sectionRef} id="plugins" className="min-h-[calc(100vh-64px)] flex items-center py-12 sm:py-16 overflow-hidden">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 w-full relative -translate-y-2 sm:-translate-y-3 lg:-translate-y-12">
+    <section ref={sectionRef} id="plugins" className="relative min-h-[calc(100vh-64px)] flex items-center py-12 sm:py-16 overflow-hidden">
+      {/** 平板（md）使用更大间距；桌面（lg+）使用原密度；移动端隐藏 **/}
+      <div className="absolute inset-0 z-0 pointer-events-none select-none hidden md:block lg:hidden" aria-hidden="true">
+        <MagnetLines
+          rows={8}
+          columns={14}
+          containerSize="100%"
+          lineColor="var(--border-ui)"
+          lineWidth="2px"
+          lineHeight="32px"
+          baseAngle={SKEW}
+          className="opacity-45"
+        />
+      </div>
+      <div className="absolute inset-0 z-0 pointer-events-none select-none hidden lg:block" aria-hidden="true">
+        <MagnetLines
+          rows={10}
+          columns={24}
+          containerSize="100%"
+          lineColor="var(--border-ui)"
+          lineWidth="2px"
+          lineHeight="28px"
+          baseAngle={SKEW}
+          className="opacity-45"
+        />
+      </div>
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 w-full relative z-10 -translate-y-2 sm:-translate-y-3 lg:-translate-y-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           <div className="lg:pr-6">
             <Reveal as="h2" className="text-left text-3xl sm:text-4xl font-semibold tracking-tight mb-4 gradient-title" delay={0}>
@@ -92,7 +118,7 @@ export default function Plugins() {
                   <Card
                     key={`skeleton-${i}`}
                     style={{ width: CARD_WIDTH, height: CARD_HEIGHT, transform, zIndex: zIndex as unknown as number }}
-                    className="p-5 sm:p-6 select-none pointer-events-none"
+                    className="p-5 sm:p-6 select-none pointer-events-none card-surface"
                     aria-hidden="true"
                   >
                     <div className="h-full w-full">
@@ -134,7 +160,7 @@ export default function Plugins() {
                 }}
               >
                 {plugins.slice(0, Math.min(8, plugins.length)).map((p) => (
-                  <Card key={p.key} className="group p-5 sm:p-6 cursor-pointer">
+                  <Card key={p.key} className="group p-5 sm:p-6 cursor-pointer card-surface">
                     <div className="relative z-10">
                       <div className="flex items-start justify-between gap-3">
                         <h4 className="text-base font-semibold leading-snug line-clamp-1">{p.name}</h4>
@@ -166,7 +192,7 @@ export default function Plugins() {
                   </Card>
                 ))}
                 {/** 更多插件卡片 */}
-                <Card key="more-card" className="group p-5 sm:p-6 cursor-pointer" onClick={() => window.open('https://plugins.astrbot.app', '_blank', 'noopener,noreferrer')}>
+                <Card key="more-card" className="group p-5 sm:p-6 cursor-pointer card-surface" onClick={() => window.open('https://plugins.astrbot.app', '_blank', 'noopener,noreferrer')}>
                   <div className="relative z-10">
                     <h4 className="text-base font-semibold leading-snug line-clamp-1">{t('plugins.more')}</h4>
                     <p className="mt-3 text-sm opacity-80 line-clamp-3 min-h-[3.4rem]">{t('plugins.subtitle')}</p>
