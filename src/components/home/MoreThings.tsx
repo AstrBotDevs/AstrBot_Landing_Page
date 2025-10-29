@@ -82,7 +82,6 @@ export default function MoreThings() {
                   rel="noopener noreferrer"
                   className="group block h-full rounded-2xl border border-ui p-5 hover:bg-black/[.04] dark:hover:bg-white/[.04] transition-colors"
                 >
-                  {/* 顶部 Banner 图像 */}
                   <div className="-mx-5 -mt-5 mb-4 relative h-24 rounded-t-2xl overflow-hidden">
                     {banners[idx] && (
                       <Image
