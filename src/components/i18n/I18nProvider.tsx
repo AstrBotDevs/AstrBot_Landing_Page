@@ -32,7 +32,6 @@ export default function I18nProvider({ children, initialLocale }: { children: Re
       const maxAge = 60 * 60 * 24 * 365; 
       document.cookie = `locale=${l}; path=/; max-age=${maxAge}`;
     } catch {}
-    // 刷新当前路由以让服务端重新生成 metadata（基于新的 Cookie）
     try {
       router.refresh();
     } catch {}

@@ -2,6 +2,7 @@
 
 import { useI18n } from "../i18n/I18nProvider";
 import { HeartIcon } from "@heroicons/react/24/solid";
+import Image from "next/image";
 
 export default function SiteFooter() {
   const { t } = useI18n();
@@ -11,7 +12,17 @@ export default function SiteFooter() {
       <div className="relative z-10 mx-auto max-w-6xl px-6 py-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <h2 className="text-lg font-semibold">AstrBot</h2>
+            <h2 className="text-lg font-semibold flex items-center gap-2">
+              <Image
+                src="/logo.webp"
+                alt="AstrBot Logo"
+                width={24}
+                height={24}
+                className="h-6 w-6"
+                priority={false}
+              />
+              <span>AstrBot</span>
+            </h2>
             <p className="mt-1 text-sm opacity-80">{t("hero.slogan")}</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
@@ -32,7 +43,7 @@ export default function SiteFooter() {
             <div>
               <h3 className="text-sm font-semibold">{t("footer.support")}</h3>
               <ul className="mt-2 space-y-2 text-sm opacity-80">
-                <li><a href="mailto:soulter@qq.com">{t("footer.contact")}</a></li>
+                <li><a href="mailto:community@astrbot.app">{t("footer.contact")}</a></li>
                 <li><a href="https://github.com/AstrBotDevs/AstrBot/issues">{t("footer.issues")}</a></li>
               </ul>
             </div>
@@ -40,8 +51,6 @@ export default function SiteFooter() {
         </div>
         <div className="mt-8 text-sm opacity-70">
           <p>© {new Date().getFullYear()} AstrBot. {t("footer.copyright")}</p>
-          <p className="mt-2">{t("footer.partners")}: <a className="underline" href="https://www.rainyun.com/NjY3OTQ1_" target="_blank">雨云-新一代云服务商</a></p>
-          <p className="mt-2">{t("footer.friendLinks")}: <a className="underline" href="https://ustb-806.github.io/" target="_blank">北京科技大学 806 学生创新实验室</a></p>
           <p className="mt-2 inline-flex items-center gap-2">
             <span>{t("footer.madeWith")}</span>
             <HeartIcon className="w-4 h-4 text-red-500" />
