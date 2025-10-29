@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Reveal from "../ui/Reveal";
 import TextType from "../ui/TextType";
 import { useI18n } from "../i18n/I18nProvider";
@@ -10,52 +10,71 @@ import Prism from "../ui/Prism";
 export default function Hero() {
   const { t } = useI18n();
   const [heroStars, setHeroStars] = useState<number | null>(null);
+  const [inView, setInView] = useState(false);
+  const sectionRef = useRef<HTMLElement | null>(null);
   useEffect(() => {
     fetch("/api/plugins", { cache: "no-store" })
       .then((r) => r.json())
       .then((d) => setHeroStars(typeof d?.github?.stars === "number" ? d.github.stars : null))
       .catch(() => setHeroStars(null));
   }, []);
+  useEffect(() => {
+    const node = sectionRef.current;
+    if (!node) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        const vis = entries.some((e) => e.isIntersecting);
+        setInView(vis);
+      },
+      { root: null, rootMargin: "100px", threshold: 0 }
+    );
+    io.observe(node);
+    return () => io.disconnect();
+  }, []);
   return (
-  <section className="relative overflow-hidden min-h-screen flex flex-col items-center justify-center bg-black text-white">
+  <section ref={sectionRef} className="relative overflow-hidden min-h-screen flex flex-col items-center justify-center bg-black text-white">
       {/* Prism 背景：移动端与桌面端分别使用不同性能配置 */}
-      {/* 移动端：低画质、DPR 上限 1.25、30 FPS、屏外暂停 */}
-      <div className="block sm:hidden absolute inset-0 z-0">
-        <Prism
-          animationType="3drotate"
-          timeScale={0.28}
-          scale={4.3}
-          height={2.5}
-          baseWidth={4.5}
-          noise={0.15}
-          glow={0.5}
-          hueShift={-0.14}
-          colorFrequency={1.15}
-          transparent={false}
-          suspendWhenOffscreen={true}
-          quality="low"
-          maxDpr={1.25}
-          fpsCap={30}
-        />
-      </div>
-      {/* 桌面端：中画质、DPR 上限 1.5、不限 FPS、屏外暂停 */}
-      <div className="hidden sm:block absolute inset-0 z-0">
-        <Prism
-          animationType="3drotate"
-          timeScale={0.3}
-          scale={4.3}
-          height={2.5}
-          baseWidth={4.5}
-          noise={0.15}
-          glow={0.5}
-          hueShift={-0.14}
-          colorFrequency={1.15}
-          transparent={false}
-          suspendWhenOffscreen={true}
-          quality="medium"
-          maxDpr={1.5}
-        />
-      </div>
+      {/* 移动端：低画质、DPR 上限 1.25、30 FPS */}
+      {inView && (
+        <div className="block sm:hidden absolute inset-0 z-0">
+          <Prism
+            animationType="3drotate"
+            timeScale={0.28}
+            scale={4.3}
+            height={2.5}
+            baseWidth={4.5}
+            noise={0.15}
+            glow={0.5}
+            hueShift={-0.14}
+            colorFrequency={1.15}
+            transparent={false}
+            suspendWhenOffscreen={true}
+            quality="low"
+            maxDpr={1.25}
+            fpsCap={30}
+          />
+        </div>
+      )}
+      {/* 桌面端：中画质、DPR 上限 1.5、不限 FPS */}
+      {inView && (
+        <div className="hidden sm:block absolute inset-0 z-0">
+          <Prism
+            animationType="3drotate"
+            timeScale={0.3}
+            scale={4.3}
+            height={2.5}
+            baseWidth={4.5}
+            noise={0.15}
+            glow={0.5}
+            hueShift={-0.14}
+            colorFrequency={1.15}
+            transparent={false}
+            suspendWhenOffscreen={true}
+            quality="medium"
+            maxDpr={1.5}
+          />
+        </div>
+      )}
       <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 py-16 sm:py-24 lg:py-28">
         <div className="flex flex-col items-center text-center gap-6">
             <h1 className="slogan text-5xl sm:text-5xl font-semibold tracking-tight">
