@@ -27,6 +27,7 @@ export default function robots(): MetadataRoute.Robots {
         "https://plugins.astrbot.app/sitemap.xml",
         "https://blog.astrbot.app/sitemap.xml",
         "https://docs.astrbot.app/sitemap.xml",
+        "https://docs.astrbot.tech/sitemap.xml",
         "https://astrbot.app/sitemap.xml"
     ],
   };
