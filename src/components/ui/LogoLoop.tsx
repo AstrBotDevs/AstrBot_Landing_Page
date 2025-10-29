@@ -223,14 +223,25 @@ export const LogoLoop = React.memo<LogoLoopProps>(
       return magnitude * directionMultiplier * speedMultiplier;
     }, [speed, direction]);
 
+    const prevContainerWRef = useRef<number>(-1);
+    const prevSeqWRef = useRef<number>(-1);
     const updateDimensions = useCallback(() => {
       const containerWidth = containerRef.current?.clientWidth ?? 0;
       const sequenceWidth = seqRef.current?.getBoundingClientRect?.()?.width ?? 0;
 
+      const changedContainer = Math.abs(containerWidth - prevContainerWRef.current) >= 1;
+      const changedSeq = Math.abs(sequenceWidth - prevSeqWRef.current) >= 1;
+      if (!changedContainer && !changedSeq) return;
+
+      prevContainerWRef.current = containerWidth;
+      prevSeqWRef.current = sequenceWidth;
+
       if (sequenceWidth > 0) {
-        setSeqWidth(Math.ceil(sequenceWidth));
+        const seqW = Math.ceil(sequenceWidth);
+        setSeqWidth((old) => (old !== seqW ? seqW : old));
         const copiesNeeded = Math.ceil(containerWidth / sequenceWidth) + ANIMATION_CONFIG.COPY_HEADROOM;
-        setCopyCount(Math.max(ANIMATION_CONFIG.MIN_COPIES, copiesNeeded));
+        const nextCopies = Math.max(ANIMATION_CONFIG.MIN_COPIES, copiesNeeded);
+        setCopyCount((old) => (old !== nextCopies ? nextCopies : old));
       }
     }, []);
 

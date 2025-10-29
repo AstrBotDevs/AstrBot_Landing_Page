@@ -262,9 +262,13 @@ const Prism: React.FC<PrismProps> = ({
     });
     const mesh = new Mesh(gl, { geometry, program });
 
+    let lastW = -1;
+    let lastH = -1;
     const resize = () => {
       const w = container.clientWidth || 1;
       const h = container.clientHeight || 1;
+      if (Math.abs(w - lastW) < 1 && Math.abs(h - lastH) < 1) return;
+      lastW = w; lastH = h;
       renderer.setSize(w, h);
       iResBuf[0] = gl.drawingBufferWidth;
       iResBuf[1] = gl.drawingBufferHeight;

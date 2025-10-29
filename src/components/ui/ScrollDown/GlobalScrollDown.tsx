@@ -22,23 +22,14 @@ export default function GlobalScrollDown({ bottomOffsetPx = 48 }: Props) {
     const io = new IntersectionObserver(
       (entries) => {
         const vis = entries.some((e) => e.isIntersecting);
-        setHide(vis);
+        setHide((prev) => (prev !== vis ? vis : prev));
       },
       { root: null, threshold: 0, rootMargin: `0px 0px -${safeZone}px 0px` }
     );
     io.observe(footer);
 
-    const onScroll = () => {
-      const rect = (footer as HTMLElement).getBoundingClientRect();
-      const distFromBottom = window.innerHeight - rect.top; 
-      setHide(distFromBottom > (window.innerHeight > 0 ? 0 : 0) || rect.top < window.innerHeight - safeZone);
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-
     return () => {
       io.disconnect();
-      window.removeEventListener("scroll", onScroll);
     };
   }, [bottomOffsetPx]);
 
