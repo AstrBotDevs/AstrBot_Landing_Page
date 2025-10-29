@@ -1,0 +1,23 @@
+[
+  { "key": "openai", "title": "OpenAI", "alt": "OpenAI", "src": "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/openai.svg", "keepColor": false },
+  { "key": "gemini", "title": "Gemini", "alt": "Gemini", "src": "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/gemini-color.svg", "keepColor": true },
+  { "key": "anthropic", "title": "Anthropic", "alt": "Anthropic", "src": "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/anthropic.svg", "keepColor": false },
+  { "key": "xai", "title": "xAI", "alt": "xAI", "src": "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/xai.svg", "keepColor": false },
+  { "key": "kimi", "title": "Kimi", "alt": "Kimi", "src": "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/kimi.svg", "keepColor": false },
+  { "key": "deepseek", "title": "DeepSeek", "alt": "DeepSeek", "src": "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/deepseek.svg", "keepColor": false },
+  { "key": "zhipu", "title": "智谱 AI", "alt": "智谱 AI", "src": "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/zhipu.svg", "keepColor": false },
+  { "key": "minimax", "title": "MiniMax", "alt": "MiniMax", "src": "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/minimax.svg", "keepColor": false },
+  { "key": "ollama", "title": "Ollama", "alt": "Ollama", "src": "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/ollama.svg", "keepColor": false },
+  { "key": "lmstudio", "title": "LM Studio", "alt": "LM Studio", "src": "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/lmstudio.svg", "keepColor": false },
+  { "key": "tokenpony", "title": "小马算力", "alt": "小马算力", "src": "/show/tokenpony.png", "href": "https://www.tokenpony.cn/3YPyf", "keepColor": true },
+  { "key": "ucloud_compshare", "title": "优云智算", "alt": "优云智算", "src": "/show/ucloud_compshare.png", "href": "https://www.compshare.cn/?ytag=GPU_YY-gh_astrbot&referral_code=FV7DcGowN4hB5UuXKgpE74", "keepColor": true },
+  { "key": "ai302", "title": "302.AI", "alt": "302.AI", "src": "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/ai302-color.svg", "href": "https://share.302.ai/rr1M3l", "keepColor": true },
+  { "key": "ppio", "title": "PPIO派欧云", "alt": "PPIO派欧云", "src": "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/ppio.svg", "keepColor": false },
+  { "key": "siliconcloud", "title": "硅基流动", "alt": "硅基流动", "src": "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/siliconcloud.svg", "keepColor": false },
+  { "key": "dify", "title": "Dify", "alt": "Dify", "src": "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/dify-color.svg", "keepColor": true },
+  { "key": "coze", "title": "Coze", "alt": "Coze", "src": "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/coze.svg", "keepColor": false },
+  { "key": "alibabacloud", "title": "阿里云百炼", "alt": "阿里云百炼", "src": "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/alibabacloud-color.svg", "keepColor": true },
+  { "key": "fastgpt", "title": "FastGPT", "alt": "FastGPT", "src": "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/fastgpt-color.svg", "keepColor": true },
+  { "key": "fishaudio", "title": "FishAudio", "alt": "FishAudio", "src": "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/fishaudio.svg", "keepColor": false },
+  { "key": "azure", "title": "Azure", "alt": "Azure", "src": "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/azure.svg", "keepColor": false }
+]

@@ -1,27 +1,17 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import MorphCircleIconButton from "../ui/MorphCircleIconButton";
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
 import Reveal from "../ui/Reveal";
 import { useI18n } from "../i18n/I18nProvider";
+import slidesConfig from "../../config/platforms.json";
 
 export default function Platforms() {
   const { t } = useI18n();
-  const slides = [
-    { key: "qq", label: "QQ", src: "/show/qq_demo_1.png" },
-    { key: "wxkefu", label: "微信客服", src: "/show/wxkefu_demo_1.png" },
-    { key: "wecom", label: "企业微信应用", src: "/show/wecom_demo_1.png" },
-    { key: "wxoa", label: "微信公众号", src: "/show/wxoa_demo_1.png" },
-    { key: "lark", label: "飞书", src: "/show/lark_demo_1.png" },
-    { key: "dingtalk", label: "钉钉", src: "/show/dingtalk_demo_1.png" },
-    { key: "telegram", label: "Telegram", src: "/show/telegram_demo_1.png" },
-    { key: "slack", label: "Slack", src: "/show/slack_demo_1.png" },
-    { key: "discord", label: "Discord", src: "/show/discord_demo_1.png" },
-    { key: "kook", label: "KOOK", src: "/show/kook_demo_1.png" },
-    { key: "vocechat", label: "VoceChat", src: "" },
-  ];
+  type Slide = { key: string; label: string; src?: string };
+  const slides: Slide[] = useMemo(() => slidesConfig as Slide[], []);
   const [index, setIndex] = useState(0);
   const slidesLen = slides.length;
   const go = useCallback((n: number) => setIndex((i) => (i + n + slidesLen) % slidesLen), [slidesLen]);
