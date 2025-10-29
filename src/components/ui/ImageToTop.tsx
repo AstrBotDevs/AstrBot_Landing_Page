@@ -27,10 +27,19 @@ type Status = "hidden" | "visible" | "leaving";
 function useScrollAbove(threshold = 200) {
   const [isAbove, setIsAbove] = useState(false);
   useEffect(() => {
-    const onScroll = () => {
+    let scheduled = false;
+    const read = () => (window.scrollY || document.documentElement.scrollTop || 0) >= threshold;
+    const loop = () => {
+      scheduled = false;
       try {
-        setIsAbove((window.scrollY || document.documentElement.scrollTop || 0) >= threshold);
+        const next = read();
+        setIsAbove((prev) => (prev !== next ? next : prev));
       } catch {}
+    };
+    const onScroll = () => {
+      if (scheduled) return;
+      scheduled = true;
+      requestAnimationFrame(loop);
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });

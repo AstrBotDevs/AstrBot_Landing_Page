@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { cookies, headers } from "next/headers";
 import { Analytics } from "@vercel/analytics/next";
 import I18nProvider from "../components/i18n/I18nProvider";
@@ -16,6 +16,11 @@ export const dynamic = "force-dynamic";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
+
 export async function generateMetadata(): Promise<Metadata> {
   const cookieStore = await cookies();
   const headerStore = await headers();
@@ -30,6 +35,8 @@ export async function generateMetadata(): Promise<Metadata> {
     title,
     description,
     icons: { icon: "/logo.png" },
+    alternates: { canonical: SITE_URL },
+    robots: { index: true, follow: true },
     openGraph: {
       title,
       description,
