@@ -1,3 +1,5 @@
+const __bannerCache = new Map<string, string>();
+
 export function hashCode(token: string): number {
   let hash = 0;
   if (token.length === 0) return hash;
@@ -9,7 +11,11 @@ export function hashCode(token: string): number {
 }
 
 export function makeRandomBanner(token: string, width = 600, height = 140): string {
-  if (typeof document === "undefined") return ""; // 仅在浏览器端生成
+  if (typeof document === "undefined") return ""; 
+
+  const key = `${token}__${width}x${height}`;
+  const cached = __bannerCache.get(key);
+  if (cached) return cached;
 
   const canvas = document.createElement("canvas");
   canvas.width = width;
@@ -17,7 +23,6 @@ export function makeRandomBanner(token: string, width = 600, height = 140): stri
   const ctx = canvas.getContext("2d");
   if (!ctx) return "";
 
-  // 计算颜色
   const codes = token.split("").map((ch) => ch.charCodeAt(0));
   let r = 0, g = 0, b = 0;
   for (let i = 0; i < codes.length; i++) {
@@ -47,5 +52,11 @@ export function makeRandomBanner(token: string, width = 600, height = 140): stri
     }
   }
 
-  return canvas.toDataURL("image/png");
+  const data = canvas.toDataURL("image/png");
+  __bannerCache.set(key, data);
+  return data;
+}
+
+export function clearRandomBannerCache() {
+  __bannerCache.clear();
 }

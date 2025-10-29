@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+import { XMLParser } from "fast-xml-parser";
+import * as cheerio from "cheerio";
 
 export const dynamic = "force-dynamic";
 
@@ -12,19 +14,54 @@ async function fetchSitemap(): Promise<string> {
   return await res.text();
 }
 
-function parseSitemap(xml: string): Entry[] {
-  const entries: Entry[] = [];
-  const urlRe = /<url>([\s\S]*?)<\/url>/gi;
-  let m: RegExpExecArray | null;
-  while ((m = urlRe.exec(xml))) {
-    const block = m[1];
-    const locMatch = block.match(/<loc>([^<]+)<\/loc>/i);
-    if (!locMatch) continue;
-    const url = locMatch[1].trim();
-    const lastmod = block.match(/<lastmod>([^<]+)<\/lastmod>/i)?.[1]?.trim();
-    entries.push({ url, lastmod });
+type UrlNode = { loc?: string; lastmod?: string };
+type UrlSet = { url?: UrlNode | UrlNode[] };
+type SiteMapNode = { loc?: string };
+type SiteMapIndex = { sitemap?: SiteMapNode | SiteMapNode[] };
+
+async function parseSitemap(xml: string): Promise<Entry[]> {
+  const parser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: "@_" });
+  const obj = parser.parse(xml);
+
+  const collectFromUrlset = (urlset: UrlSet): Entry[] => {
+    const urls: UrlNode[] = Array.isArray(urlset?.url) ? urlset.url : urlset?.url ? [urlset.url] : [];
+    return urls
+      .map((u: UrlNode) => ({ url: String(u?.loc || "").trim(), lastmod: u?.lastmod ? String(u.lastmod).trim() : undefined }))
+      .filter((e: Entry) => !!e.url);
+  };
+
+  const smi: SiteMapIndex | undefined = obj?.sitemapindex;
+  if (smi?.sitemap) {
+    const smList: SiteMapNode[] = Array.isArray(smi.sitemap) ? smi.sitemap : [smi.sitemap];
+    const xmlList = await Promise.all(
+      smList.map(async (sm: SiteMapNode) => {
+        const loc = String(sm?.loc || "").trim();
+        if (!loc) return "";
+        try {
+          const res = await fetch(loc, { cache: "no-store" });
+          return res.ok ? await res.text() : "";
+        } catch {
+          return "";
+        }
+      })
+    );
+    const all: Entry[] = [];
+    for (const x of xmlList) {
+      if (!x) continue;
+      try {
+        const o: { urlset?: UrlSet } = parser.parse(x);
+        if (o?.urlset) all.push(...collectFromUrlset(o.urlset));
+      } catch {}
+    }
+    return all;
   }
-  return entries;
+
+  const us: UrlSet | undefined = obj?.urlset;
+  if (us) {
+    return collectFromUrlset(us);
+  }
+
+  return [];
 }
 
 async function fetchTitle(url: string): Promise<string | undefined> {
@@ -32,11 +69,11 @@ async function fetchTitle(url: string): Promise<string | undefined> {
     const res = await fetch(url, { cache: "force-cache" });
     if (!res.ok) return undefined;
     const html = await res.text();
-    // Prefer og:title
-    const og = html.match(/<meta[^>]+property=["']og:title["'][^>]+content=["']([^"']+)["'][^>]*>/i)?.[1];
-    if (og) return decodeHtml(og.trim());
-    const t = html.match(/<title[^>]*>([^<]+)<\/title>/i)?.[1];
-    if (t) return cleanupTitle(decodeHtml(t.trim()));
+    const $ = cheerio.load(html);
+    const og = $('meta[property="og:title"]').attr('content') || $('meta[name="og:title"]').attr('content');
+    if (og && og.trim()) return cleanupTitle(decodeHtml(og.trim()));
+    const t = $('title').first().text();
+    if (t && t.trim()) return cleanupTitle(decodeHtml(t.trim()));
   } catch {}
   return undefined;
 }
@@ -58,8 +95,9 @@ function cleanupTitle(t: string): string {
 export async function GET() {
   try {
     const xml = await fetchSitemap();
-    const entries = parseSitemap(xml)
-      .filter((e) => {
+    const parsed = await parseSitemap(xml);
+    const entries: Entry[] = parsed
+      .filter((e: Entry) => {
         try {
           const u = new URL(e.url);
           if (!u.pathname.startsWith("/posts/")) return false;
@@ -72,7 +110,7 @@ export async function GET() {
         }
       });
 
-    entries.sort((a, b) => {
+    entries.sort((a: Entry, b: Entry) => {
       const ta = a.lastmod ? Date.parse(a.lastmod) : 0;
       const tb = b.lastmod ? Date.parse(b.lastmod) : 0;
       return tb - ta;
@@ -80,7 +118,7 @@ export async function GET() {
 
     const top = entries.slice(0, 4);
     const withTitles = await Promise.all(
-      top.map(async (e) => {
+      top.map(async (e: Entry) => {
         const title = await fetchTitle(e.url);
         return { url: e.url, lastmod: e.lastmod, title: title ?? slugToTitle(e.url) };
       })
